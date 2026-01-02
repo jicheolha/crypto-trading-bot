@@ -13,14 +13,14 @@ This is a sophisticated algorithmic trading system designed for cryptocurrency (
 - **Multi-Timeframe Analysis**: Signals generation on 4-hour timeframe, volatility measurement on 1-hour, trade execution on 1-minute
 - **Advanced Indicators**: Bollinger Bands, Keltner Channels, RSI, ATR, and normalized momentum
 - **Dynamic Position Sizing**: Allocation adjusts based on squeeze quality, volume confirmation, and drawdown state
-- **Backtesting**: Minute-by-minute simulation over 6+ years with realistic commission and slippage modeling
-- **Bayesian Optimization**: Automated hyperparameter tuning using Optuna TPE sampler across 24+ parameters
-- **Live Trading**: Real-time execution with Coinbase Advanced Trade API integration
+- **Backtesting**: Minute-by-minute simulation of upto 6 years with commission and slippage customization
+- **Optimization**: Hyperparameter tuning of ~20 parameters using one of Bayesian, Random, Grid Search, and Walk-Forward analysis.
+- **Live Trading**: Real-time trading capability with Coinbase Advanced Trade API
 - **Risk Management**: Multiple protective layers including ATR-based stops, daily loss limits, and maximum hold periods
 
 ---
 
-## Strategy (with Opitimized Parameters)
+## Strategy (with Optimized Parameters)
 
 ### Bollinger Band Squeeze
 
