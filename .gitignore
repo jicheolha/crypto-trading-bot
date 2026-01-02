@@ -1,0 +1,25 @@
+# Data Cache - 455 MB, don't upload!
+data_cache/
+*.pkl
+*.pickle
+*.h5
+*.hdf5
+
+# Logs
+*.log
+logs/
+
+# API Keys
+config.py
+.env
+*.key
+*.secret
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+env/
+
+# OS
+.DS_Store
