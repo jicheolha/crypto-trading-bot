@@ -1,28 +1,28 @@
 # Cryptocurrency Trading Bot - Bollinger Band Squeeze Strategy
 
-**Automated cryptocurrency trading system implementing the Bollinger Band Squeeze breakout strategy with multi-timeframe analysis, Bayesian parameter optimization, and production-ready live trading.**
+**Automated cryptocurrency trading system that implements the Bollinger Band Squeeze breakout strategy with multi-timeframe analysis, Bayesian parameter optimization, and live trading using Coinbase API.**
 
 ---
 
 ## Overview
 
-This project is a sophisticated algorithmic trading system designed for cryptocurrency markets. The strategy identifies low-volatility consolidation periods (squeezes) followed by high-probability breakout opportunities. The system includes comprehensive backtesting, parameter optimization, and live trading capabilities with professional risk management.
+This is a sophisticated algorithmic trading system designed for cryptocurrency (futures) markets. It identifies low-volatility consolidation periods (squeezes) followed by high-probability breakout opportunities. The system supports backtesting, parameter optimization, and live trading capabilities with risk management. Live trading is implemented on crypto futures, which allow both long and short positions. 
 
 ### Key Features
 
-- **Multi-Timeframe Technical Analysis**: Signal generation on 4-hour timeframe, volatility measurement on 1-hour, execution precision on 1-minute
-- **Advanced Indicators**: Bollinger Bands, Keltner Channels, RSI, ATR, normalized momentum
+- **Multi-Timeframe Analysis**: Signals generation on 4-hour timeframe, volatility measurement on 1-hour, trade execution on 1-minute
+- **Advanced Indicators**: Bollinger Bands, Keltner Channels, RSI, ATR, and normalized momentum
 - **Dynamic Position Sizing**: Allocation adjusts based on squeeze quality, volume confirmation, and drawdown state
-- **Rigorous Backtesting**: Minute-by-minute simulation over 6+ years with realistic commission and slippage modeling
-- **Bayesian Optimization**: Automated hyperparameter tuning using Optuna TPE sampler across 24+ parameters
-- **Production Trading**: Real-time execution with Coinbase Advanced Trade API integration
+- **Backtesting**: Minute-by-minute simulation of upto 6 years with commission and slippage customization
+- **Optimization**: Hyperparameter tuning of ~20 parameters using one of Bayesian, Random, Grid Search, and Walk-Forward analysis.
+- **Live Trading**: Real-time trading capability with Coinbase Advanced Trade API
 - **Risk Management**: Multiple protective layers including ATR-based stops, daily loss limits, and maximum hold periods
 
 ---
 
-## Strategy Explanation
+## Strategy (with Optimized Parameters)
 
-### Core Concept: Bollinger Band Squeeze
+### Bollinger Band Squeeze
 
 The Bollinger Band Squeeze is a volatility-based pattern that identifies periods of low volatility followed by expansion. The strategy exploits the market tendency to alternate between consolidation and trending phases.
 
@@ -65,38 +65,60 @@ Adjustments:
 - If absolute momentum >= 1.5: multiply by 1.15
 - If consecutive losses >= 2: multiply by 0.7
 
-Final position size constrained to range [30%, 90%]
+Final position size constrained to range [30%, 85%]
 ```
 
 ---
 
-## Performance Results
+## Performance Results (2021-2025, 5 years)
 
-### BTC/USD Backtest (2018-2024, 6 years)
-
-| Metric | Value |
-|--------|-------|
-| Total Trades | 87 |
-| Win Rate | 58.6% |
-| Profit Factor | 2.14 |
-| Sharpe Ratio | 1.82 |
-| Maximum Drawdown | 11.3% |
-| Annualized Return | 43.7% |
-| Average Win | $8,450 |
-| Average Loss | $3,920 |
-
-### ETH/USD Backtest (2018-2024, 6 years)
+### BTC/USD
 
 | Metric | Value |
 |--------|-------|
-| Total Trades | 93 |
-| Win Rate | 56.2% |
-| Profit Factor | 1.98 |
-| Sharpe Ratio | 1.67 |
-| Maximum Drawdown | 14.8% |
-| Annualized Return | 38.2% |
-| Average Win | $6,280 |
-| Average Loss | $3,170 |
+| Total Trades | 133 |
+| Win Rate | 66.2% |
+| Profit Factor | 2.22 |
+| Sharpe Ratio | 2.11 |
+| Maximum Drawdown | 15.3% |
+| Total Return | 219.5% |
+| Total Return after commission (0.05%) and slippage (0.02%) | 211.6%
+
+### ETH/USD
+
+| Metric | Value |
+|--------|-------|
+| Total Trades | 135 |
+| Win Rate | 60.7% |
+| Profit Factor | 1.97 |
+| Sharpe Ratio | 1.58 |
+| Maximum Drawdown | 20.7% |
+| Total Return | 202.5% |
+| Total Return after commission (0.05%) and slippage (0.02%) | 195.5%
+
+### DOGE/USD
+
+| Metric | Value |
+|--------|-------|
+| Total Trades | 127 |
+| Win Rate | 69.3% |
+| Profit Factor | 2.13 |
+| Sharpe Ratio | 2.79 |
+| Maximum Drawdown | 20.7% |
+| Total Return | 931.2% |
+| Total Return after commission (0.05%) and slippage (0.02%) | 909.6%
+
+### SOL/USD
+
+| Metric | Value |
+|--------|-------|
+| Total Trades | 98 |
+| Win Rate | 68.0% |
+| Profit Factor | 1.99 |
+| Sharpe Ratio | 1.41 |
+| Maximum Drawdown | 20.7% |
+| Total Return | 241.0% |
+| Total Return after commission (0.05%) and slippage (0.02%) | 235.4%
 
 **Disclaimer**: Past performance does not guarantee future results. These results are for educational purposes and were generated using historical data with realistic assumptions for commission (0.05%) and slippage (0.02%).
 
@@ -107,7 +129,6 @@ Final position size constrained to range [30%, 90%]
 ### Requirements
 
 - Python 3.11 or higher
-- Virtual environment recommended
 - API credentials from supported exchange (Coinbase Advanced Trade)
 
 ### Installation Steps
@@ -156,9 +177,9 @@ COINBASE_API_SECRET = os.environ.get('COINBASE_API_SECRET')
 python run_backtest.py
 
 # Output includes:
-# - Detailed trade log with entry/exit prices and P&L
-# - Summary statistics (Sharpe ratio, profit factor, win rate)
-# - Equity curve visualization saved to results/plots/
+# - Trade log with date, direction, entry/exit prices, duration, and P&L
+# - Summary statistics (Sharpe ratio, profit factor, win rate, and total return)
+# - Equity curves
 ```
 
 ### Parameter Optimization
@@ -167,15 +188,15 @@ The optimization module supports multiple methods for hyperparameter tuning:
 
 ```bash
 # Bayesian optimization (recommended)
-python optimize.py --method bayesian --trials 200
+python optimize.py --method bayesian
 
-# Random search for initial exploration
-python optimize.py --method random --trials 100
+# Random search
+python optimize.py --method random
 
-# Walk-forward analysis for robustness testing
+# Walk-forward analysis
 python optimize.py --method walkforward --folds 5
 
-# Grid search (exhaustive but slow)
+# Grid search
 python optimize.py --method grid
 ```
 
@@ -188,70 +209,12 @@ python optimize.py --method grid
 export COINBASE_API_KEY='your_api_key'
 export COINBASE_API_SECRET='your_api_secret'
 
-# Launch trading bot
-python run_live.py
+# Launch real trading bot
+python run_eth_futures_simple.py
 
-# For paper trading, ensure PAPER_TRADING = True in configuration
 ```
 
 ---
-
-## Project Structure
-
-```
-crypto-trading-bot/
-├── technical.py              # Technical indicator calculations
-├── signal_generator.py       # Signal generation and position sizing
-├── backtester.py            # Simulation engine
-├── data_utils.py            # Data fetching and caching
-├── run_backtest.py          # Backtest execution script
-├── run_live.py              # Live trading bot
-├── optimize.py              # Parameter optimization
-├── diagnose.py              # Real-time market diagnostics
-├── requirements.txt         # Python dependencies
-├── config.example.py        # Configuration template
-├── LICENSE                  # MIT License
-├── README.md               # This file
-├── results/                # Backtest results and visualizations
-│   └── plots/              # Equity curve images
-└── docs/                   # Additional documentation
-```
-
----
-
-## Technical Architecture
-
-### Core Components
-
-**technical.py** - Technical Analysis Engine
-- Implements vectorized calculations for all technical indicators
-- Bollinger Bands: SMA-based with configurable standard deviation multiplier
-- Keltner Channels: EMA-based with ATR multiplier
-- Squeeze detection algorithm comparing band positions
-- RSI calculation using exponential moving averages of gains/losses
-- Normalized momentum calculation
-
-**signal_generator.py** - Signal Management System
-- Coordinates multi-timeframe analysis
-- Manages setup validity windows (signals expire after 8 bars if not triggered)
-- Calculates dynamic position sizes based on setup quality
-- Tracks consecutive losses for position size reduction
-- Computes ATR-based stop loss and take profit levels
-
-**backtester.py** - Simulation Engine
-- Minute-by-minute bar replay for accurate entry/exit modeling
-- Commission application (0.05% per trade)
-- Slippage modeling (0.02% on entry and exit)
-- Daily loss limit enforcement
-- Maximum hold period tracking
-- Comprehensive performance metric calculation
-
-**optimize.py** - Hyperparameter Optimization
-- Random search: Fast exploration of parameter space
-- Bayesian optimization: Efficient search using Optuna TPE sampler
-- Walk-forward analysis: Time-based validation preventing look-ahead bias
-- Grid search: Exhaustive evaluation of discrete parameter combinations
-- Composite objective function balancing multiple performance criteria
 
 ### Data Flow
 
@@ -276,14 +239,14 @@ Performance Metrics / Order Placement
 | Language | Python 3.11+ |
 | Data Processing | Pandas, NumPy |
 | Visualization | Matplotlib |
-| Optimization | Optuna (Tree-structured Parzen Estimator) |
+| Optimization | Optuna |
 | Exchange APIs | CCXT, Coinbase Advanced Trade |
 | Authentication | HMAC-SHA256 via cryptography library |
-| Caching | Pickle (local filesystem) |
+| Caching | Pickle |
 
 ---
 
-## Algorithm Details
+## Indicators
 
 ### Bollinger Bands Calculation
 
@@ -378,47 +341,15 @@ MAX_HOLD_DAYS = 7            # Maximum holding period in days
 
 ---
 
-## Risk Management
-
-### Multiple Protective Layers
-
-1. **Position-Level Protection**
-   - ATR-based stop losses dynamically adjust to market volatility
-   - Take profit targets maintain favorable risk-reward ratios
-   - Maximum holding period prevents indefinite exposure
-
-2. **Account-Level Protection**
-   - Daily loss limit halts trading at 3% drawdown
-   - Maximum position limit prevents over-concentration
-   - Position sizing reduces during losing streaks
-
-3. **Strategy-Level Protection**
-   - Signal filters eliminate low-probability setups
-   - Multi-timeframe confirmation reduces false positives
-   - Volume requirements ensure sufficient liquidity
-
-### Risk Metrics Monitored
-
-- Sharpe Ratio: Risk-adjusted returns relative to volatility
-- Maximum Drawdown: Largest peak-to-trough decline
-- Profit Factor: Ratio of gross profits to gross losses
-- Win Rate: Percentage of profitable trades
-- Average Win/Loss Ratio: Comparison of typical profitable vs losing trade sizes
-- Consecutive Loss Tracking: Identifies potential strategy degradation
-
----
-
 ## Testing and Validation
 
 ### Backtesting Methodology
 
-The backtesting engine employs minute-by-minute simulation to accurately model real trading conditions:
+The backtesting engine uses minute-by-minute data to accurately model real trading conditions:
 
-- **Historical Data**: 6+ years of cryptocurrency price data across multiple timeframes
-- **Execution Modeling**: Realistic entry/exit prices with slippage assumptions
-- **Cost Modeling**: Commission charges of 0.05% per trade leg
-- **Liquidity Assumptions**: Assumes sufficient liquidity for position sizes (validated for major pairs)
-- **Look-Ahead Bias Prevention**: Strict temporal ordering ensures no future information leakage
+- **Historical Data**: 6 years of cryptocurrency price data across multiple timeframes
+- **Cost Modeling**: Commission charges of 0.05% and 0.02% slippage per trade leg
+- **Data Cache**: Creates a cache of all data after the first download
 
 ### Walk-Forward Analysis
 
@@ -439,49 +370,9 @@ The optimization process evaluates robustness by:
 
 ---
 
-## Troubleshooting
-
-### Common Issues
-
-**Issue**: API authentication failures
-**Solution**: Verify API keys are correctly set in environment variables. Ensure API key has appropriate permissions (view + trade, no withdrawal).
-
-**Issue**: Data download errors
-**Solution**: Check internet connection. Verify exchange API is accessible. Consider increasing request timeout values.
-
-**Issue**: Backtest results differ from live trading
-**Solution**: Confirm commission and slippage settings match live execution. Verify data quality and timezone consistency.
-
-**Issue**: Out of memory errors during optimization
-**Solution**: Reduce lookback period or use fewer optimization trials. Consider running optimization in batches.
-
----
-
-## Contributing
-
-Contributions are welcome. Please follow these guidelines:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/improvement`)
-3. Make changes with clear, descriptive commits
-4. Add tests for new functionality
-5. Ensure all tests pass
-6. Submit pull request with detailed description
-
-For major changes, please open an issue first to discuss the proposed modifications.
-
----
-
 ## License
 
 This project is licensed under the MIT License. See LICENSE file for full text.
-
-**MIT License Summary**:
-- Commercial use permitted
-- Modification permitted
-- Distribution permitted
-- Private use permitted
-- Liability and warranty disclaimers apply
 
 ---
 
@@ -501,21 +392,6 @@ For questions, bug reports, or collaboration opportunities:
 
 - GitHub Issues: [github.com/jicheolha/crypto-trading-bot/issues](https://github.com/jicheolha/crypto-trading-bot/issues)
 - Repository: [github.com/jicheolha/crypto-trading-bot](https://github.com/jicheolha/crypto-trading-bot)
-
----
-
-## Acknowledgments
-
-This project was developed as a comprehensive exploration of algorithmic trading concepts, incorporating industry-standard practices for technical analysis, risk management, and quantitative strategy development.
-
-**Skills Demonstrated**:
-- Quantitative finance and trading strategy development
-- Python programming with focus on data analysis and numerical computing
-- Object-oriented software design and modular architecture
-- Machine learning applications (Bayesian optimization)
-- API integration and real-time data processing
-- Statistical analysis and performance attribution
-- Production system development and deployment
 
 ---
 

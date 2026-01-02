@@ -1,0 +1,111 @@
+=========================================
+BOLLINGER BANDS SQUEEZE BREAKOUT STRATEGY
+=========================================
+Symbols: ['SUSHI/USD']
+Period: 1825 days (5.0 years)
+Timeframes: Trade=1min, Signal=4h, ATR=1h
+BB: 19 period, 2.47 std
+KC: 17 period, 2.38x ATR
+Squeeze: 2+ bars
+Stops: 3.45x SL, 4.0x TP
+Position: 40% base, 30%-85% range
+
+Loading data...
+Loading SUSHI/USD...
+  Fetched SUSHI/USD 1min from API (391567 bars)
+  Fetched SUSHI/USD 4h from API (6461 bars)
+  Fetched SUSHI/USD 1h from API (20209 bars)
+Symbols loaded: 1/1
+Period: 2021-07-23 to 2025-12-28
+
+Running backtest...
+
+==================================================================================================
+TRADE LOG
+==================================================================================================
+Date         Dir     Entry        Exit               P&L     Duration     Reasons
+--------------------------------------------------------------------------------------------------
+2021-07-31   ▲ LONG  $          9 $          8       $-3,969 2d 7h        SQ13 V1.9 M2.0 RSI57
+2021-08-11   ▲ LONG  $         10 $         11       $+4,348 6h           SQ5 V1.6 M2.7 RSI61
+2021-08-17   ▲ LONG  $         13 $         14       $+1,083 7d 0h        SQ9 V2.0 M3.6 RSI63
+2021-08-24   ▼ SHORT $         13 $         12       $+4,235 16h          SQ14 V1.3 M-2.7 RSI30
+2021-10-04   ▲ LONG  $         10 $         11       $+2,854 1d 12h       SQ4 V1.6 M0.7 RSI53
+2021-10-12   ▼ SHORT $         10 $         10       $+4,377 10h          SQ16 V1.6 M-2.6 RSI33
+2021-10-14   ▲ LONG  $         11 $         11       $+3,300 1d 2h        SQ6 V2.1 M0.0 RSI48
+2021-10-26   ▲ LONG  $         11 $         12       $+2,720 6h           SQ4 V2.7 M1.6 RSI63
+2021-10-29   ▲ LONG  $         11 $         11       $-3,232 1d 20h       SQ2 V2.0 M1.2 RSI49
+2021-11-10   ▼ SHORT $         12 $         11       $+5,246 1h           SQ8 V5.6 M-2.6 RSI35
+2021-11-10   ▼ SHORT $         11 $         10       $+6,725 5d 2h        SQ8 V5.6 M-2.6 RSI35
+2021-11-16   ▼ SHORT $         10 $         10       $+4,204 3h           SQ14 V3.3 M-5.5 RSI31
+2021-11-16   ▼ SHORT $         10 $          9       $+6,230 2d 9h        SQ14 V3.3 M-5.5 RSI31
+2021-11-26   ▼ SHORT $          8 $          7      $+12,116 1d 18h       SQ14 V4.2 M-4.7 RSI32
+2021-12-13   ▲ LONG  $          6 $          5       $-6,512 7d 0h        SQ2 V2.7 M1.1 RSI58
+2021-12-21   ▲ LONG  $          6 $          6       $+3,819 22h          SQ3 V3.2 M0.9 RSI53
+2022-02-01   ▲ LONG  $          4 $          4       $-5,162 1d 3h        SQ17 V1.6 M1.7 RSI58
+2022-02-21   ▼ SHORT $          4 $          3       $+6,221 5h           SQ2 V3.0 M-5.3 RSI26
+2022-03-04   ▼ SHORT $          3 $          3       $+4,318 19h          SQ6 V1.2 M-0.9 RSI42
+2022-03-09   ▲ LONG  $          3 $          3       $-5,061 12h          SQ10 V1.6 M0.6 RSI53
+2022-03-22   ▲ LONG  $          3 $          4       $+4,380 1d 3h        SQ9 V1.0 M1.7 RSI57
+2022-03-27   ▲ LONG  $          4 $          4       $+6,535 20h          SQ18 V2.0 M3.9 RSI66
+2022-04-18   ▼ SHORT $          3 $          3       $-5,536 10h          SQ20 V1.4 M-2.3 RSI43
+2022-07-04   ▲ LONG  $          1 $          1       $+7,301 2d 4h        SQ11 V3.3 M1.7 RSI66
+2022-07-10   ▲ LONG  $          1 $          1       $-8,788 1d 1h        SQ11 V3.3 M4.1 RSI68
+2022-07-18   ▲ LONG  $          2 $          1       $-5,834 18h          SQ4 V3.0 M5.5 RSI65
+2022-07-20   ▼ SHORT $          1 $          1       $-4,124 4d 18h       SQ8 V1.2 M-1.3 RSI47
+2022-08-26   ▼ SHORT $          1 $          1       $+2,530 5h           SQ6 V1.2 M-1.8 RSI40
+2022-09-02   ▲ LONG  $          1 $          1       $+4,526 2d 5h        SQ3 V2.7 M2.5 RSI56
+2022-09-13   ▼ SHORT $          1 $          1       $+7,613 1d 13h       SQ14 V3.5 M-3.1 RSI31
+2022-10-11   ▼ SHORT $          1 $          1       $+6,202 1d 23h       SQ10 V1.2 M-2.4 RSI30
+2022-10-30   ▲ LONG  $          2 $          2       $-9,371 22h          SQ9 V2.0 M3.6 RSI62
+2022-11-27   ▲ LONG  $          1 $          1       $+4,460 3h           SQ6 V2.8 M3.9 RSI66
+2022-12-02   ▲ LONG  $          1 $          1       $+4,069 4h           SQ10 V1.6 M0.5 RSI49
+2022-12-06   ▲ LONG  $          1 $          1       $-4,832 8h           SQ13 V1.2 M1.1 RSI59
+2022-12-26   ▲ LONG  $          1 $          1       $+1,808 6h           SQ2 V2.1 M1.9 RSI53
+2022-12-29   ▼ SHORT $          1 $          1       $-2,784 4d 7h        SQ5 V1.9 M-0.4 RSI47
+2023-01-13   ▲ LONG  $          1 $          1       $+6,077 6h           SQ23 V6.4 M2.8 RSI63
+2023-01-30   ▼ SHORT $          1 $          1       $+6,211 2d 1h        SQ13 V1.6 M-2.0 RSI38
+2023-02-15   ▲ LONG  $          1 $          1       $+3,487 4h           SQ16 V1.2 M2.3 RSI57
+2023-02-19   ▲ LONG  $          1 $          2       $+3,752 2h           SQ8 V2.2 M4.0 RSI57
+2023-02-19   ▲ LONG  $          1 $          1       $-4,001 2h           SQ8 V2.2 M4.0 RSI57
+2023-03-08   ▼ SHORT $          1 $          1       $+5,731 1d 0h        SQ17 V1.9 M-3.4 RSI34
+2023-06-05   ▼ SHORT $          1 $          1       $+6,661 0h           SQ81 V5.1 M-5.0 RSI27
+2023-07-08   ▼ SHORT $          1 $          1      $-14,803 5d 3h        SQ19 V3.3 M-1.9 RSI41
+2023-12-12   ▲ LONG  $          1 $          1       $-3,068 7d 19h       SQ13 V1.8 M0.9 RSI50
+2024-01-05   ▼ SHORT $          1 $          1       $-4,071 7d 2h        SQ3 V4.8 M-2.3 RSI43
+2024-02-13   ▲ LONG  $          1 $          1       $+5,986 3d 12h       SQ7 V2.6 M2.8 RSI64
+2024-03-16   ▲ LONG  $          2 $          2       $+3,487 9d 14h       SQ2 V1.7 M1.0 RSI53
+2024-10-18   ▼ SHORT $          1 $          1      $-12,104 2d 2h        SQ3 V1.7 M-2.0 RSI51
+2024-12-24   ▼ SHORT $          2 $          1      $+10,337 1d 18h       SQ4 V2.3 M-1.2 RSI47
+2025-01-03   ▲ LONG  $          2 $          2      $+14,816 1d 0h        SQ5 V3.9 M2.7 RSI65
+2025-01-27   ▼ SHORT $          1 $          1      $-12,005 3d 13h       SQ25 V1.0 M-5.2 RSI34
+2025-03-02   ▲ LONG  $          1 $          1      $-11,209 22h          SQ15 V1.4 M3.0 RSI60
+2025-03-04   ▼ SHORT $          1 $          1      $+10,006 5d 17h       SQ2 V1.1 M-1.8 RSI43
+2025-03-19   ▲ LONG  $          1 $          1       $-2,262 7d 2h        SQ14 V1.4 M2.7 RSI64
+2025-05-22   ▲ LONG  $          1 $          1       $-8,335 2d 14h       SQ8 V1.2 M0.7 RSI57
+2025-05-26   ▲ LONG  $          1 $          1       $-5,977 4d 10h       SQ5 V1.1 M0.5 RSI56
+2025-06-10   ▲ LONG  $          1 $          1       $+6,052 8h           SQ17 V1.5 M1.8 RSI50
+2025-06-23   ▼ SHORT $          1 $          1      $-10,710 7d 0h        SQ5 V2.8 M-3.6 RSI34
+2025-07-01   ▲ LONG  $          1 $          1       $+8,442 2d 8h        SQ16 V2.5 M0.2 RSI51
+2025-08-07   ▲ LONG  $          1 $          1       $+6,647 1d 9h        SQ11 V9.8 M2.9 RSI60
+2025-08-22   ▲ LONG  $          1 $          1       $-7,275 3d 1h        SQ3 V14.8 M2.7 RSI66
+2025-09-09   ▲ LONG  $          1 $          1       $+6,377 3d 1h        SQ34 V6.9 M2.3 RSI62
+2025-10-10   ▼ SHORT $          1 $          0      $+28,256 2h           SQ25 V11.3 M-2.3 RSI43
+2025-11-04   ▼ SHORT $          0 $          1      $-22,814 6d 17h       SQ4 V7.7 M-3.2 RSI30
+--------------------------------------------------------------------------------------------------
+
+Wins: 41 | Losses: 25
+Longs: 39 | Shorts: 27
+
+===========================
+BACKTEST RESULTS
+===========================
+Total Trades:    66
+Win Rate:        62.1%
+Profit Factor:   1.38
+Total P&L:       $+69,704
+Max Drawdown:    22.2%
+Sharpe Ratio:    1.40
+Final Equity:    $166,872
+Return:          +66.9%
+===========================
+Equity plot saved to equity_curve_SUSHIUSD.png
