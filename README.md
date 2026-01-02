@@ -96,7 +96,7 @@ Final position size constrained to range [30%, 85%]
 | Total Return | 202.5% |
 | Total Return after commission (0.05%) and slippage (0.02%) | 195.5%
 
-### DOGE/USD Backtest (2021-2025, 5 years)
+### DOGE/USD
 
 | Metric | Value |
 |--------|-------|
@@ -108,7 +108,7 @@ Final position size constrained to range [30%, 85%]
 | Total Return | 931.2% |
 | Total Return after commission (0.05%) and slippage (0.02%) | 909.6%
 
-### SOL/USD Backtest (2021-2025, 5 years)
+### SOL/USD
 
 | Metric | Value |
 |--------|-------|
