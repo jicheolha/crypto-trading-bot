@@ -70,9 +70,9 @@ Final position size constrained to range [30%, 85%]
 
 ---
 
-## Performance Results
+## Performance Results (2021-2025, 5 years)
 
-### BTC/USD Backtest (2021-2025, 5 years)
+### BTC/USD
 
 | Metric | Value |
 |--------|-------|
@@ -84,19 +84,7 @@ Final position size constrained to range [30%, 85%]
 | Total Return | 219.5% |
 | Total Return after commission (0.05%) and slippage (0.02%) | 211.6%
 
-### ETH/USD Backtest (2011-2025, 5 years)
-
-| Metric | Value |
-|--------|-------|
-| Total Trades | 135 |
-| Win Rate | 60.7% |
-| Profit Factor | 1.97 |
-| Sharpe Ratio | 1.58 |
-| Maximum Drawdown | 20.7% |
-| Total Return | 202.5% |
-| Total Return after commission (0.05%) and slippage (0.02%) | 195.5%
-
-### ETH/USD Backtest (2021-2025, 5 years)
+### ETH/USD
 
 | Metric | Value |
 |--------|-------|
