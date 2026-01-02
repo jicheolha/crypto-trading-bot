@@ -104,7 +104,7 @@ Final position size constrained to range [30%, 85%]
 | Win Rate | 69.3% |
 | Profit Factor | 2.13 |
 | Sharpe Ratio | 2.79 |
-| Maximum Drawdown | 20.7% |
+| Maximum Drawdown | 15.3% |
 | Total Return | 931.2% |
 | Total Return after commission (0.05%) and slippage (0.02%) | 909.6%
 
@@ -116,7 +116,7 @@ Final position size constrained to range [30%, 85%]
 | Win Rate | 68.0% |
 | Profit Factor | 1.99 |
 | Sharpe Ratio | 1.41 |
-| Maximum Drawdown | 20.7% |
+| Maximum Drawdown | 29.1% |
 | Total Return | 241.0% |
 | Total Return after commission (0.05%) and slippage (0.02%) | 235.4%
 
