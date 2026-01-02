@@ -20,7 +20,7 @@ This is a sophisticated algorithmic trading system designed for cryptocurrency (
 
 ---
 
-## Strategy
+## Strategy (with Opitimized Parameters)
 
 ### Bollinger Band Squeeze
 
