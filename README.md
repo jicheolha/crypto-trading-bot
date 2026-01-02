@@ -1,4 +1,4 @@
-# Cryptocurrency Futures Trading Bot - Bollinger Band Squeeze Strategy
+# Cryptocurrency Trading Bot - Bollinger Band Squeeze Strategy
 
 **Automated cryptocurrency trading system that implements the Bollinger Band Squeeze breakout strategy with multi-timeframe analysis, Bayesian parameter optimization, and live trading using Coinbase API.**
 
@@ -6,7 +6,7 @@
 
 ## Overview
 
-This is a sophisticated algorithmic trading system designed for cryptocurrency (futures) markets. It identifies low-volatility consolidation periods (squeezes) followed by high-probability breakout opportunities. The system supports backtesting, parameter optimization, and live trading capabilities with risk management.
+This is a sophisticated algorithmic trading system designed for cryptocurrency (futures) markets. It identifies low-volatility consolidation periods (squeezes) followed by high-probability breakout opportunities. The system supports backtesting, parameter optimization, and live trading capabilities with risk management. Live trading is implemented on crypto futures, which allow both long and short positions. 
 
 ### Key Features
 
