@@ -10,7 +10,7 @@ This is an algorithmic trading system designed for cryptocurrency (futures) mark
 - **Advanced Indicators**: Bollinger Bands, Keltner Channels, RSI, ATR, and normalized momentum
 - **Dynamic Position Sizing**: Allocation adjusts based on squeeze quality, volume confirmation, and drawdown state
 - **Backtesting**: Minute-by-minute simulation of upto 6 years with commission and slippage customization
-- **Optimization**: Hyperparameter tuning of ~20 parameters using one of Bayesian, Random, Grid Search, and Walk-Forward analysis.
+- **Optimization**: Hyperparameter tuning of ~20 parameters using one of Bayesian, Random, Grid Search, and Walk-Forward
 - **Live Trading**: Real-time trading capability with Coinbase Advanced Trade API
 - **Risk Management**: Multiple protective layers including ATR-based stops, daily loss limits, and maximum hold periods
 
