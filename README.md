@@ -212,22 +212,6 @@ python run_eth_futures_simple.py
 
 ---
 
-### Data Flow
-
-```
-Exchange API
-    ↓
-Data Fetcher (with local caching)
-    ↓
-Technical Analyzer (indicator calculation)
-    ↓
-Signal Generator (entry logic)
-    ↓
-Backtester / Live Trader (execution)
-    ↓
-Performance Metrics / Order Placement
-```
-
 ### Technology Stack
 
 | Component | Technology |
@@ -289,53 +273,6 @@ rsi = 100 - (100 / (1 + relative_strength))
 
 ---
 
-## Configuration Parameters
-
-### Strategy Parameters
-
-```python
-# Timeframes
-SIGNAL_TIMEFRAME = '4h'      # Signal generation timeframe
-ATR_TIMEFRAME = '1h'         # Volatility measurement timeframe
-TRADE_TIMEFRAME = '1min'     # Backtest execution timeframe
-
-# Bollinger Bands
-BB_PERIOD = 19               # Simple moving average period
-BB_STD = 2.47                # Standard deviation multiplier
-
-# Keltner Channels
-KC_PERIOD = 17               # Exponential moving average period
-KC_ATR_MULT = 2.38           # ATR multiplier for channel width
-
-# Squeeze Detection
-MIN_SQUEEZE_BARS = 2         # Minimum squeeze duration in bars
-
-# Volume Filter
-VOLUME_PERIOD = 45           # Volume moving average period
-MIN_VOLUME_RATIO = 1.02      # Minimum volume ratio for confirmation
-
-# RSI Filter
-RSI_PERIOD = 21              # RSI calculation period
-RSI_OVERBOUGHT = 68          # Upper threshold for long entries
-RSI_OVERSOLD = 18            # Lower threshold for short entries
-
-# Stop Loss and Take Profit
-ATR_PERIOD = 16              # ATR calculation period
-ATR_STOP_MULT = 3.45         # Stop loss distance in ATR units
-ATR_TARGET_MULT = 4.0        # Take profit distance in ATR units
-
-# Position Sizing
-BASE_POSITION = 0.60         # Base allocation as percentage of capital
-MIN_POSITION = 0.30          # Minimum position size
-MAX_POSITION = 0.90          # Maximum position size
-
-# Risk Management
-MAX_POSITIONS = 3            # Maximum concurrent positions
-MAX_DAILY_LOSS = 0.03        # Maximum daily loss (3% of capital)
-MAX_HOLD_DAYS = 7            # Maximum holding period in days
-```
-
----
 
 ## Testing and Validation
 
