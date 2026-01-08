@@ -66,7 +66,7 @@ Final position size constrained to range [30%, 85%]
 
 ---
 
-## Performance Results (2021-2025, 5 years)
+## Performance Results (2021-2025)
 
 ### BTC/USD
 
