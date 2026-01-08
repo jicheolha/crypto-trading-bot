@@ -1,4 +1,4 @@
-# Cryptocurrency Trading Bot - Bollinger Band Squeeze Strategy
+# Algorithmic Crypto Trading Bot for Coinbase
 
 ## Overview
 
