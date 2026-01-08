@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is an algorithmic trading system designed for cryptocurrency (futures) markets. It identifies low-volatility consolidation periods (squeezes) followed by high-probability breakout opportunities. The system supports backtesting, parameter optimization, and live trading with risk management. Live trading is implemented on crypto futures (e.g. ETH futures), which allow both long and short positions. This bot has demonstrated an average return of 388.0%, Sharpe Ratio of 1.97, and max drawdown of 20.1% accross BTC, ETH, DOGE, and SOL over five years. 
+This is an algorithmic trading system designed for cryptocurrency (futures) markets. It identifies low-volatility consolidation periods (squeezes) followed by high-probability breakout opportunities. The system supports backtesting, parameter optimization, and live trading with risk management. Live trading is implemented on crypto futures (e.g. ETH futures), which allow both long and short positions. This bot has demonstrated an average return of 388.0%, Sharpe Ratio of 2.0, and max drawdown of 20.1% accross BTC, ETH, DOGE, and SOL over five years. 
 
 ### Key Features
 
