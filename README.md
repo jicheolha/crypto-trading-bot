@@ -1,4 +1,4 @@
-# Algorithmic Crypto Trading Bot for Coinbase
+# Live Algorithmic Crypto Trading Bot
 
 ## Overview
 
