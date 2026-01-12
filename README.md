@@ -79,6 +79,8 @@ Final position size constrained to configured min/max range
 | Maximum Drawdown | 11.4% |
 | Total Return (after commision and slippage) | 287.2% |
 
+![BTC Equity Curve](plots/equity_curve_BTCUSD.png)
+
 ### ETH/USD
 
 | Metric | Value |
@@ -89,6 +91,8 @@ Final position size constrained to configured min/max range
 | Sharpe Ratio | 1.92 |
 | Maximum Drawdown | 24.8% |
 | Total Return (after commision and slippage) | 271.1% |
+
+![ETH Equity Curve](plots/equity_curve_ETHUSD.png)
 
 ### DOGE/USD
 
@@ -101,6 +105,8 @@ Final position size constrained to configured min/max range
 | Maximum Drawdown | 18.9% |
 | Total Return (after commision and slippage) | 1430.6% |
 
+![DOGE Equity Curve](plots/equity_curve_DOGEUSD.png)
+
 ### SOL/USD
 
 | Metric | Value |
@@ -111,6 +117,8 @@ Final position size constrained to configured min/max range
 | Sharpe Ratio | 1.37 |
 | Maximum Drawdown | 35.7% |
 | Total Return (after commision and slippage) | 202.9% |
+
+![SOL Equity Curve](plots/equity_curve_SOLUSD.png)
 
 **Disclaimer**: Past performance does not guarantee future results. These results are from backtesting on historical data.
 
