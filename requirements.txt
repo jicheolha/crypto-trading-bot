@@ -1,0 +1,23 @@
+# Core Dependencies
+pandas>=2.0.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+
+# Exchange APIs
+ccxt>=4.0.0
+
+# Optimization
+optuna>=3.3.0
+
+# Cryptography for Coinbase
+cryptography>=41.0.0
+
+# HTTP Requests
+requests>=2.31.0
+
+# Optional: Data sources
+# alpaca-py>=0.14.0  # If using Alpaca
+
+# Optional: Jupyter notebooks
+# jupyter>=1.0.0
+# notebook>=7.0.0
