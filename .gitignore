@@ -1,0 +1,8 @@
+
+# Ignore large data
+*.csv
+*.pkl
+*.log
+data/
+logs/
+models/
