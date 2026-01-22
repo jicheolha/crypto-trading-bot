@@ -1,0 +1,16 @@
+{
+  "initial_balance": 416.91,
+  "current_balance": 416.91,
+  "peak_balance": 416.91,
+  "cumulative_pnl": 0.0,
+  "total_trades": 0,
+  "winning_trades": 0,
+  "losing_trades": 0,
+  "max_drawdown_pct": 0.0,
+  "max_consecutive_wins": 0,
+  "max_consecutive_losses": 0,
+  "trade_counter": 0,
+  "total_slippage": 0.0,
+  "start_time": "2026-01-20T15:02:45.701115",
+  "saved_at": "2026-01-20T16:02:45.732737"
+}

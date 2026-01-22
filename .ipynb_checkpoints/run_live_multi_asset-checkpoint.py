@@ -173,15 +173,6 @@ def main():
     print("")
     print("=" * 70)
     print("")
-    print("[!] WARNING: This will trade with REAL MONEY on your account!")
-    print("")
-    
-    confirm = input("Type 'LIVE' to start live trading: ")
-    if confirm != 'LIVE':
-        print("Aborted. You must type 'LIVE' to confirm.")
-        return
-    
-    print("")
     print("Starting live trader...")
     print("")
     

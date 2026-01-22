@@ -41,7 +41,7 @@ def filter_data_by_date(data, start_date=None, end_date=None):
 # PARAMETERS
 # ============================================================================
 
-SYMBOLS = ['DOGE/USD']
+SYMBOLS = ['DOGE/USD', 'BTC/USD','ETH/USD','SOL/USD']
 DAYS_BACK = 365*6
 INITIAL_CAPITAL = 100000
 COMMISSION = 0.0005
@@ -72,15 +72,15 @@ ATR_STOP_MULT = 3.45
 ATR_TARGET_MULT = 4.0
 
 # Position Sizing
-BASE_POSITION = 0.5
-MIN_POSITION = 0.3
-MAX_POSITION = 0.9
+BASE_POSITION = 0.3
+MIN_POSITION = 0.1
+MAX_POSITION = 0.5
 
 # Setup
 SETUP_VALIDITY_BARS = 8
 
 # Risk
-MAX_POSITIONS = 3
+MAX_POSITIONS = 2
 MAX_DAILY_LOSS = 0.03
 MAX_HOLD_DAYS = 7 
 LONG_ONLY = False     
