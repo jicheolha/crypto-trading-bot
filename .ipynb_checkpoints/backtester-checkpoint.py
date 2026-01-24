@@ -77,17 +77,6 @@ def _infer_timeframe_from_index(index) -> str:
         return '1d'
 
 
-# Annualization factors for Sharpe ratio calculation
-PERIODS_PER_YEAR = {
-    '1min': 365 * 24 * 60,
-    '5min': 365 * 24 * 12,
-    '15min': 365 * 24 * 4,
-    '30min': 365 * 24 * 2,
-    '1h': 365 * 24,
-    '4h': 365 * 6,
-    '1d': 365,
-}
-
 
 class BBSqueezeBacktester:
     """
@@ -357,14 +346,34 @@ class BBSqueezeBacktester:
     def _calc_equity(self, data: Dict[str, pd.DataFrame], ts: datetime) -> float:
         """Calculate current equity."""
         equity = self.capital
+        
         for symbol, pos in self.positions.items():
-            if symbol in data and ts in data[symbol].index:
-                price = float(data[symbol].loc[ts, 'close'])
-                if pos.direction == 'long':
-                    unrealized = (price - pos.entry_price) * pos.quantity
+            if symbol not in data:
+                # Symbol not in data at all - just add capital_used back
+                equity += pos.capital_used
+                continue
+            
+            df = data[symbol]
+            
+            # Find price: use exact timestamp or most recent before it
+            if ts in df.index:
+                price = float(df.loc[ts, 'close'])
+            else:
+                # Use last known price before this timestamp
+                prior = df.index[df.index <= ts]
+                if len(prior) > 0:
+                    price = float(df.loc[prior[-1], 'close'])
                 else:
-                    unrealized = (pos.entry_price - price) * pos.quantity
-                equity += pos.capital_used + unrealized
+                    # No data yet - use entry price
+                    price = pos.entry_price
+            
+            if pos.direction == 'long':
+                unrealized = (price - pos.entry_price) * pos.quantity
+            else:
+                unrealized = (pos.entry_price - price) * pos.quantity
+            
+            equity += pos.capital_used + unrealized
+        
         return equity
     
     def _calc_equity_now(self) -> float:
@@ -410,14 +419,20 @@ class BBSqueezeBacktester:
         drawdown = (equity - peak) / peak * 100
         max_dd = abs(drawdown.min())
         
-        # Returns with correct annualization factor
-        returns = equity.pct_change().dropna()
-        periods_per_year = PERIODS_PER_YEAR.get(self._trade_timeframe, 365 * 24 * 60)
-        annualization_factor = np.sqrt(periods_per_year)
-        
-        if len(returns) > 1 and returns.std() > 0:
-            sharpe = returns.mean() / returns.std() * annualization_factor
-        else:
+        # Sharpe Ratio - INDUSTRY STANDARD: Calculate on DAILY returns
+        # Resampling equity to daily prevents artificial inflation from
+        # near-zero intraday returns when signals are on higher timeframes (4h)
+        try:
+            daily_equity = equity.resample('D').last().dropna()
+            daily_returns = daily_equity.pct_change().dropna()
+            
+            if len(daily_returns) > 1 and daily_returns.std() > 0:
+                # Annualize: sqrt(252 trading days)
+                sharpe = daily_returns.mean() / daily_returns.std() * np.sqrt(252)
+            else:
+                sharpe = 0
+        except Exception:
+            # Fallback if resampling fails
             sharpe = 0
         
         # R-multiple stats

@@ -10,11 +10,6 @@ Methods:
 3. Grid Search - Exhaustive (for final refinement)
 4. Walk-Forward - Time-based validation
 
-Usage:
-    python optimize.py --method bayesian --trials 200
-    python optimize.py --method bayesian --trials 50 --study my_study  # Named study
-    python optimize.py --method bayesian --trials 50 --reset  # Fresh start
-    python optimize.py --history  # View history stats
 """
 import argparse
 import logging

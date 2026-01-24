@@ -36,6 +36,7 @@ from coinbase.rest import RESTClient
 
 from technical import BBSqueezeAnalyzer
 from signal_generator import BBSqueezeSignalGenerator
+from utils import Colors, colored
 
 logging.basicConfig(
     level=logging.INFO,
@@ -352,22 +353,35 @@ class TradingStats:
     
     def _log_trade_exit(self, trade: TradeRecord):
         """Log detailed trade exit information."""
+        # Color direction
+        if trade.direction.lower() == 'long':
+            dir_colored = colored(trade.direction.upper(), Colors.GREEN)
+        else:
+            dir_colored = colored(trade.direction.upper(), Colors.MAGENTA)
+        
+        # Color P&L
+        if trade.gross_pnl >= 0:
+            pnl_colored = colored(f"${trade.gross_pnl:+,.2f}", Colors.GREEN)
+        else:
+            pnl_colored = colored(f"${trade.gross_pnl:+,.2f}", Colors.RED)
+        
         logger.info("=" * 70)
-        logger.info(f"TRADE #{trade.trade_id} | EXIT | {trade.exit_time.strftime('%Y-%m-%d %H:%M:%S')}")
+        logger.info(f"TRADE #{trade.trade_id} | EXIT | {dir_colored}")
         logger.info("=" * 70)
         logger.info(f"Symbol:      {trade.symbol}")
-        logger.info(f"Direction:   {trade.direction.upper()}")
         logger.info(f"Duration:    {trade.duration_hours:.1f} hours")
-        logger.info(f"")
         logger.info(f"Entry:       ${trade.entry_price:,.2f}")
         logger.info(f"Exit:        ${trade.exit_price:,.2f}")
         logger.info(f"Reason:      {trade.exit_reason}")
         logger.info(f"")
-        logger.info(f"Gross P&L:   ${trade.gross_pnl:+,.2f} ({trade.pnl_pct:+.2%})")
+        logger.info(f"P&L:         {pnl_colored} ({trade.pnl_pct:+.2%})")
         logger.info(f"")
         logger.info(f"--- Running Totals ---")
-        logger.info(f"Daily P&L:   ${self.daily_pnl:+,.2f}")
-        logger.info(f"Cumulative:  ${self.cumulative_pnl:+,.2f}")
+        # Color running P&L
+        daily_col = colored(f"${self.daily_pnl:+,.2f}", Colors.GREEN if self.daily_pnl >= 0 else Colors.RED)
+        cum_col = colored(f"${self.cumulative_pnl:+,.2f}", Colors.GREEN if self.cumulative_pnl >= 0 else Colors.RED)
+        logger.info(f"Daily P&L:   {daily_col}")
+        logger.info(f"Cumulative:  {cum_col}")
         logger.info(f"Balance:     ${self.current_balance:,.2f}")
         logger.info(f"Drawdown:    {self.current_drawdown_pct:.2%}")
         logger.info(f"Win Rate:    {self.win_rate:.1%} ({self.winning_trades}W / {self.losing_trades}L)")
@@ -603,7 +617,7 @@ class CoinbaseLiveTrader:
     # Hardcoded contract specs for Coinbase International perpetual futures
     PERP_CONTRACT_SPECS = {
         'BIP-20DEC30-CDE': {'contract_size': 0.01, 'leverage': 10.0, 'base': 'BTC'},
-        'ETP-20DEC30-CDE': {'contract_size': 0.1, 'leverage': 10.0, 'base': 'ETH'},
+        'ETP-20DEC30-CDE': {'contract_size': 0.1, 'leverage': 4.0, 'base': 'ETH'},
         'SLP-20DEC30-CDE': {'contract_size': 5.0, 'leverage': 5.0, 'base': 'SOL'},
         'XPP-20DEC30-CDE': {'contract_size': 500.0, 'leverage': 5.0, 'base': 'XRP'},
         'DOP-20DEC30-CDE': {'contract_size': 5000.0, 'leverage': 4.0, 'base': 'DOGE'},
@@ -751,7 +765,6 @@ class CoinbaseLiveTrader:
                         spec = self.PERP_CONTRACT_SPECS[symbol]
                         contract_size = spec['contract_size']
                         leverage = spec['leverage']
-                        logger.info(f"  Using spec for {symbol}: {contract_size} {spec['base']}/contract, {leverage}x")
                     else:
                         logger.warning(f"  No hardcoded spec for {symbol}, using defaults")
                         contract_size = 0.1
@@ -764,12 +777,12 @@ class CoinbaseLiveTrader:
                     'product_type': product_type
                 }
                 
-                logger.info(
-                    f"{symbol}: "
-                    f"{'FUTURES' if is_futures else 'SPOT'} | "
-                    f"Contract: {contract_size} | "
-                    f"Leverage: {leverage}x"
-                )
+                # Single consolidated log line
+                if is_futures:
+                    base = self.PERP_CONTRACT_SPECS.get(symbol, {}).get('base', '?')
+                    logger.info(f"{symbol}: {colored('FUTURES', Colors.CYAN)} | {contract_size} {base}/contract | {leverage}x")
+                else:
+                    logger.info(f"{symbol}: SPOT")
                 
             except Exception as e:
                 logger.error(f"Error detecting {symbol}: {e}")
@@ -1193,11 +1206,16 @@ class CoinbaseLiveTrader:
         
         size_str = f"{int(size)} contracts" if is_futures else f"{size:.6f}"
         
+        # Color direction
+        if signal.direction == 'long':
+            dir_colored = colored("LONG", Colors.GREEN)
+        else:
+            dir_colored = colored("SHORT", Colors.MAGENTA)
+        
         logger.info("=" * 70)
-        logger.info(f"TRADE #{self.stats.trade_counter + 1} | ENTRY")
+        logger.info(f"TRADE #{self.stats.trade_counter + 1} | ENTRY | {dir_colored}")
         logger.info("=" * 70)
         logger.info(f"Symbol:      {symbol}")
-        logger.info(f"Direction:   {signal.direction.upper()}")
         logger.info(f"Size:        {size_str} (${notional:,.2f})")
         logger.info(f"Entry:       ${price:,.2f}")
         logger.info(f"Stop:        ${signal.stop_loss:,.2f}")
@@ -1375,19 +1393,26 @@ class CoinbaseLiveTrader:
                     current = df.iloc[-1]
                     prev = df.iloc[-2]
                     
-                    squeeze_state = "IN SQUEEZE" if current['Squeeze'] else "NOT SQUEEZED"
+                    # Color squeeze state
+                    if current['Squeeze']:
+                        squeeze_state = colored("IN SQUEEZE", Colors.CYAN)
+                    else:
+                        squeeze_state = colored("NOT SQUEEZED", Colors.YELLOW)
                     logger.info(f"   State: {squeeze_state} | Duration: {current['Squeeze_Duration']:.0f} bars")
                     logger.info(f"   BB Width: {current['BB_Width']:.4f} | Momentum: {current['Momentum_Norm']:+.2f}")
                     logger.info(f"   RSI: {current['RSI']:.1f} | Volume Ratio: {current['Volume_Ratio']:.2f}")
                     
                     if prev['Squeeze'] and not current['Squeeze']:
-                        logger.info(f"   SQUEEZE RELEASED after {prev['Squeeze_Duration']:.0f} bars!")
+                        logger.info(f"   {colored('SQUEEZE RELEASED', Colors.YELLOW)} after {prev['Squeeze_Duration']:.0f} bars!")
             
             self.signal_generator.set_signal_data({signal_symbol: signal_df_for_detection})
             self.signal_generator.set_atr_data({signal_symbol: atr_df})
             
+            # CRITICAL: Pass signal_df_for_detection (complete candles only)
+            # to match backtest behavior. Entry price comes from df.iloc[-1]
+            # so we must exclude incomplete candles for backtest-live parity.
             signal = self.signal_generator.generate_signal(
-                signal_df,
+                signal_df_for_detection,
                 signal_symbol,
                 datetime.now(pytz.UTC)
             )
@@ -1398,7 +1423,12 @@ class CoinbaseLiveTrader:
                     logger.info(f"   Skipping SHORT signal (long_only=True)")
                     continue
                 
-                logger.info(f"   SIGNAL: {signal.direction.upper()}")
+                # Color signal direction
+                if signal.direction == 'long':
+                    dir_str = colored("LONG", Colors.GREEN)
+                else:
+                    dir_str = colored("SHORT", Colors.MAGENTA)
+                logger.info(f"   SIGNAL: {dir_str}")
                 logger.info(f"   Entry: ${signal.entry_price:,.2f} | Stop: ${signal.stop_loss:,.2f} | Target: ${signal.take_profit:,.2f}")
                 logger.info(f"   Size: {signal.position_size:.0%} | Score: {signal.score:.2f}")
                 logger.info(f"   Reasons: {' '.join(signal.reasons)}")
@@ -1455,18 +1485,15 @@ class CoinbaseLiveTrader:
                     self.check_exits()
                     self.check_entries()
                     
-                    # Enhanced tick log
-                    logger.info(
-                        f"Tick #{self.stats.tick_count} | "
-                        f"Positions: {len(self.positions)}/{self.max_positions} | "
-                        f"Daily: ${self.stats.daily_pnl:+.2f} | "
-                        f"Cumulative: ${self.stats.cumulative_pnl:+.2f} | "
-                        f"DD: {self.stats.current_drawdown_pct:.1%}"
-                    )
+                    if self.stats.tick_count % 10 == 0:
+                        logger.info(
+                            f"Positions: {len(self.positions)}/{self.max_positions} | "
+                            f"Daily: ${self.stats.daily_pnl:+.2f} | "
+                            f"Cumulative: ${self.stats.cumulative_pnl:+.2f}"
+                        )
                     
-                    # Periodic status report (every hour)
+                    # Save state every hour (no verbose print)
                     if (datetime.now() - self.last_status_report).total_seconds() >= self.status_report_interval:
-                        self.stats.print_status_report(self.positions)
                         self.stats.save_state()
                         self.last_status_report = datetime.now()
                     

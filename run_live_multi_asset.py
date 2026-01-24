@@ -4,6 +4,7 @@ Crypto Trading Bot - Multi-Asset Live Trader
 
 Trades multiple futures contracts simultaneously:
 - BIP (BTC futures) - signals from BTC-USD
+- ETP (ETH futures) - signals from ETH-USD
 - SLP (SOL futures) - signals from SOL-USD
 - XPP (XRP futures) - signals from XRP-USD
 - DOP (DOGE futures) - signals from DOGE-USD
@@ -31,15 +32,17 @@ API_SECRET = os.environ.get('COINBASE_API_SECRET')
 
 # Perpetual futures contracts to trade (from Coinbase International)
 SYMBOLS = [
-    'BIP-20DEC30-CDE',   # BTC futures (0.01 BTC, 10x leverage, ~$95 margin)
-    'SLP-20DEC30-CDE',   # SOL futures (5 SOL, 5x leverage, ~$134 margin)
-    'XPP-20DEC30-CDE',   # XRP futures (500 XRP, 5x leverage, ~$200 margin)
-    'DOP-20DEC30-CDE',   # DOGE futures (5000 DOGE, 4x leverage, ~$162 margin)
+    'BIP-20DEC30-CDE',   # BTC futures (0.01 BTC, 10x leverage)
+    'ETP-20DEC30-CDE',   # ETH futures (0.1 ETH, 4x leverage)
+    'SLP-20DEC30-CDE',   # SOL futures (5 SOL, 5x leverage)
+    'XPP-20DEC30-CDE',   # XRP futures (500 XRP, 5x leverage)
+    'DOP-20DEC30-CDE',   # DOGE futures (5000 DOGE, 4x leverage)
 ]
 
 # Spot markets for signals (backtested parameters work on spot data)
 SIGNAL_SYMBOLS = [
     'BTC-USD',   # Signals for BIP
+    'ETH-USD',   # Signals for ETP
     'SOL-USD',   # Signals for SLP
     'XRP-USD',   # Signals for XPP
     'DOGE-USD',  # Signals for DOP
@@ -67,7 +70,7 @@ MOMENTUM_PERIOD = 15
 # RSI
 RSI_PERIOD = 21
 RSI_OVERBOUGHT = 68
-RSI_OVERSOLD = 18
+RSI_OVERSOLD = 25
 
 # Squeeze
 MIN_SQUEEZE_BARS = 2
@@ -89,9 +92,9 @@ SETUP_VALIDITY_BARS = 8
 # =============================================================================
 
 # Position sizing
-BASE_POSITION = 0.50    # 50% base position size
-MIN_POSITION = 0.30     # 30% minimum
-MAX_POSITION = 0.50     # 50% maximum (as requested)
+BASE_POSITION = 0.30    # 30% base position size
+MIN_POSITION = 0.10     # 10% minimum
+MAX_POSITION = 0.50     # 50% maximum
 
 # Risk limits
 MAX_POSITIONS = 2       # Max 2 positions across ALL assets
