@@ -11,6 +11,7 @@ import numpy as np
 
 from technical import BBSqueezeAnalyzer
 from signal_generator import BBSqueezeSignalGenerator, TradeSignal
+from utils import infer_timeframe_from_index
 
 logger = logging.getLogger(__name__)
 
@@ -47,35 +48,6 @@ class BacktestResults:
     trades: List[Position]
     equity_curve: pd.Series
     statistics: Dict
-
-
-def _infer_timeframe_from_index(index) -> str:
-    """Infer timeframe from pandas DatetimeIndex"""
-    if len(index) < 2:
-        return '1min'
-    
-    diffs = index.to_series().diff().dropna()
-    if len(diffs) == 0:
-        return '1min'
-    
-    median_diff = diffs.median()
-    minutes = median_diff.total_seconds() / 60
-    
-    if minutes <= 1.5:
-        return '1min'
-    elif minutes <= 7:
-        return '5min'
-    elif minutes <= 20:
-        return '15min'
-    elif minutes <= 45:
-        return '30min'
-    elif minutes <= 120:
-        return '1h'
-    elif minutes <= 360:
-        return '4h'
-    else:
-        return '1d'
-
 
 
 class BBSqueezeBacktester:
@@ -129,7 +101,7 @@ class BBSqueezeBacktester:
         
         # Infer timeframe from data for Sharpe calculation
         first_df = next(iter(data.values()))
-        self._trade_timeframe = _infer_timeframe_from_index(first_df.index)
+        self._trade_timeframe = infer_timeframe_from_index(first_df.index)
         
         # Get all timestamps
         all_times = set()
@@ -165,7 +137,7 @@ class BBSqueezeBacktester:
                 
                 # Check exits first
                 if symbol in self.positions:
-                    self._check_exit(symbol, price, ts, bar_df, equity)
+                    self._check_exit(symbol, price, ts)
                 
                 # Check entries
                 if symbol not in self.positions and len(self.positions) < self.max_positions:
@@ -179,8 +151,7 @@ class BBSqueezeBacktester:
         for symbol in list(self.positions.keys()):
             if symbol in data:
                 final_price = float(data[symbol].iloc[-1]['close'])
-                final_equity = self._calc_equity(data, all_times[-1])
-                self._close(symbol, final_price, all_times[-1], "End of backtest", final_equity)
+                self._close(symbol, final_price, all_times[-1], "End of backtest")
         
         return self._compile_results()
     
@@ -266,7 +237,7 @@ class BBSqueezeBacktester:
             print(f"{ts.strftime('%Y-%m-%d %H:%M')}  {dir_str}  ${entry_price:>10,.2f}  "
                   f"{signal.position_size:>5.0%}  ${equity:>12,.0f}  {' '.join(signal.reasons)}")
     
-    def _check_exit(self, symbol: str, price: float, ts: datetime, df: pd.DataFrame, equity: float):
+    def _check_exit(self, symbol: str, price: float, ts: datetime):
         """Check exit conditions."""
         pos = self.positions[symbol]
         
@@ -274,26 +245,26 @@ class BBSqueezeBacktester:
         if self.max_hold_days is not None:
             hold_time = ts - pos.entry_time
             if hold_time.total_seconds() >= self.max_hold_days * 24 * 3600:
-                self._close(symbol, price, ts, "Time exit", equity)
+                self._close(symbol, price, ts, "Time exit")
                 return
         
         # Stop loss
         if pos.direction == 'long' and price <= pos.stop_loss:
-            self._close(symbol, price, ts, "Stop loss hit", equity)
+            self._close(symbol, price, ts, "Stop loss hit")
             return
         elif pos.direction == 'short' and price >= pos.stop_loss:
-            self._close(symbol, price, ts, "Stop loss hit", equity)
+            self._close(symbol, price, ts, "Stop loss hit")
             return
         
         # Take profit
         if pos.direction == 'long' and price >= pos.take_profit:
-            self._close(symbol, price, ts, "Take profit hit", equity)
+            self._close(symbol, price, ts, "Take profit hit")
             return
         elif pos.direction == 'short' and price <= pos.take_profit:
-            self._close(symbol, price, ts, "Take profit hit", equity)
+            self._close(symbol, price, ts, "Take profit hit")
             return
     
-    def _close(self, symbol: str, price: float, ts: datetime, reason: str, equity: float):
+    def _close(self, symbol: str, price: float, ts: datetime, reason: str):
         """Close position."""
         if symbol not in self.positions:
             return

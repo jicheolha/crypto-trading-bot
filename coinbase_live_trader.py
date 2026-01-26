@@ -1,22 +1,18 @@
 """
 Coinbase Live Trader - Supports SPOT and FUTURES
 
-Enhanced with professional hedge-fund grade monitoring:
+Features:
 - Complete trade journal with persistence
-- Cumulative P&L tracking
-- Drawdown monitoring  
+- P&L tracking, drawdown monitoring
 - Win rate and profit factor tracking
-- Consecutive loss alerts
 - Rolling performance metrics
 - Drift detection vs backtest
-- Periodic status reports
 
 Handles:
-- Spot trading (fractional amounts, e.g. 0.032 ETH)
-- Futures trading (whole contracts only, e.g. 1, 2, 3 contracts)
+- Spot trading (fractional amounts)
+- Futures trading (whole contracts only)
 - Automatic leverage detection
 - Margin calculation
-- Bracket orders with server-side stops
 """
 import os
 import csv
@@ -93,13 +89,12 @@ class TradingStats:
     
     # Alert thresholds
     THRESHOLDS = {
-        'daily_loss_warning': -0.02,      # -2%
-        'daily_loss_critical': -0.03,     # -3%
-        'drawdown_warning': -0.05,        # -5%
-        'drawdown_critical': -0.10,       # -10%
+        'daily_loss_warning': -0.02,
+        'daily_loss_critical': -0.03,
+        'drawdown_warning': -0.05,
+        'drawdown_critical': -0.10,
         'consecutive_losses_warning': 4,
-        'slippage_warning': 0.002,        # 0.2%
-        'win_rate_warning': 0.35,         # Below 35%
+        'slippage_warning': 0.002,
     }
     
     def __init__(
@@ -862,29 +857,41 @@ class CoinbaseLiveTrader:
         return is_intraday
     
     def get_current_margin_rate(self, symbol: str, direction: str) -> float:
-        """Get the appropriate margin rate based on time of day and direction."""
+        """Get margin rate - fetches live from API before each trade."""
         info = self.product_info.get(symbol, {})
         
         if not info.get('is_futures', False):
             return 1.0
         
+        # Fetch current margin rates from API
+        try:
+            product = self.client.get_product(product_id=symbol)
+            future_details = getattr(product, 'future_product_details', None)
+            
+            if future_details:
+                is_intraday = self.is_intraday_hours()
+                
+                if isinstance(future_details, dict):
+                    rates = future_details.get('intraday_margin_rate' if is_intraday else 'overnight_margin_rate', {})
+                else:
+                    rates = getattr(future_details, 'intraday_margin_rate' if is_intraday else 'overnight_margin_rate', {}) or {}
+                
+                if isinstance(rates, dict):
+                    rate = float(rates.get('long_margin_rate' if direction == 'long' else 'short_margin_rate', 0.25))
+                    logger.debug(f"{symbol} fetched {'intraday' if is_intraday else 'overnight'} {direction} margin: {rate:.2%}")
+                    return rate
+                    
+        except Exception as e:
+            logger.warning(f"Failed to fetch margin rate for {symbol}, using cached: {e}")
+        
+        # Fallback to cached rates
         is_intraday = self.is_intraday_hours()
-        
         if direction == 'long':
-            if is_intraday:
-                rate = info.get('margin_rate_long_intraday', 0.25)
-            else:
-                rate = info.get('margin_rate_long_overnight', 0.30)
+            key = 'margin_rate_long_intraday' if is_intraday else 'margin_rate_long_overnight'
         else:
-            if is_intraday:
-                rate = info.get('margin_rate_short_intraday', 0.25)
-            else:
-                rate = info.get('margin_rate_short_overnight', 0.30)
+            key = 'margin_rate_short_intraday' if is_intraday else 'margin_rate_short_overnight'
         
-        period = "intraday" if is_intraday else "overnight"
-        logger.debug(f"{symbol} using {period} margin rate: {rate:.2%}")
-        
-        return rate
+        return info.get(key, 0.25)
     
     def get_balance(self) -> float:
         """Get available balance (spot)."""
@@ -1211,11 +1218,11 @@ class CoinbaseLiveTrader:
                     base_size=str(size)
                 )
             
-            # DEBUG: Log full response
-            logger.info(f"Order response type: {type(order)}")
-            logger.info(f"Order response: {order}")
+            # Log response for debugging
+            logger.debug(f"Order response type: {type(order)}")
+            logger.debug(f"Order response: {order}")
             if hasattr(order, '__dict__'):
-                logger.info(f"Order __dict__: {order.__dict__}")
+                logger.debug(f"Order __dict__: {order.__dict__}")
             
             if hasattr(order, 'success') and not order.success:
                 error_msg = "Unknown error"
@@ -1457,7 +1464,6 @@ class CoinbaseLiveTrader:
             return
         
         # Daily loss limit
-        balance = self.get_trading_balance()
         if self.stats.daily_pnl < -self.max_daily_loss * self.stats.initial_balance:
             logger.warning(f"Daily loss limit reached: ${self.stats.daily_pnl:.2f}")
             return
@@ -1571,7 +1577,7 @@ class CoinbaseLiveTrader:
     def run(self):
         """Start trading bot."""
         logger.info("=" * 60)
-        logger.info("COINBASE LIVE TRADER (Enhanced Monitoring)")
+        logger.info("COINBASE LIVE TRADER")
         logger.info("=" * 60)
         logger.info(f"Symbols: {self.symbols}")
         logger.info(f"Signal TF: {self.signal_timeframe}")
