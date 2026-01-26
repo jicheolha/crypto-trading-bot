@@ -1,5 +1,17 @@
 archive/
 trading_data/
+trade_logs/
+plots/
+.ipynb_checkpoints/
+__pycache__/
+*.db
+data_cache/
+*.csv
+*.pkl
+run_live_multi_asset.py
+run_backtest.py
+trading_bot_commands.mdarchive/
+trading_data/
 .ipynb_checkpoints/
 __pycache__/
 *.db
