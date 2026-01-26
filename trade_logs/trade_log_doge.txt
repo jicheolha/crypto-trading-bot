@@ -1,0 +1,333 @@
+=========================================
+BOLLINGER BANDS SQUEEZE BREAKOUT STRATEGY
+=========================================
+Symbols: ['DOGE/USD']
+Period: 2190 days (6.0 years)
+Timeframes: Trade=1min, Signal=4h, ATR=1h
+BB: 19 period, 2.47 std
+KC: 17 period, 2.38x ATR
+Squeeze: 2+ bars
+Stops: 3.45x SL, 4.0x TP
+Position: 50% base, 10%-90% range
+
+Loading data...
+Loading DOGE/USD...
+  Loaded DOGE/USD 1min from cache (982520 bars)
+  Loaded DOGE/USD 4h from cache (10556 bars)
+  Loaded DOGE/USD 1h from cache (36663 bars)
+Symbols loaded: 1/1
+Period: 2021-01-01 to 2025-12-28
+
+Running backtest...
+
+==============================================================================================================
+TRADE LOG
+==============================================================================================================
+Type    Timestamp            Dir            Price       Size          P&L Duration     Reasons
+--------------------------------------------------------------------------------------------------------------
+ENTRY   2021-01-14 15:05     SHORT   $       0.01      69.0%                           SQ7 V2.2 M-0.1 RSI52
+EXIT    2021-01-15 16:01             $       0.01                 $+8,482 1d 0h        Take profit hit
+
+ENTRY   2021-02-15 00:00     SHORT   $       0.06      66.1%                           SQ8 V1.4 M-3.8 RSI28
+EXIT    2021-02-15 02:22             $       0.05                $+15,949 2h 22m       Take profit hit
+
+ENTRY   2021-02-15 02:45     SHORT   $       0.05      66.1%                           SQ8 V1.4 M-3.8 RSI28
+EXIT    2021-02-22 02:45             $       0.06                 $-5,602 7d 0h        Time exit
+
+ENTRY   2021-03-08 01:21     LONG    $       0.05      89.7%                           SQ26 V4.4 M3.0 RSI67
+EXIT    2021-03-08 03:26             $       0.06                 $+6,592 2h 5m        Take profit hit
+
+ENTRY   2021-03-08 03:29     LONG    $       0.05      89.7%                           SQ26 V4.4 M3.0 RSI67
+EXIT    2021-03-08 06:13             $       0.06                 $+7,888 2h 44m       Take profit hit
+
+ENTRY   2021-03-22 20:00     SHORT   $       0.06      82.2%                           SQ34 V1.6 M-2.5 RSI30
+EXIT    2021-03-23 06:22             $       0.05                 $+5,553 10h 22m      Take profit hit
+
+ENTRY   2021-04-06 16:00     LONG    $       0.06      74.8%                           SQ10 V1.2 M1.7 RSI60
+EXIT    2021-04-11 09:27             $       0.07                $+12,718 4d 17h       Take profit hit
+
+ENTRY   2021-04-28 13:22     LONG    $       0.31      74.8%                           SQ14 V1.4 M2.6 RSI61
+EXIT    2021-05-01 04:39             $       0.37                $+22,866 2d 15h       Take profit hit
+
+ENTRY   2021-05-09 20:00     SHORT   $       0.57      65.0%                           SQ17 V1.1 M-0.3 RSI47
+EXIT    2021-05-12 23:57             $       0.39                $+36,776 3d 3h        Take profit hit
+
+ENTRY   2021-05-19 08:00     SHORT   $       0.42      74.8%                           SQ15 V1.2 M-3.7 RSI31
+EXIT    2021-05-19 11:31             $       0.34                $+29,052 3h 31m       Take profit hit
+
+ENTRY   2021-05-19 11:37     SHORT   $       0.38      74.8%                           SQ15 V1.2 M-3.7 RSI31
+EXIT    2021-05-19 12:51             $       0.27                $+51,864 1h 14m       Take profit hit
+
+ENTRY   2021-06-07 20:48     SHORT   $       0.35      72.7%                           SQ9 V1.5 M-5.4 RSI39
+EXIT    2021-06-08 02:51             $       0.33                $+14,363 6h 3m        Take profit hit
+
+ENTRY   2021-06-14 12:00     LONG    $       0.32      57.5%                           SQ6 V1.2 M0.5 RSI54
+EXIT    2021-06-14 16:09             $       0.34                 $+8,759 4h 9m        Take profit hit
+
+ENTRY   2021-07-08 04:00     SHORT   $       0.22      57.5%                           SQ3 V1.2 M-4.6 RSI27
+EXIT    2021-07-08 22:29             $       0.20                $+12,799 18h 29m      Take profit hit
+
+ENTRY   2021-08-06 16:00     LONG    $       0.21      79.3%                           SQ8 V2.5 M1.6 RSI65
+EXIT    2021-08-07 03:36             $       0.21                 $+8,606 11h 36m      Take profit hit
+
+ENTRY   2021-08-11 16:00     LONG    $       0.28      74.8%                           SQ10 V1.3 M3.8 RSI57
+EXIT    2021-08-12 14:57             $       0.25                $-20,609 22h 57m      Stop loss hit
+
+ENTRY   2021-08-15 07:44     LONG    $       0.29      74.8%                           SQ20 V1.5 M2.0 RSI54
+EXIT    2021-08-15 20:59             $       0.32                $+25,955 13h 15m      Take profit hit
+
+ENTRY   2021-09-02 00:00     LONG    $       0.29      89.7%                           SQ19 V4.7 M2.2 RSI67
+EXIT    2021-09-05 19:19             $       0.31                $+19,924 3d 19h       Take profit hit
+
+ENTRY   2021-09-07 14:25     SHORT   $       0.28      89.7%                           SQ21 V3.7 M-3.6 RSI29
+EXIT    2021-09-07 14:57             $       0.24                $+38,713 32m          Take profit hit
+
+ENTRY   2021-09-07 15:04     SHORT   $       0.25      89.7%                           SQ21 V3.7 M-3.6 RSI29
+EXIT    2021-09-14 15:04             $       0.24                $+17,322 7d 0h        Time exit
+
+ENTRY   2021-10-01 10:28     LONG    $       0.21      89.7%                           SQ27 V2.5 M3.2 RSI67
+EXIT    2021-10-01 21:22             $       0.22                $+16,337 10h 54m      Take profit hit
+
+ENTRY   2021-10-14 12:00     SHORT   $       0.24      50.0%                           SQ5 V1.2 M-0.9 RSI49
+EXIT    2021-10-15 08:27             $       0.23                $+10,083 20h 27m      Take profit hit
+
+ENTRY   2021-10-25 03:57     LONG    $       0.27      89.7%                           SQ57 V2.8 M1.9 RSI62
+EXIT    2021-10-27 08:03             $       0.23                $-53,979 2d 4h        Stop loss hit
+
+ENTRY   2021-11-26 08:01     SHORT   $       0.21      89.7%                           SQ18 V12.6 M-4.0 RSI34
+EXIT    2021-11-26 08:26             $       0.19                $+31,308 25m          Take profit hit
+
+ENTRY   2021-11-26 08:28     SHORT   $       0.20      89.7%                           SQ18 V12.6 M-4.0 RSI34
+EXIT    2021-11-29 13:25             $       0.21                $-32,089 3d 4h        Stop loss hit
+
+ENTRY   2021-12-04 00:00     SHORT   $       0.20      69.0%                           SQ5 V2.2 M-3.2 RSI30
+EXIT    2021-12-04 04:54             $       0.18                $+22,356 4h 54m       Take profit hit
+
+ENTRY   2021-12-13 16:00     SHORT   $       0.16      89.7%                           SQ11 V3.1 M-4.2 RSI37
+EXIT    2021-12-14 10:34             $       0.17                $-38,564 18h 34m      Stop loss hit
+
+ENTRY   2021-12-22 12:00     LONG    $       0.17      78.0%                           SQ20 V2.7 M1.4 RSI56
+EXIT    2021-12-23 17:51             $       0.18                $+12,705 1d 5h        Take profit hit
+
+ENTRY   2022-01-05 19:01     SHORT   $       0.17      89.7%                           SQ34 V6.6 M-3.6 RSI31
+EXIT    2022-01-05 19:49             $       0.16                $+17,628 48m          Take profit hit
+
+ENTRY   2022-01-05 19:53     SHORT   $       0.16      89.7%                           SQ34 V6.6 M-3.6 RSI31
+EXIT    2022-01-05 22:28             $       0.15                $+19,491 2h 35m       Take profit hit
+
+ENTRY   2022-01-10 16:00     SHORT   $       0.14      89.7%                           SQ15 V2.6 M-3.9 RSI37
+EXIT    2022-01-11 11:26             $       0.15                $-19,491 19h 26m      Stop loss hit
+
+ENTRY   2022-01-12 12:00     LONG    $       0.16      69.0%                           SQ7 V2.3 M1.3 RSI57
+EXIT    2022-01-12 23:58             $       0.16                $+13,989 11h 58m      Take profit hit
+
+ENTRY   2022-02-04 20:01     LONG    $       0.14      57.5%                           SQ2 V1.2 M2.0 RSI58
+EXIT    2022-02-05 05:52             $       0.15                 $+9,875 9h 51m       Take profit hit
+
+ENTRY   2022-02-11 16:07     SHORT   $       0.15      57.5%                           SQ3 V1.2 M-2.5 RSI27
+EXIT    2022-02-11 19:05             $       0.15                 $+9,855 2h 58m       Take profit hit
+
+ENTRY   2022-02-11 19:08     SHORT   $       0.15      57.5%                           SQ3 V1.2 M-2.5 RSI27
+EXIT    2022-02-13 11:19             $       0.15                $-10,570 1d 16h       Stop loss hit
+
+ENTRY   2022-02-17 20:00     SHORT   $       0.14      74.8%                           SQ24 V1.0 M-2.7 RSI42
+EXIT    2022-02-21 21:51             $       0.13                $+18,362 4d 1h        Take profit hit
+
+ENTRY   2022-02-21 21:51     SHORT   $       0.13      89.7%                           SQ11 V3.3 M-4.2 RSI37
+EXIT    2022-02-24 03:00             $       0.12                $+26,848 2d 5h        Take profit hit
+
+ENTRY   2022-03-23 12:00     LONG    $       0.12      79.3%                           SQ9 V2.5 M2.6 RSI58
+EXIT    2022-03-23 16:29             $       0.13                $+11,167 4h 29m       Take profit hit
+
+ENTRY   2022-03-27 20:00     LONG    $       0.14      79.3%                           SQ6 V2.3 M3.8 RSI62
+EXIT    2022-03-28 03:04             $       0.15                $+24,287 7h 4m        Take profit hit
+
+ENTRY   2022-04-05 12:00     LONG    $       0.15      79.3%                           SQ6 V8.5 M3.4 RSI66
+EXIT    2022-04-05 16:14             $       0.16                $+31,305 4h 14m       Take profit hit
+
+ENTRY   2022-05-09 08:04     SHORT   $       0.12      79.3%                           SQ8 V2.6 M-3.9 RSI28
+EXIT    2022-05-09 10:46             $       0.12                $+20,257 2h 42m       Take profit hit
+
+ENTRY   2022-05-09 11:54     SHORT   $       0.12      79.3%                           SQ8 V2.6 M-3.9 RSI28
+EXIT    2022-05-09 16:48             $       0.11                $+27,754 4h 54m       Take profit hit
+
+ENTRY   2022-06-10 16:00     SHORT   $       0.08      72.7%                           SQ8 V1.8 M-4.9 RSI31
+EXIT    2022-06-11 11:22             $       0.07                $+17,831 19h 22m      Take profit hit
+
+ENTRY   2022-06-19 20:01     LONG    $       0.06      55.0%                           SQ4 V1.5 M1.3 RSI58
+EXIT    2022-06-21 14:12             $       0.07                $+48,670 1d 18h       Take profit hit
+
+ENTRY   2022-07-10 12:00     SHORT   $       0.07      57.5%                           SQ9 V1.2 M-1.1 RSI44
+EXIT    2022-07-11 01:23             $       0.07                $+12,288 13h 23m      Take profit hit
+
+ENTRY   2022-09-06 20:00     SHORT   $       0.06      74.8%                           SQ49 V1.1 M-2.3 RSI38
+EXIT    2022-09-09 00:38             $       0.06                $-23,905 2d 4h        Stop loss hit
+
+ENTRY   2022-09-13 16:00     SHORT   $       0.06      74.8%                           SQ12 V1.3 M-2.1 RSI37
+EXIT    2022-09-18 21:11             $       0.06                $+25,635 5d 5h        Take profit hit
+
+ENTRY   2022-09-23 16:00     LONG    $       0.06      89.7%                           SQ15 V4.7 M3.0 RSI65
+EXIT    2022-09-24 01:10             $       0.07                $+43,911 9h 10m       Take profit hit
+
+ENTRY   2022-11-20 16:05     SHORT   $       0.08      74.8%                           SQ58 V1.5 M-3.9 RSI31
+EXIT    2022-11-20 21:46             $       0.08                $+22,078 5h 41m       Take profit hit
+
+ENTRY   2022-12-11 22:00     SHORT   $       0.09      89.7%                           SQ11 V2.2 M-4.2 RSI35
+EXIT    2022-12-11 22:38             $       0.09                $+18,044 38m          Take profit hit
+
+ENTRY   2022-12-11 22:40     SHORT   $       0.09      89.7%                           SQ11 V2.2 M-4.2 RSI35
+EXIT    2022-12-12 02:53             $       0.09                $+24,674 4h 13m       Take profit hit
+
+ENTRY   2022-12-22 20:00     LONG    $       0.08      60.0%                           SQ2 V2.6 M0.0 RSI49
+EXIT    2022-12-28 03:03             $       0.07                $-24,176 5d 7h        Stop loss hit
+
+ENTRY   2023-01-09 00:00     LONG    $       0.07      89.7%                           SQ33 V3.0 M2.9 RSI62
+EXIT    2023-01-09 09:44             $       0.08                $+22,016 9h 44m       Take profit hit
+
+ENTRY   2023-01-13 21:00     LONG    $       0.08      89.7%                           SQ14 V3.4 M3.9 RSI67
+EXIT    2023-01-13 23:11             $       0.08                $+32,379 2h 11m       Take profit hit
+
+ENTRY   2023-01-13 23:13     LONG    $       0.08      89.7%                           SQ14 V3.4 M3.9 RSI67
+EXIT    2023-01-14 01:39             $       0.09                $+42,451 2h 26m       Take profit hit
+
+ENTRY   2023-01-31 16:00     LONG    $       0.09      79.3%                           SQ9 V3.1 M3.1 RSI63
+EXIT    2023-02-07 16:00             $       0.09                $-21,271 7d 0h        Time exit
+
+ENTRY   2023-02-09 16:00     SHORT   $       0.09      89.7%                           SQ11 V2.8 M-3.9 RSI33
+EXIT    2023-02-09 21:30             $       0.08                $+55,329 5h 30m       Take profit hit
+
+ENTRY   2023-03-03 01:28     SHORT   $       0.08      89.7%                           SQ22 V9.8 M-4.4 RSI31
+EXIT    2023-03-03 01:57             $       0.07                $+33,909 29m          Take profit hit
+
+ENTRY   2023-03-03 02:19     SHORT   $       0.07      89.7%                           SQ22 V9.8 M-4.4 RSI31
+EXIT    2023-03-08 22:18             $       0.07                $+38,281 5d 19h       Take profit hit
+
+ENTRY   2023-03-09 20:00     SHORT   $       0.07      89.7%                           SQ20 V5.2 M-3.7 RSI28
+EXIT    2023-03-10 10:29             $       0.06                $+62,343 14h 29m      Take profit hit
+
+ENTRY   2023-03-20 16:00     SHORT   $       0.07      57.5%                           SQ8 V1.3 M-0.9 RSI43
+EXIT    2023-03-21 17:14             $       0.08                $-28,907 1d 1h        Stop loss hit
+
+ENTRY   2023-04-13 16:03     LONG    $       0.09      66.1%                           SQ9 V1.3 M2.3 RSI65
+EXIT    2023-04-14 04:45             $       0.09                $+26,757 12h 42m      Take profit hit
+
+ENTRY   2023-04-20 16:00     SHORT   $       0.09      89.7%                           SQ29 V2.8 M-2.0 RSI36
+EXIT    2023-04-21 20:05             $       0.08                $+97,584 1d 4h        Take profit hit
+
+ENTRY   2023-04-26 12:00     LONG    $       0.08      74.8%                           SQ11 V1.0 M1.7 RSI59
+EXIT    2023-04-26 19:38             $       0.08                $-22,652 7h 38m       Stop loss hit
+
+ENTRY   2023-05-08 04:01     SHORT   $       0.08      57.5%                           SQ2 V1.2 M-2.4 RSI35
+EXIT    2023-05-08 17:02             $       0.07                $+22,942 13h 1m       Take profit hit
+
+ENTRY   2023-05-17 20:00     LONG    $       0.07      74.8%                           SQ33 V1.4 M2.6 RSI64
+EXIT    2023-05-18 18:11             $       0.07                $-31,343 22h 11m      Stop loss hit
+
+ENTRY   2023-05-31 12:00     SHORT   $       0.07      69.0%                           SQ8 V3.6 M-1.0 RSI36
+EXIT    2023-06-02 19:10             $       0.07                $-14,114 2d 7h        Stop loss hit
+
+ENTRY   2023-06-05 15:52     SHORT   $       0.07      48.3%                           SQ4 V3.7 M-5.2 RSI29
+EXIT    2023-06-05 16:00             $       0.07                $+15,903 8m           Take profit hit
+
+ENTRY   2023-07-13 17:36     LONG    $       0.07      89.7%                           SQ21 V2.8 M4.9 RSI68
+EXIT    2023-07-14 15:49             $       0.07                $+43,358 22h 13m      Take profit hit
+
+ENTRY   2023-08-08 01:15     SHORT   $       0.07      69.0%                           SQ7 V3.2 M-1.1 RSI46
+EXIT    2023-08-09 12:41             $       0.08                $-25,034 1d 11h       Stop loss hit
+
+ENTRY   2023-12-29 09:12     SHORT   $       0.09      60.0%                           SQ5 V2.1 M-0.4 RSI46
+EXIT    2024-01-03 12:01             $       0.09                $+47,413 5d 2h        Take profit hit
+
+ENTRY   2024-01-18 16:49     SHORT   $       0.08      63.2%                           SQ3 V1.5 M-4.7 RSI30
+EXIT    2024-01-19 16:41             $       0.08                $+28,096 23h 52m      Take profit hit
+
+ENTRY   2024-02-07 20:22     LONG    $       0.08      55.0%                           SQ5 V1.8 M1.4 RSI55
+EXIT    2024-02-09 12:16             $       0.08                $+13,673 1d 15h       Take profit hit
+
+ENTRY   2024-02-14 14:06     LONG    $       0.08      57.5%                           SQ4 V1.1 M2.2 RSI56
+EXIT    2024-02-14 17:09             $       0.09                $+21,852 3h 3m        Take profit hit
+
+ENTRY   2024-05-30 08:57     SHORT   $       0.16      79.3%                           SQ8 V5.8 M-2.6 RSI43
+EXIT    2024-06-05 07:04             $       0.16                $-34,676 5d 22h       Stop loss hit
+
+ENTRY   2024-06-24 05:15     SHORT   $       0.12      74.8%                           SQ12 V1.0 M-3.0 RSI35
+EXIT    2024-06-24 20:29             $       0.11                $+32,751 15h 14m      Take profit hit
+
+ENTRY   2024-08-23 06:12     LONG    $       0.11      57.5%                           SQ2 V1.4 M3.3 RSI63
+EXIT    2024-08-23 14:15             $       0.11                $+22,197 8h 3m        Take profit hit
+
+ENTRY   2024-09-06 16:31     SHORT   $       0.09      66.1%                           SQ7 V1.2 M-3.8 RSI31
+EXIT    2024-09-08 03:14             $       0.10                $-39,831 1d 10h       Stop loss hit
+
+ENTRY   2024-10-25 23:03     SHORT   $       0.13      66.1%                           SQ6 V1.4 M-4.3 RSI32
+EXIT    2024-10-27 13:15             $       0.14                $-34,368 1d 14h       Stop loss hit
+
+ENTRY   2024-11-19 16:03     LONG    $       0.40      57.6%                           SQ18 V2.0 M2.2 RSI58
+EXIT    2024-11-20 18:01             $       0.37                $-40,261 1d 1h        Stop loss hit
+
+ENTRY   2024-11-23 00:10     LONG    $       0.41      62.8%                           SQ15 V2.4 M3.3 RSI63
+EXIT    2024-11-23 04:09             $       0.46                $+70,114 3h 59m       Take profit hit
+
+ENTRY   2025-01-07 16:03     SHORT   $       0.36      69.0%                           SQ7 V3.0 M-1.2 RSI34
+EXIT    2025-01-08 07:01             $       0.34                $+51,110 14h 58m      Take profit hit
+
+ENTRY   2025-02-01 16:01     SHORT   $       0.32      89.7%                           SQ18 V2.1 M-2.3 RSI38
+EXIT    2025-02-01 20:20             $       0.31                $+34,014 4h 19m       Take profit hit
+
+ENTRY   2025-02-11 04:53     LONG    $       0.26      72.7%                           SQ8 V1.7 M2.8 RSI66
+EXIT    2025-02-11 18:46             $       0.25                $-36,357 13h 53m      Stop loss hit
+
+ENTRY   2025-02-21 20:00     SHORT   $       0.24      57.5%                           SQ2 V1.5 M-4.1 RSI38
+EXIT    2025-02-24 14:57             $       0.22                $+45,026 2d 18h       Take profit hit
+
+ENTRY   2025-02-28 04:01     SHORT   $       0.19      69.0%                           SQ5 V3.4 M-5.7 RSI29
+EXIT    2025-02-28 22:03             $       0.20                $-61,485 18h 2m       Stop loss hit
+
+ENTRY   2025-05-22 00:01     LONG    $       0.23      89.7%                           SQ16 V6.0 M3.4 RSI53
+EXIT    2025-05-23 02:45             $       0.25                $+85,710 1d 2h        Take profit hit
+
+ENTRY   2025-06-18 08:20     SHORT   $       0.17      89.7%                           SQ14 V5.4 M-2.4 RSI38
+EXIT    2025-06-20 16:22             $       0.16                $+55,372 2d 8h        Take profit hit
+
+ENTRY   2025-06-24 08:28     SHORT   $       0.16      50.0%                           SQ4 V1.3 M-0.3 RSI52
+EXIT    2025-07-01 08:36             $       0.16                 $+8,614 7d 0h        Time exit
+
+ENTRY   2025-07-14 15:52     LONG    $       0.20      69.0%                           SQ4 V2.3 M2.4 RSI50
+EXIT    2025-07-16 18:34             $       0.21                $+54,410 2d 2h        Take profit hit
+
+ENTRY   2025-08-07 10:03     LONG    $       0.21      79.3%                           SQ7 V2.4 M3.1 RSI62
+EXIT    2025-08-07 13:39             $       0.22                $+43,612 3h 36m       Take profit hit
+
+ENTRY   2025-08-18 12:24     SHORT   $       0.22      57.5%                           SQ3 V1.2 M-2.1 RSI46
+EXIT    2025-08-19 16:31             $       0.21                $+35,341 1d 4h        Take profit hit
+
+ENTRY   2025-09-03 22:57     LONG    $       0.22      78.0%                           SQ17 V2.1 M1.2 RSI55
+EXIT    2025-09-04 05:03             $       0.22                $-30,472 6h 6m        Stop loss hit
+
+ENTRY   2025-09-11 20:00     LONG    $       0.25      79.3%                           SQ6 V10.0 M5.0 RSI67
+EXIT    2025-09-12 00:44             $       0.26                $+56,118 4h 44m       Take profit hit
+
+ENTRY   2025-10-01 12:00     LONG    $       0.24      89.7%                           SQ11 V2.4 M3.3 RSI62
+EXIT    2025-10-02 02:00             $       0.25                $+59,601 14h 0m       Take profit hit
+
+ENTRY   2025-11-11 20:51     LONG    $       0.17      57.5%                           SQ7 V1.4 M0.6 RSI41
+EXIT    2025-11-13 17:40             $       0.17                $-32,772 1d 20h       Stop loss hit
+
+--------------------------------------------------------------------------------------------------------------
+
+Wins: 73 | Losses: 23
+Longs: 41 | Shorts: 55
+
+===========================
+BACKTEST RESULTS
+===========================
+Total Trades:    96
+Win Rate:        76.0%
+Profit Factor:   3.13
+Total P&L:       $+1,456,669
+Max Drawdown:    18.9%
+Sharpe Ratio:    3.54
+Final Equity:    $1,530,635
+Return:          +1430.6%
+===========================
+Equity plot saved to equity_curve_DOGEUSD.png
