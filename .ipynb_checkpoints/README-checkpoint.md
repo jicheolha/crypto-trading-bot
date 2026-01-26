@@ -2,17 +2,19 @@
 
 ## Overview
 
-This is a robust, fully automatic bot designed to efficiently trade crypto perpetual futures. It identifies breakouts preceded by low-volatility consolidation periods (squeezes). The system supports 1) data mining and management 2) backtesting 3) parameter optimization 4) Monte Carlo permutation testing and 5) live trading. Live trading is implemented on Coinbase via their Advanced Trade API. This bot has demonstrated an average annualized return of 39.7%, Sharpe Ratio of 2.35, and max drawdown of 22.7% across BTC, ETH, DOGE, and SOL over five years. Parameters are optimized on one-year spot price of Bitcoin. Currently deployed live 24/7 on Coinbase using a Cloud server located in NYC.
+A fully automated trading bot for cryptocurrency perpetual futures on Coinbase International Exchange. The system identifies breakouts preceded by low-volatility consolidation periods (squeezes) using a multi-timeframe Bollinger Band Squeeze strategy. 
+
+Currently deployed 24/7 on a DigitalOcean cloud server trading BTC, SOL, XRP, and DOGE perpetual futures.
 
 ### Key Features
 
-- **Multi-Timeframe Analysis**: Timeframe customization for signal generation, entry and exit, and trade execution frequency
-- **Indicators**: Bollinger Bands, Keltner Channels, RSI, ATR, and normalized momentum
-- **Position Sizing**: Allocation adjusts based on squeeze quality, volume confirmation, and drawdown state
-- **Backtesting**: Minute-by-minute simulation of up to 6 years with commission and slippage customization
-- **Optimization**: Hyperparameter tuning with memory using Bayesian, Random, Grid Search, or Walk-Forward methods
-- **Live Trading**: Real-time trading with Coinbase Advanced Trade API
-- **Risk Management**: Multiple protective layers including ATR-based stops, daily loss limits, and maximum hold periods
+- **Multi-Asset Trading**: Trades multiple perpetual futures contracts simultaneously (BTC, SOL, XRP, DOGE)
+- **Multi-Timeframe Analysis**: 4-hour signals, 1-hour ATR, minute-level execution
+- **Dynamic Position Sizing**: Allocation adjusts based on squeeze quality, volume confirmation, and consecutive losses
+- **Professional Monitoring**: Complete trade journal, P&L tracking, drawdown alerts, and drift detection
+- **Risk Management**: ATR-based stops, daily loss limits, maximum hold periods, and position limits
+- **Backtesting**: Minute-by-minute simulation with commission and slippage modeling
+- **Optimization**: Bayesian hyperparameter tuning with persistent history
 
 ---
 
@@ -20,118 +22,108 @@ This is a robust, fully automatic bot designed to efficiently trade crypto perpe
 
 ### Bollinger Band Squeeze
 
-The Bollinger Band Squeeze is a volatility-based pattern that identifies periods of low volatility followed by expansion. The strategy exploits the market tendency to alternate between consolidation and trending phases.
+The strategy exploits the market tendency to alternate between consolidation and trending phases by detecting volatility compression followed by expansion.
 
 **Pattern Recognition**:
-1. **Squeeze Formation**: Bollinger Bands contract inside Keltner Channels, indicating volatility compression
-2. **Minimum Duration**: Squeeze must persist for a minimum number of bars to filter false signals
-3. **Breakout Detection**: Bollinger Bands expand outside Keltner Channels on current bar
-4. **Volume Confirmation**: Breakout must be accompanied by volume above a threshold relative to the moving average
-5. **Direction Determination**: Entry direction based on momentum sign and price position relative to bands
-6. **RSI Filter**: Rejects long entries when RSI is overbought, short entries when RSI is oversold
+1. **Squeeze Detection**: Bollinger Bands contract inside Keltner Channels
+2. **Minimum Duration**: Squeeze must persist for minimum bars to filter false signals
+3. **Breakout Confirmation**: Bollinger Bands expand outside Keltner Channels
+4. **Volume Confirmation**: Breakout accompanied by above-average volume
+5. **RSI Filter**: Rejects overbought longs and oversold shorts
 
 ### Entry Conditions
 
-All conditions must be satisfied simultaneously:
-- Squeeze duration meets minimum bar requirement
-- Bollinger Bands expanded outside Keltner Channels (squeeze released)
-- Current volume ratio meets threshold
-- RSI within acceptable range for direction
-- Available capital and position limits not exceeded
-- Daily loss limit not breached
+All conditions must be satisfied:
+- Squeeze duration meets minimum bar requirement (2+ bars)
+- Squeeze released (BB expanded outside KC)
+- Volume ratio above threshold (1.02x average)
+- RSI within acceptable range (25-68)
+- Position limits not exceeded (max 2 positions)
+- Daily loss limit not breached (3%)
 
 ### Exit Logic
 
-Positions are closed when any of the following conditions are met:
-- **Stop Loss**: Entry price minus/plus ATR multiplier, depending on direction
-- **Take Profit**: Entry price plus/minus ATR multiplier, depending on direction
-- **Time-Based Exit**: Automatic closure after maximum hold period to prevent indefinite holding
-- **Daily Loss Limit**: Trading halted if account experiences threshold drawdown in single day
+Positions close when any condition is met:
+- **Stop Loss**: ATR-based (3.45x ATR from entry)
+- **Take Profit**: ATR-based (4.0x ATR from entry)
+- **Time Exit**: Maximum hold period (7 days)
+- **Daily Loss Limit**: Trading halts at 3% daily drawdown
 
-### Position Sizing Algorithm
+### Position Sizing
 
-Base allocation starts at a configurable percentage of available capital, then adjusts based on setup quality:
+Base allocation of 50% with adjustments:
+- Longer squeeze duration → increased allocation
+- Higher volume ratio → increased allocation
+- Strong momentum → increased allocation
+- Consecutive losses → decreased allocation
 
-```
-base_allocation = configurable base percentage
-
-Adjustments:
-- If squeeze duration >= threshold: increase allocation
-- If volume ratio >= threshold: increase allocation
-- If absolute momentum >= threshold: increase allocation
-- If consecutive losses >= threshold: decrease allocation
-
-Final position size constrained to configured min/max range
-```
+Final size constrained to 30-50% range.
 
 ---
 
-## Performance Results (2021.01.01-2025.12.29)
+## Live Trading Setup
+
+### Futures Contracts Traded
+
+| Contract | Asset | Contract Size | Leverage | Margin Rate |
+|----------|-------|---------------|----------|-------------|
+| BIP-20DEC30-CDE | BTC | 0.01 BTC | ~10x | ~10% intraday |
+| SLP-20DEC30-CDE | SOL | 5 SOL | ~5x | ~20% intraday |
+| XPP-20DEC30-CDE | XRP | 500 XRP | ~5x | ~20% intraday |
+| DOP-20DEC30-CDE | DOGE | 5000 DOGE | ~4x | ~25% intraday |
+
+### Server Deployment
+
+- **Provider**: DigitalOcean
+- **Location**: NYC3
+- **Cost**: $4/month
+- **OS**: Ubuntu 24.04
+
+---
+
+## Backtest Performance (2021-01-01 to 2025-12-29)
 
 ### BTC/USD
-
 | Metric | Value |
 |--------|-------|
 | Total Trades | 128 |
 | Win Rate | 68.0% |
 | Profit Factor | 2.37 |
 | Sharpe Ratio | 2.57 |
-| Maximum Drawdown | 11.4% |
-| Total Return (after commision and slippage) | 287.2% |
-
-![BTC Equity Curve](plots/equity_curve_BTCUSD.png)
-
-### ETH/USD
-
-| Metric | Value |
-|--------|-------|
-| Total Trades | 134 |
-| Win Rate | 63.4% |
-| Profit Factor | 2.01 |
-| Sharpe Ratio | 1.92 |
-| Maximum Drawdown | 24.8% |
-| Total Return (after commision and slippage) | 271.1% |
-
-![ETH Equity Curve](plots/equity_curve_ETHUSD.png)
+| Max Drawdown | 11.4% |
+| Total Return | 287.2% |
 
 ### DOGE/USD
-
 | Metric | Value |
 |--------|-------|
 | Total Trades | 96 |
 | Win Rate | 76.0% |
 | Profit Factor | 3.13 |
 | Sharpe Ratio | 3.54 |
-| Maximum Drawdown | 18.9% |
-| Total Return (after commision and slippage) | 1430.6% |
-
-![DOGE Equity Curve](plots/equity_curve_DOGEUSD.png)
+| Max Drawdown | 18.9% |
+| Total Return | 1430.6% |
 
 ### SOL/USD
-
 | Metric | Value |
 |--------|-------|
 | Total Trades | 90 |
 | Win Rate | 67.8% |
 | Profit Factor | 1.62 |
 | Sharpe Ratio | 1.37 |
-| Maximum Drawdown | 35.7% |
-| Total Return (after commision and slippage) | 202.9% |
+| Max Drawdown | 35.7% |
+| Total Return | 202.9% |
 
-![SOL Equity Curve](plots/equity_curve_SOLUSD.png)
-
-**Disclaimer**: Past performance does not guarantee future results. These results are from backtesting on historical data.
+**Disclaimer**: Past performance does not guarantee future results.
 
 ---
 
-## Installation and Setup
+## Installation
 
 ### Requirements
+- Python 3.11+
+- Coinbase Advanced Trade API credentials
 
-- Python 3.11 or higher
-- API credentials from supported exchange (Coinbase Advanced Trade)
-
-### Installation Steps
+### Setup
 
 ```bash
 # Clone repository
@@ -140,119 +132,97 @@ cd crypto-trading-bot
 
 # Create virtual environment
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
-```
 
-### Configuration
-
-```bash
-# Copy example configuration
-cp config.example.py config.py
-
-# Edit configuration file with your settings
-nano config.py
-```
-
-**Important**: Never commit `config.py` to version control. Use environment variables for API credentials in production.
-
-```python
-# Recommended: Use environment variables
-import os
-
-COINBASE_API_KEY = os.environ.get('COINBASE_API_KEY')
-COINBASE_API_SECRET = os.environ.get('COINBASE_API_SECRET')
+# Set API credentials
+export COINBASE_API_KEY='your_api_key'
+export COINBASE_API_SECRET='your_api_secret'
 ```
 
 ---
 
 ## Usage
 
-### Running Backtests
-
+### Download Historical Data
 ```bash
-# Execute backtest with default parameters
-python run_backtest.py
+python download_data.py
+```
 
-# Output includes:
-# - Trade log with date, direction, entry/exit prices, duration, and P&L
-# - Summary statistics (Sharpe ratio, profit factor, win rate, and total return)
-# - Equity curves
+### Run Backtest
+```bash
+python run_backtest.py
 ```
 
 ### Parameter Optimization
-
-The optimization module supports multiple methods for hyperparameter tuning:
-
 ```bash
 # Bayesian optimization (recommended)
-python optimize.py --method bayesian
+python optimize.py --method bayesian --trials 200
 
-# Random search
-python optimize.py --method random
-
-# Walk-forward analysis
-python optimize.py --method walkforward --folds 5
-
-# Grid search
-python optimize.py --method grid
+# View optimization history
+python optimize.py --history
 ```
 
 ### Live Trading
-
-**Warning**: Always begin with paper trading to validate system behavior.
-
 ```bash
-# Set environment variables
-export COINBASE_API_KEY='your_api_key'
-export COINBASE_API_SECRET='your_api_secret'
-
-# Launch trading bot
-python run_eth_futures_simple.py
+# Start live trading
+python run_live_multi_asset.py
 ```
 
 ---
 
-### Technology Stack
+## Project Structure
+
+```
+├── coinbase_live_trader.py   # Main live trading engine
+├── run_live_multi_asset.py   # Live trading launcher
+├── signal_generator.py       # Signal generation logic
+├── technical.py              # Technical indicators
+├── backtester.py             # Backtesting engine
+├── run_backtest.py           # Backtest launcher
+├── optimize.py               # Optimization runner
+├── optimize_lib.py           # Optimization library
+├── data_utils.py             # Data loading utilities
+├── download_data.py          # Historical data downloader
+├── utils.py                  # Shared utilities
+└── requirements.txt          # Dependencies
+```
+
+---
+
+## Technology Stack
 
 | Component | Technology |
 |-----------|-----------|
 | Language | Python 3.11+ |
 | Data Processing | Pandas, NumPy |
-| Visualization | Matplotlib |
 | Optimization | Optuna |
-| Exchange APIs | CCXT, Coinbase Advanced Trade |
-| Authentication | HMAC-SHA256 via cryptography library |
+| Exchange API | Coinbase Advanced Trade |
 | Caching | Pickle |
 
 ---
 
 ## License
 
-This project is licensed under the MIT License. See LICENSE file for full text.
+MIT License - See LICENSE file.
 
 ---
 
 ## Disclaimer
 
-**This software is provided for educational and research purposes only.**
+**This software is for educational and research purposes only.**
 
-Cryptocurrency trading involves substantial risk of loss. Past performance does not guarantee future results. Never invest more than you can afford to lose. This software is not financial advice. Users are responsible for their own trading decisions and any resulting gains or losses.
-
-The authors and contributors are not liable for any financial losses incurred through use of this software. Always test strategies with paper trading before deploying real capital.
+Cryptocurrency trading involves substantial risk of loss. Past performance does not guarantee future results. Never invest more than you can afford to lose. The authors are not liable for any financial losses incurred through use of this software.
 
 ---
 
 ## Contact
 
-For questions, bug reports, or collaboration opportunities:
-
-- GitHub Issues: [github.com/jicheolha/crypto-trading-bot/issues](https://github.com/jicheolha/crypto-trading-bot/issues)
-- Repository: [github.com/jicheolha/crypto-trading-bot](https://github.com/jicheolha/crypto-trading-bot)
+- GitHub: [github.com/jicheolha/crypto-trading-bot](https://github.com/jicheolha/crypto-trading-bot)
 
 ---
 
-**Version**: 1.0.0  
+**Version**: 2.0.0  
 **Last Updated**: January 2026

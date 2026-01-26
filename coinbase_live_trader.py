@@ -614,14 +614,20 @@ class CoinbaseLiveTrader:
     Enhanced with professional monitoring.
     """
     
-    # Hardcoded contract specs for Coinbase International perpetual futures
+    # Contract specs - contract_size is static, margin rates fetched dynamically from API
     PERP_CONTRACT_SPECS = {
-        'BIP-20DEC30-CDE': {'contract_size': 0.01, 'leverage': 10.0, 'base': 'BTC'},
-        'ETP-20DEC30-CDE': {'contract_size': 0.1, 'leverage': 4.0, 'base': 'ETH'},
-        'SLP-20DEC30-CDE': {'contract_size': 5.0, 'leverage': 5.0, 'base': 'SOL'},
-        'XPP-20DEC30-CDE': {'contract_size': 500.0, 'leverage': 5.0, 'base': 'XRP'},
-        'DOP-20DEC30-CDE': {'contract_size': 5000.0, 'leverage': 4.0, 'base': 'DOGE'},
+        'BIP-20DEC30-CDE': {'contract_size': 0.01, 'base': 'BTC'},
+        'ETP-20DEC30-CDE': {'contract_size': 0.1, 'base': 'ETH'},
+        'SLP-20DEC30-CDE': {'contract_size': 5.0, 'base': 'SOL'},
+        'XPP-20DEC30-CDE': {'contract_size': 500.0, 'base': 'XRP'},
+        'DOP-20DEC30-CDE': {'contract_size': 5000.0, 'base': 'DOGE'},
     }
+    
+    # Coinbase International intraday margin hours (in UTC)
+    # Intraday rates apply: 14:30 UTC (9:30 AM ET) to 21:00 UTC (4:00 PM ET) on trading days
+    # Outside these hours, overnight rates apply
+    INTRADAY_START_UTC = 14  # 14:00 UTC = 9:00 AM ET (being conservative, 30 min before market open)
+    INTRADAY_END_UTC = 21    # 21:00 UTC = 4:00 PM ET
     
     def __init__(
         self,
@@ -749,7 +755,7 @@ class CoinbaseLiveTrader:
         logger.info(f"Initialized trader for {len(symbols)} symbols")
     
     def _detect_product_types(self):
-        """Detect if symbols are spot or futures and get contract info."""
+        """Detect if symbols are spot or futures and get contract info with dynamic margin rates."""
         for symbol in self.symbols:
             try:
                 product = self.client.get_product(product_id=symbol)
@@ -758,40 +764,127 @@ class CoinbaseLiveTrader:
                 is_futures = 'FUTURE' in product_type.upper()
                 
                 contract_size = 1.0
-                leverage = 1.0
+                margin_rate_long = 0.25  # Default 25% = 4x leverage
+                margin_rate_short = 0.25
+                overnight_long = 0.30    # Default 30% overnight margin
+                overnight_short = 0.30
                 
                 if is_futures:
+                    # Get contract size from our specs
                     if symbol in self.PERP_CONTRACT_SPECS:
                         spec = self.PERP_CONTRACT_SPECS[symbol]
                         contract_size = spec['contract_size']
-                        leverage = spec['leverage']
                     else:
-                        logger.warning(f"  No hardcoded spec for {symbol}, using defaults")
+                        logger.warning(f"  No contract spec for {symbol}, using default 0.1")
                         contract_size = 0.1
-                        leverage = 5.0
+                    
+                    # Fetch dynamic margin rates from API
+                    future_details = getattr(product, 'future_product_details', None)
+                    if future_details:
+                        # Handle both dict and object access
+                        if isinstance(future_details, dict):
+                            intraday = future_details.get('intraday_margin_rate', {})
+                            overnight = future_details.get('overnight_margin_rate', {})
+                        else:
+                            intraday = getattr(future_details, 'intraday_margin_rate', {}) or {}
+                            overnight = getattr(future_details, 'overnight_margin_rate', {}) or {}
+                        
+                        # Get intraday margin rates (used during trading hours)
+                        if isinstance(intraday, dict):
+                            margin_rate_long = float(intraday.get('long_margin_rate', 0.25))
+                            margin_rate_short = float(intraday.get('short_margin_rate', 0.25))
+                        
+                        # Get overnight rates (for reference/logging only)
+                        overnight_long = 0.30
+                        overnight_short = 0.30
+                        if isinstance(overnight, dict):
+                            overnight_long = float(overnight.get('long_margin_rate', 0.30))
+                            overnight_short = float(overnight.get('short_margin_rate', 0.30))
+                        
+                        logger.info(f"  {symbol} margin rates: intraday L={margin_rate_long:.2%} S={margin_rate_short:.2%}, overnight L={overnight_long:.2%} S={overnight_short:.2%}")
                 
+                # Store BOTH intraday and overnight rates - we'll pick dynamically based on time
                 self.product_info[symbol] = {
                     'is_futures': is_futures,
                     'contract_size': contract_size,
-                    'leverage': leverage,
+                    'margin_rate_long_intraday': margin_rate_long if is_futures else 1.0,
+                    'margin_rate_short_intraday': margin_rate_short if is_futures else 1.0,
+                    'margin_rate_long_overnight': overnight_long if is_futures else 1.0,
+                    'margin_rate_short_overnight': overnight_short if is_futures else 1.0,
                     'product_type': product_type
                 }
                 
-                # Single consolidated log line
+                # Log summary
                 if is_futures:
                     base = self.PERP_CONTRACT_SPECS.get(symbol, {}).get('base', '?')
-                    logger.info(f"{symbol}: {colored('FUTURES', Colors.CYAN)} | {contract_size} {base}/contract | {leverage}x")
+                    lev_intraday = 1.0 / margin_rate_long if margin_rate_long > 0 else 1.0
+                    lev_overnight = 1.0 / overnight_long if overnight_long > 0 else 1.0
+                    logger.info(f"{symbol}: {colored('FUTURES', Colors.CYAN)} | {contract_size} {base}/contract | {lev_intraday:.0f}x intraday / {lev_overnight:.1f}x overnight")
                 else:
                     logger.info(f"{symbol}: SPOT")
                 
             except Exception as e:
                 logger.error(f"Error detecting {symbol}: {e}")
+                import traceback
+                traceback.print_exc()
                 self.product_info[symbol] = {
                     'is_futures': False,
                     'contract_size': 1.0,
-                    'leverage': 1.0,
+                    'margin_rate_long_intraday': 1.0,
+                    'margin_rate_short_intraday': 1.0,
+                    'margin_rate_long_overnight': 1.0,
+                    'margin_rate_short_overnight': 1.0,
                     'product_type': 'SPOT'
                 }
+    
+    def is_intraday_hours(self) -> bool:
+        """
+        Check if current time is within intraday margin hours.
+        
+        Coinbase International uses different margin rates:
+        - Intraday: Lower margin (higher leverage) during US market hours
+        - Overnight: Higher margin (lower leverage) outside market hours
+        
+        Returns True if we're in intraday hours (can use lower margin rates).
+        """
+        now_utc = datetime.now(pytz.UTC)
+        hour_utc = now_utc.hour
+        weekday = now_utc.weekday()  # 0=Monday, 6=Sunday
+        
+        # Weekend = overnight rates (Saturday and Sunday)
+        if weekday >= 5:
+            return False
+        
+        # Intraday hours: roughly 9 AM - 5 PM ET = 14:00 - 22:00 UTC
+        # Being slightly conservative to avoid edge cases
+        is_intraday = self.INTRADAY_START_UTC <= hour_utc < self.INTRADAY_END_UTC
+        
+        return is_intraday
+    
+    def get_current_margin_rate(self, symbol: str, direction: str) -> float:
+        """Get the appropriate margin rate based on time of day and direction."""
+        info = self.product_info.get(symbol, {})
+        
+        if not info.get('is_futures', False):
+            return 1.0
+        
+        is_intraday = self.is_intraday_hours()
+        
+        if direction == 'long':
+            if is_intraday:
+                rate = info.get('margin_rate_long_intraday', 0.25)
+            else:
+                rate = info.get('margin_rate_long_overnight', 0.30)
+        else:
+            if is_intraday:
+                rate = info.get('margin_rate_short_intraday', 0.25)
+            else:
+                rate = info.get('margin_rate_short_overnight', 0.30)
+        
+        period = "intraday" if is_intraday else "overnight"
+        logger.debug(f"{symbol} using {period} margin rate: {rate:.2%}")
+        
+        return rate
     
     def get_balance(self) -> float:
         """Get available balance (spot)."""
@@ -1050,8 +1143,8 @@ class CoinbaseLiveTrader:
             logger.error(f"Error getting candles for {symbol}: {e}")
             return pd.DataFrame()
     
-    def calculate_position_size(self, symbol: str, signal_position_pct: float, balance: float, price: float) -> float:
-        """Calculate position size in proper units."""
+    def calculate_position_size(self, symbol: str, signal_position_pct: float, balance: float, price: float, direction: str = 'long') -> float:
+        """Calculate position size in proper units using dynamic margin rates based on time of day."""
         info = self.product_info.get(symbol, {})
         is_futures = info.get('is_futures', False)
         
@@ -1059,10 +1152,12 @@ class CoinbaseLiveTrader:
         
         if is_futures:
             contract_size = info.get('contract_size', 0.1)
-            leverage = info.get('leverage', 4.0)
+            
+            # Get dynamic margin rate based on time of day and direction
+            margin_rate = self.get_current_margin_rate(symbol, direction)
             
             notional_per_contract = price * contract_size
-            margin_per_contract = notional_per_contract / leverage
+            margin_per_contract = notional_per_contract * margin_rate
             
             max_contracts = position_value / margin_per_contract
             contracts = int(max_contracts)
@@ -1070,9 +1165,11 @@ class CoinbaseLiveTrader:
             if contracts < 1 and position_value >= margin_per_contract:
                 contracts = 1
             
+            leverage = 1.0 / margin_rate if margin_rate > 0 else 1.0
+            period = "intraday" if self.is_intraday_hours() else "overnight"
             logger.info(
-                f"{symbol} sizing: ${position_value:.2f} / "
-                f"${margin_per_contract:.2f} per contract = {contracts} contracts"
+                f"{symbol} sizing ({direction}, {period}): ${position_value:.2f} budget / "
+                f"${margin_per_contract:.2f} margin per contract ({margin_rate:.1%} rate, ~{leverage:.1f}x) = {contracts} contracts"
             )
             
             return float(contracts)
@@ -1114,18 +1211,32 @@ class CoinbaseLiveTrader:
                     base_size=str(size)
                 )
             
+            # DEBUG: Log full response
+            logger.info(f"Order response type: {type(order)}")
+            logger.info(f"Order response: {order}")
+            if hasattr(order, '__dict__'):
+                logger.info(f"Order __dict__: {order.__dict__}")
+            
             if hasattr(order, 'success') and not order.success:
                 error_msg = "Unknown error"
                 if hasattr(order, 'error_response'):
                     err = order.error_response
+                    logger.error(f"Error response object: {err}")
+                    logger.error(f"Error response type: {type(err)}")
+                    if hasattr(err, '__dict__'):
+                        logger.error(f"Error __dict__: {err.__dict__}")
+                    
                     error_msg = getattr(err, 'error', 'Unknown')
                     preview_reason = getattr(err, 'preview_failure_reason', '')
+                    message = getattr(err, 'message', '')
+                    
+                    logger.error(f"Order FAILED:")
+                    logger.error(f"  error: {error_msg}")
+                    logger.error(f"  preview_failure_reason: {preview_reason}")
+                    logger.error(f"  message: {message}")
                     
                     if preview_reason == 'PREVIEW_INSUFFICIENT_FUNDS_FOR_FUTURES':
-                        logger.error(f"INSUFFICIENT FUNDS FOR FUTURES!")
-                        logger.error(f"   Transfer funds: Coinbase -> Transfer -> Spot to Futures")
-                    else:
-                        logger.error(f"Order failed: {error_msg} - {preview_reason}")
+                        logger.error(f"  -> Transfer funds: Coinbase -> Transfer -> Spot to Futures")
                 
                 return None
             
@@ -1155,7 +1266,7 @@ class CoinbaseLiveTrader:
             logger.warning(f"Cannot enter {symbol}: price={price}, balance={balance}")
             return
         
-        size = self.calculate_position_size(symbol, signal.position_size, balance, price)
+        size = self.calculate_position_size(symbol, signal.position_size, balance, price, signal.direction)
         
         if size <= 0:
             logger.warning(f"Cannot enter {symbol}: calculated size={size}")
