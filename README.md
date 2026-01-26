@@ -6,6 +6,23 @@ A fully automated trading bot for cryptocurrency perpetual futures on Coinbase I
 
 This bot has demonstrated an average annualized return of 39.7%, Sharpe Ratio of 2.35, and max drawdown of 22.7% across BTC, DOGE, and SOL over five years of backtesting. Parameters are optimized on one-year spot price of Bitcoin. Currently deployed live 24/7 on a DigitalOcean cloud server trading BTC, SOL, XRP, and DOGE perpetual futures.
 
+### Multi-Asset Performance (2021-2025)
+
+![Multi-Asset Equity Curve](plots/equity_curve_DOGEUSD_BTCUSD_ETHUSD_SOLUSD_XRPUSD.png)
+
+Trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
+
+| Metric | Value |
+|--------|-------|
+| Total Trades | 494 |
+| Win Rate | 66.6% |
+| Profit Factor | 1.97 |
+| Sharpe Ratio | 1.83 |
+| Max Drawdown | 27.5% |
+| Total Return | +1,751.9% |
+
+*Longs: 199 | Shorts: 295 | Wins: 329 | Losses: 165*
+
 ### Key Features
 
 - **Multi-Asset Trading**: Trades multiple perpetual futures contracts simultaneously (BTC, SOL, XRP, DOGE)
@@ -52,10 +69,10 @@ Positions close when any condition is met:
 ### Position Sizing
 
 Base allocation of 50% with adjustments:
-- Longer squeeze duration → increased allocation
-- Higher volume ratio → increased allocation
-- Strong momentum → increased allocation
-- Consecutive losses → decreased allocation
+- Longer squeeze duration â†’ increased allocation
+- Higher volume ratio â†’ increased allocation
+- Strong momentum â†’ increased allocation
+- Consecutive losses â†’ decreased allocation
 
 Final size constrained to 30-50% range.
 
@@ -198,18 +215,18 @@ python run_live_multi_asset.py
 ## Project Structure
 
 ```
-├── coinbase_live_trader.py   # Main live trading engine
-├── run_live_multi_asset.py   # Live trading launcher
-├── signal_generator.py       # Signal generation logic
-├── technical.py              # Technical indicators
-├── backtester.py             # Backtesting engine
-├── run_backtest.py           # Backtest launcher
-├── optimize.py               # Optimization runner
-├── optimize_lib.py           # Optimization library
-├── data_utils.py             # Data loading utilities
-├── download_data.py          # Historical data downloader
-├── utils.py                  # Shared utilities
-└── requirements.txt          # Dependencies
+coinbase_live_trader.py   - Main live trading engine
+run_live_multi_asset.py   - Live trading launcher
+signal_generator.py       - Signal generation logic
+technical.py              - Technical indicators
+backtester.py             - Backtesting engine
+run_backtest.py           - Backtest launcher
+optimize.py               - Optimization runner
+optimize_lib.py           - Optimization library
+data_utils.py             - Data loading utilities
+download_data.py          - Historical data downloader
+utils.py                  - Shared utilities
+requirements.txt          - Dependencies
 ```
 
 ---
