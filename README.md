@@ -4,7 +4,7 @@
 
 A fully automated trading bot for cryptocurrency perpetual futures on Coinbase International Exchange. The system identifies breakouts preceded by low-volatility consolidation periods (squeezes) using a multi-timeframe Bollinger Band Squeeze strategy. 
 
-Currently deployed 24/7 on a DigitalOcean cloud server trading BTC, SOL, XRP, and DOGE perpetual futures.
+This bot has demonstrated an average annualized return of 39.7%, Sharpe Ratio of 2.35, and max drawdown of 22.7% across BTC, DOGE, and SOL over five years of backtesting. Parameters are optimized on one-year spot price of Bitcoin. Currently deployed live 24/7 on a DigitalOcean cloud server trading BTC, SOL, XRP, and DOGE perpetual futures.
 
 ### Key Features
 
@@ -61,6 +61,64 @@ Final size constrained to 30-50% range.
 
 ---
 
+## Backtest Performance (2021-01-01 to 2025-12-29)
+
+### BTC/USD
+
+| Metric | Value |
+|--------|-------|
+| Total Trades | 128 |
+| Win Rate | 68.0% |
+| Profit Factor | 2.37 |
+| Sharpe Ratio | 2.57 |
+| Maximum Drawdown | 11.4% |
+| Total Return (after commission and slippage) | 287.2% |
+
+![BTC Equity Curve](plots/equity_curve_BTCUSD.png)
+
+### DOGE/USD
+
+| Metric | Value |
+|--------|-------|
+| Total Trades | 96 |
+| Win Rate | 76.0% |
+| Profit Factor | 3.13 |
+| Sharpe Ratio | 3.54 |
+| Maximum Drawdown | 18.9% |
+| Total Return (after commission and slippage) | 1430.6% |
+
+![DOGE Equity Curve](plots/equity_curve_DOGEUSD.png)
+
+### SOL/USD
+
+| Metric | Value |
+|--------|-------|
+| Total Trades | 90 |
+| Win Rate | 67.8% |
+| Profit Factor | 1.62 |
+| Sharpe Ratio | 1.37 |
+| Maximum Drawdown | 35.7% |
+| Total Return (after commission and slippage) | 202.9% |
+
+![SOL Equity Curve](plots/equity_curve_SOLUSD.png)
+
+### XRP/USD
+
+| Metric | Value |
+|--------|-------|
+| Total Trades | 85 |
+| Win Rate | 65.9% |
+| Profit Factor | 1.89 |
+| Sharpe Ratio | 1.72 |
+| Maximum Drawdown | 19.2% |
+| Total Return (after commission and slippage) | 198.4% |
+
+![XRP Equity Curve](plots/equity_curve_XRPUSD.png)
+
+**Disclaimer**: Past performance does not guarantee future results. These results are from backtesting on historical data.
+
+---
+
 ## Live Trading Setup
 
 ### Futures Contracts Traded
@@ -78,42 +136,6 @@ Final size constrained to 30-50% range.
 - **Location**: NYC3
 - **Cost**: $4/month
 - **OS**: Ubuntu 24.04
-
----
-
-## Backtest Performance (2021-01-01 to 2025-12-29)
-
-### BTC/USD
-| Metric | Value |
-|--------|-------|
-| Total Trades | 128 |
-| Win Rate | 68.0% |
-| Profit Factor | 2.37 |
-| Sharpe Ratio | 2.57 |
-| Max Drawdown | 11.4% |
-| Total Return | 287.2% |
-
-### DOGE/USD
-| Metric | Value |
-|--------|-------|
-| Total Trades | 96 |
-| Win Rate | 76.0% |
-| Profit Factor | 3.13 |
-| Sharpe Ratio | 3.54 |
-| Max Drawdown | 18.9% |
-| Total Return | 1430.6% |
-
-### SOL/USD
-| Metric | Value |
-|--------|-------|
-| Total Trades | 90 |
-| Win Rate | 67.8% |
-| Profit Factor | 1.62 |
-| Sharpe Ratio | 1.37 |
-| Max Drawdown | 35.7% |
-| Total Return | 202.9% |
-
-**Disclaimer**: Past performance does not guarantee future results.
 
 ---
 
