@@ -1,4 +1,14 @@
-
+archive/
+trading_data/
+.ipynb_checkpoints/
+__pycache__/
+*.db
+data_cache/
+*.csv
+*.pkl
+*.png
+run_live_multi_asset.py
+run_backtest.py
 # Ignore large data
 *.csv
 *.pkl
