@@ -1,6 +1,6 @@
-# Keltrade
+# Keltrader
 
-A fully automated algorithmic trading system that trades cryptocurrency perpetual futures 24/7. The bot identifies low-volatility consolidation patterns and enters positions when volatility expands, capturing momentum breakouts in either direction.
+Keltrader fully automated algorithmic trading system that trades cryptocurrency perpetual futures 24/7. The bot identifies low-volatility consolidation patterns and enters positions when volatility expands, capturing momentum breakouts in either direction.
 
 **Core Capabilities:**
 - Real-time signal generation using Bollinger Band / Keltner Channel squeeze detection
@@ -34,7 +34,7 @@ Trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
 
 ## Strategy
 
-Keltrade detects volatility compression (squeeze) followed by expansion breakouts.
+Keltrader detects volatility compression (squeeze) followed by expansion breakouts.
 
 **Entry Conditions:**
 - Bollinger Bands contract inside Keltner Channels (squeeze)
@@ -107,8 +107,8 @@ Keltrade detects volatility compression (squeeze) followed by expansion breakout
 ## Installation
 
 ```bash
-git clone https://github.com/jicheolha/keltrade.git
-cd keltrade
+git clone https://github.com/jicheolha/crypto-trading-bot.git
+cd crypto-trading-bot
 
 python3 -m venv venv
 source venv/bin/activate
