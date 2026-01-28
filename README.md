@@ -35,7 +35,7 @@ Trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
 
 ## Performance with Leverage (2021-2025)
 
-![Multi-Asset Equity Curve with Leverage](plots/equity_curve_DOGEUSD_BTCUSD_ETHUSD_SOLUSD_XRPUSD_leverage.png)
+![Multi-Asset Equity Curve with Leverage](equity_curve_DOGEUSD_BTCUSD_ETHUSD_SOLUSD_XRPUSD_leverage.png)
 
 Same strategy with conservative leverage (overnight margin rates only):
 
