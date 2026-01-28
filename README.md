@@ -1,31 +1,31 @@
 # Keltrader
 
-A fully automated algorithmic trading system that trades cryptocurrency perpetual futures 24/7. The bot identifies low-volatility consolidation patterns and enters positions when volatility expands, capturing momentum breakouts in either direction.
+A fully automatic algorithmic trading system that trades cryptocurrency perpetual futures 24/7. The bot identifies low-volatility consolidation patterns and enters positions when volatility expands, capturingmomentum breakouts in either direction.
 
-**Core Capabilities:**
+**Capabilities:**
 - Real-time signal generation using Bollinger Band / Keltner Channel squeeze detection
 - Multi-asset portfolio management with dynamic position sizing
-- ATR-based risk management with automated stop-loss and take-profit execution
+- Automated stop-loss and take-profit levels dynamically set by ATR
 - Bayesian hyperparameter optimization with walk-forward validation
-- Complete trade journaling, P&L tracking, and performance monitoring
-- Conservative leverage management (overnight margin rates only)
+- Live trade journaling, P&L tracking, and performance monitoring
+- Leveraged vs. Spot mode backtesting
 
-Currently deployed live on DigitalOcean trading BTC, ETH, SOL, XRP, and DOGE futures on Coinbase International Exchange.
+Currently deployed live on DigitalOcean trading BTC, ETH, SOL, XRP, and DOGE perp futures on Coinbase International Exchange.
 
 ---
 
-## Performance (2021-2025)
+## Spot Trading Performance (2021-2025)
 
 ![Multi-Asset Equity Curve](plots/equity_curve_DOGEUSD_BTCUSD_ETHUSD_SOLUSD_XRPUSD.png)
 
-Trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
+Spot trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
 
 | Metric | Value |
 |--------|-------|
 | Total Trades | 494 |
-| Win Rate | 66.6% |
+| Win Rate | **66.6%** |
 | Profit Factor | 1.97 |
-| Sharpe Ratio | 1.83 |
+| Sharpe Ratio | **1.83** |
 | Max Drawdown | 27.5% |
 | Total Return | +1,751.9% |
 
@@ -33,18 +33,18 @@ Trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
 
 ---
 
-## Performance with Leverage (2021-2025)
+## Leveraged Trading Performance (2021-2025)
 
 ![Multi-Asset Equity Curve with Leverage](equity_curve_DOGEUSD_BTCUSD_ETHUSD_SOLUSD_XRPUSD_leverage.png)
 
-Same strategy with conservative leverage (overnight margin rates only):
+Same strategy with maintenance margin of 0.67 and leverage levels set by Coinbase:
 
 | Metric | Value |
 |--------|-------|
 | Total Trades | 508 |
-| Win Rate | 67.1% |
+| Win Rate | **67.1%** |
 | Profit Factor | 1.82 |
-| Sharpe Ratio | 1.85 |
+| Sharpe Ratio | **1.85** |
 | Max Drawdown | 47.6% |
 | Total Return | +120,441.6% |
 | Avg Leverage | 3.2x |
@@ -52,7 +52,7 @@ Same strategy with conservative leverage (overnight margin rates only):
 
 *Longs: 197 | Shorts: 311 | Wins: 341 | Losses: 167*
 
-**Note:** Higher returns come with significantly higher drawdown (47.6% vs 27.5%) and liquidation risk. The bot uses conservative overnight margin rates only—no 10x intraday leverage.
+**Note:** Higher returns come with higher drawdown (47.6% vs 27.5%) and more liquidation risk.
 
 ---
 
@@ -68,17 +68,11 @@ Keltrader detects volatility compression (squeeze) followed by expansion breakou
 **Exit Conditions:**
 - ATR-based stop loss and take profit
 - Maximum hold period (7 days)
-- Daily loss limit (3%)
 
 **Timeframes:**
 - Signal generation: 4h
 - ATR calculation: 1h
 - Trade execution: Real-time
-
-**Risk Management:**
-- Max 2 concurrent positions across all assets
-- Conservative overnight margin rates only (no 10x intraday leverage)
-- Position sizing: 20-50% of capital per trade
 
 ---
 
@@ -181,30 +175,6 @@ python run_live_multi_asset.py
 
 ---
 
-## Configuration
-
-Key parameters in `run_live_multi_asset.py`:
-
-```python
-# Timeframes (use format: 1m, 5m, 15m, 30m, 1h, 4h, 1d)
-SIGNAL_TIMEFRAME = '4h'    # Signal generation
-ATR_TIMEFRAME = '1h'       # ATR for stops/targets
-
-# Position sizing
-BASE_POSITION = 0.4        # 40% base position
-MIN_POSITION = 0.2         # 20% minimum
-MAX_POSITION = 0.5         # 50% maximum
-
-# Risk management
-MAX_POSITIONS = 2          # Max concurrent positions
-MAX_DAILY_LOSS = 0.03      # 3% daily loss limit
-MAX_HOLD_DAYS = 7          # Maximum hold time
-
-# Bot settings
-CHECK_INTERVAL = 30        # Check every 30 seconds
-```
-
----
 
 ## Project Structure
 
@@ -219,10 +189,10 @@ CHECK_INTERVAL = 30        # Check every 30 seconds
 ├── diagnostics.py            # Pre-deployment system checks
 ├── data_utils.py             # Data fetching and caching
 ├── download_data.py          # Historical data downloader
-├── run_backtest.py           # Backtest runner
-├── run_live_multi_asset.py   # Live trading configuration
+├── run_backtest.py           # Backtest runner (redacted)
+├── run_live_multi_asset.py   # Live trading configuration (redacted)
 ├── utils.py                  # Shared utilities
-├── trading_bot_commands.md   # Server deployment guide
+├── trading_bot_commands.md   # Server deployment guide (redacted)
 └── requirements.txt          # Python dependencies
 ```
 
@@ -239,41 +209,6 @@ The bot trades these Coinbase International perpetual futures:
 | SLP-20DEC30-CDE | SOL | 5 SOL | ~2.7x |
 | XPP-20DEC30-CDE | XRP | 500 XRP | ~2.6x |
 | DOP-20DEC30-CDE | DOGE | 5000 DOGE | ~2x |
-
-*Leverage shown is conservative overnight rates. The bot does not use higher intraday leverage.*
-
----
-
-## Monitoring
-
-The bot includes professional-grade monitoring:
-
-- **Trade Journal**: CSV log of all trades with entry/exit details
-- **Daily Summary**: Daily P&L and win rate tracking
-- **State Persistence**: Survives restarts without losing position data
-- **Drawdown Alerts**: Warnings at 5% and 10% drawdown levels
-- **Performance Drift**: Comparison against backtest expectations
-
-Data stored in `trading_data/` directory.
-
----
-
-## Server Deployment
-
-See `trading_bot_commands.md` for complete deployment guide.
-
-Quick reference:
-```bash
-# Deploy and restart
-scp *.py root@YOUR_SERVER:/home/trader/bot/ && \
-ssh root@YOUR_SERVER "systemctl restart trading-bot && journalctl -u trading-bot -f"
-
-# View logs
-ssh root@YOUR_SERVER "journalctl -u trading-bot -f --output=cat"
-
-# Check status
-ssh root@YOUR_SERVER "systemctl status trading-bot"
-```
 
 ---
 
