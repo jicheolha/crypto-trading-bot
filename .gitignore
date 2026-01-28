@@ -1,4 +1,3 @@
-archive/
 trading_data/
 .ipynb_checkpoints/
 __pycache__/
@@ -9,5 +8,6 @@ data_cache/
 run_live_multi_asset.py
 run_backtest.py
 trading_bot_commands.md
-signal_generate.py
+signal_generator.py
 download_data.py
+diagnostics.py
