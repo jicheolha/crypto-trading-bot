@@ -1,6 +1,6 @@
 # Keltrader
 
-A fully automatic algorithmic trading system that trades cryptocurrency perpetual futures 24/7. The bot identifies low-volatility consolidation patterns and enters positions when volatility expands, capturingmomentum breakouts in either direction.
+Making money is so easy. Keltrader is a fully automatic algorithmic trading system that trades cryptocurrency perpetual futures 24/7. The bot identifies low-volatility consolidation patterns and enters positions when volatility expands, capturingmomentum breakouts in either direction.
 
 **Capabilities:**
 - Real-time signal generation using Bollinger Band / Keltner Channel squeeze detection
