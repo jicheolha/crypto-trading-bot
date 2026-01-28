@@ -33,6 +33,29 @@ Trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
 
 ---
 
+## Performance with Leverage (2021-2025)
+
+![Multi-Asset Equity Curve with Leverage](plots/equity_curve_DOGEUSD_BTCUSD_ETHUSD_SOLUSD_XRPUSD_leverage.png)
+
+Same strategy with conservative leverage (overnight margin rates only):
+
+| Metric | Value |
+|--------|-------|
+| Total Trades | 508 |
+| Win Rate | 67.1% |
+| Profit Factor | 1.82 |
+| Sharpe Ratio | 1.85 |
+| Max Drawdown | 47.6% |
+| Total Return | +120,441.6% |
+| Avg Leverage | 3.2x |
+| Liquidations | 16 |
+
+*Longs: 197 | Shorts: 311 | Wins: 341 | Losses: 167*
+
+**Note:** Higher returns come with significantly higher drawdown (47.6% vs 27.5%) and liquidation risk. The bot uses conservative overnight margin rates only—no 10x intraday leverage.
+
+---
+
 ## Strategy
 
 Keltrader detects volatility compression (squeeze) followed by expansion breakouts.
