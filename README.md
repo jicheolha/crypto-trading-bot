@@ -132,50 +132,6 @@ Keltrader detects volatility compression (squeeze) followed by expansion breakou
 
 ---
 
-## Installation
-
-```bash
-git clone https://github.com/jicheolha/crypto-trading-bot.git
-cd crypto-trading-bot
-
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-export COINBASE_API_KEY='your_key'
-export COINBASE_API_SECRET='your_secret'
-```
-
----
-
-## Usage
-
-```bash
-# Download historical data (required first time)
-python download_data.py
-
-# Run backtest (spot mode)
-python run_backtest.py
-
-# Run backtest with leverage simulation
-python run_backtest.py --leverage
-
-# Optimize parameters
-python optimize.py --trials 200
-
-# Optimize specific timeframe combination
-python optimize.py --signal-tf 4h --atr-tf 1h --trials 100
-
-# Run diagnostics before live trading
-python diagnostics.py
-
-# Start live trading
-python run_live_multi_asset.py
-```
-
----
-
-
 ## Project Structure
 
 ```
