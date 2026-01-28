@@ -2,10 +2,19 @@
 Timeframe-Specific Optimizer
 
 Tests EACH timeframe combination systematically and finds
-the best parameters for each one.
+the best parameters for each one. Uses persistent storage
+so reruns build on previous trials.
 
 Usage:
-    python optimize_timeframes.py --trials 50 --start-date 2020-01-01 --end-date 2023-12-31
+    # Spot mode (no leverage)
+    python optimize.py --trials 50 --start-date 2020-01-01 --end-date 2023-12-31
+    python optimize.py --trials 100 --signal-tf 4h --atr-tf 1h
+    python optimize.py --reset --trials 50  # Start fresh
+    
+    # Leverage mode
+    python optimize.py --leverage --trials 50
+    python optimize.py --leverage --trials 100 --signal-tf 4h --atr-tf 1h
+    python optimize.py --leverage --maintenance-margin 0.3 --trials 50
 """
 import argparse
 import sys
@@ -15,25 +24,26 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from optimize_lib import (
     load_data, filter_data_by_date, run_backtest, calculate_score,
     SYMBOLS, DAYS_BACK, INITIAL_CAPITAL, MIN_TRADES, LONG_ONLY,
-    FIXED_BASE_POSITION, FIXED_MIN_POSITION, FIXED_MAX_POSITION, PARAM_SPACE
+    FIXED_BASE_POSITION, FIXED_MIN_POSITION, FIXED_MAX_POSITION,
+    FIXED_MAX_POSITIONS, FIXED_MAX_DAILY_LOSS, PARAM_SPACE,
+    get_storage_url
 )
 from datetime import datetime
 import pandas as pd
-import random
 
 try:
     import optuna
     from optuna.samplers import TPESampler
+    optuna.logging.set_verbosity(optuna.logging.WARNING)
 except ImportError:
     print("Installing optuna...")
     import subprocess
     subprocess.check_call([sys.executable, "-m", "pip", "install", "optuna", "-q", "--break-system-packages"])
     import optuna
     from optuna.samplers import TPESampler
+    optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 
-# All timeframe combinations to test
-# Includes scalping (5min/15min signal) to swing (4h signal)
 SIGNAL_TIMEFRAMES = ['5min', '15min', '30min', '1h', '4h']
 ATR_TIMEFRAMES = ['15min', '30min', '1h', '4h', '1d']
 
@@ -42,14 +52,34 @@ def optimize_for_timeframe_combo(
     data: dict,
     signal_tf: str,
     atr_tf: str,
-    n_trials: int = 50
+    n_trials: int = 50,
+    reset: bool = False,
+    leverage_enabled: bool = False,
+    maintenance_margin: float = 0.5
 ):
     """Optimize parameters for a specific timeframe combination."""
     
+    # Different study names for leverage vs spot
+    if leverage_enabled:
+        study_name = f"tf_{signal_tf}_{atr_tf}_leverage"
+    else:
+        study_name = f"tf_{signal_tf}_{atr_tf}"
+    
     print(f"\n{'='*70}")
     print(f"OPTIMIZING: Signal={signal_tf}, ATR={atr_tf}")
+    if leverage_enabled:
+        print(f"MODE: LEVERAGE (maintenance margin: {maintenance_margin:.0%})")
     print(f"{'='*70}")
-    print(f"Trials: {n_trials}")
+    print(f"Study: {study_name}")
+    print(f"New trials: {n_trials}")
+    
+    # Delete existing study if reset requested
+    if reset:
+        try:
+            optuna.delete_study(study_name=study_name, storage=get_storage_url())
+            print(f"Reset study: {study_name}")
+        except:
+            pass
     
     # Split train/test
     train_data, test_data = {}, {}
@@ -63,13 +93,7 @@ def optimize_for_timeframe_combo(
             train_data[symbol][tf] = df.iloc[:split_idx]
             test_data[symbol][tf] = df.iloc[split_idx:]
     
-    best_score = -float('inf')
-    best_params = None
-    best_stats = None
-    
     def objective(trial):
-        nonlocal best_score, best_params, best_stats
-        
         # Fixed timeframes
         params = {
             'signal_timeframe': signal_tf,
@@ -79,7 +103,7 @@ def optimize_for_timeframe_combo(
         # Optimize all other parameters
         for name, spec in PARAM_SPACE.items():
             if name in ['signal_timeframe', 'atr_timeframe']:
-                continue  # Skip timeframes, we fixed them
+                continue
             
             if spec['type'] == 'int':
                 params[name] = trial.suggest_int(name, spec['low'], spec['high'])
@@ -91,13 +115,21 @@ def optimize_for_timeframe_combo(
             return -1000
         
         # Train score
-        train_score, train_stats = run_backtest(train_data, params)
+        train_score, train_stats = run_backtest(
+            train_data, params,
+            leverage_enabled=leverage_enabled,
+            maintenance_margin=maintenance_margin
+        )
         
-        if train_stats['total_trades'] < MIN_TRADES:
+        if train_stats.get('total_trades', 0) < MIN_TRADES:
             return train_score
         
         # Test score
-        test_score, test_stats = run_backtest(test_data, params)
+        test_score, test_stats = run_backtest(
+            test_data, params,
+            leverage_enabled=leverage_enabled,
+            maintenance_margin=maintenance_margin
+        )
         
         # Combined score
         if test_score < 0:
@@ -105,23 +137,26 @@ def optimize_for_timeframe_combo(
         else:
             combined = train_score * 0.4 + test_score * 0.6
         
-        # Track best
-        if combined > best_score:
-            best_score = combined
-            best_params = params.copy()
-            best_stats = {
-                'train': train_stats,
-                'test': test_stats,
-                'train_score': train_score,
-                'test_score': test_score
-            }
-        
         return combined
     
-    # Run optimization
-    sampler = TPESampler(seed=42, n_startup_trials=min(15, n_trials // 3))
-    study = optuna.create_study(direction='maximize', sampler=sampler)
+    # Load or create persistent study
+    study = optuna.create_study(
+        study_name=study_name,
+        storage=get_storage_url(),
+        load_if_exists=True,
+        direction='maximize',
+        sampler=TPESampler(seed=42, n_startup_trials=min(15, n_trials // 3))
+    )
     
+    existing_trials = len(study.trials)
+    if existing_trials > 0:
+        print(f"Loaded {existing_trials} existing trials")
+        print(f"Previous best: {study.best_value:.4f}")
+        # Reduce startup trials since we have history
+        effective_startup = max(5, 15 - existing_trials)
+        study.sampler = TPESampler(seed=42, n_startup_trials=effective_startup)
+    
+    # Run optimization
     study.optimize(
         objective,
         n_trials=n_trials,
@@ -129,12 +164,42 @@ def optimize_for_timeframe_combo(
         catch=(Exception,)
     )
     
+    total_trials = len(study.trials)
+    print(f"Total trials (all time): {total_trials}")
+    print(f"Best score (all time): {study.best_value:.4f}")
+    
+    # Get best params from study (all time best)
+    all_time_best_params = study.best_params.copy()
+    all_time_best_params['signal_timeframe'] = signal_tf
+    all_time_best_params['atr_timeframe'] = atr_tf
+    
+    # Re-run best params to get stats
+    _, all_time_train_stats = run_backtest(
+        train_data, all_time_best_params,
+        leverage_enabled=leverage_enabled,
+        maintenance_margin=maintenance_margin
+    )
+    _, all_time_test_stats = run_backtest(
+        test_data, all_time_best_params,
+        leverage_enabled=leverage_enabled,
+        maintenance_margin=maintenance_margin
+    )
+    
+    # Print leverage stats if enabled
+    if leverage_enabled:
+        print(f"  Train - Liquidations: {all_time_train_stats.get('liquidations', 0)}, Max DD: {all_time_train_stats.get('max_drawdown', 0):.1f}%")
+        print(f"  Test  - Liquidations: {all_time_test_stats.get('liquidations', 0)}, Max DD: {all_time_test_stats.get('max_drawdown', 0):.1f}%")
+    
     return {
         'signal_tf': signal_tf,
         'atr_tf': atr_tf,
-        'best_score': best_score,
-        'best_params': best_params,
-        'best_stats': best_stats
+        'best_score': study.best_value,
+        'best_params': all_time_best_params,
+        'best_stats': {
+            'train': all_time_train_stats,
+            'test': all_time_test_stats
+        },
+        'total_trials': total_trials
     }
 
 
@@ -153,9 +218,15 @@ def main():
     parser.add_argument('--swing', action='store_true',
                         help='Only test swing combos (1h, 4h signals)')
     parser.add_argument('--signal-tf', type=str, default=None,
-                        help='Test specific signal timeframe only (e.g., 5min)')
+                        help='Test specific signal timeframe only')
     parser.add_argument('--atr-tf', type=str, default=None,
-                        help='Test specific ATR timeframe only (e.g., 15min)')
+                        help='Test specific ATR timeframe only')
+    parser.add_argument('--reset', action='store_true',
+                        help='Reset optimization history and start fresh')
+    parser.add_argument('--leverage', action='store_true',
+                        help='Enable leverage mode optimization')
+    parser.add_argument('--maintenance-margin', type=float, default=0.5,
+                        help='Maintenance margin for liquidation (default: 0.5 = 50%%)')
     
     args = parser.parse_args()
     
@@ -181,10 +252,16 @@ def main():
     print(f"\n{'='*70}")
     print("TIMEFRAME-SPECIFIC OPTIMIZATION")
     print(f"{'='*70}")
+    if args.leverage:
+        print(f"MODE: LEVERAGE (maintenance margin: {args.maintenance_margin:.0%})")
+    else:
+        print(f"MODE: SPOT (no leverage)")
     print(f"Testing {total_combos} timeframe combinations")
     print(f"Trials per combo: {args.trials}")
-    print(f"Total trials: {total_trials}")
-    print(f"Estimated time: {total_trials * 0.5 / 60:.0f}-{total_trials * 1.0 / 60:.0f} minutes")
+    print(f"Total new trials: {total_trials}")
+    print(f"\nFixed parameters:")
+    print(f"  max_positions: {FIXED_MAX_POSITIONS}")
+    print(f"  max_daily_loss: {FIXED_MAX_DAILY_LOSS:.1%}")
     
     # Load data
     print(f"\nLoading {DAYS_BACK} days of data...")
@@ -213,7 +290,10 @@ def main():
             print(f"\n[Combo {combo_num}/{total_combos}]")
             
             result = optimize_for_timeframe_combo(
-                data, signal_tf, atr_tf, args.trials
+                data, signal_tf, atr_tf, args.trials, 
+                reset=args.reset,
+                leverage_enabled=args.leverage,
+                maintenance_margin=args.maintenance_margin
             )
             results.append(result)
     
@@ -235,22 +315,32 @@ def main():
         atr_tf = result['atr_tf']
         score = result['best_score']
         stats = result['best_stats']
+        total = result.get('total_trials', 0)
         
-        print(f"\n#{i}: {signal_tf} / {atr_tf}  |  Score: {score:.4f}")
+        print(f"\n#{i}: {signal_tf} / {atr_tf}  |  Score: {score:.4f}  |  Trials: {total}")
         
         if stats and 'train' in stats:
             train = stats['train']
             test = stats['test']
             
-            print(f"  Train: {train['total_trades']} trades, "
+            # Base stats
+            train_line = (f"  Train: {train['total_trades']} trades, "
                   f"{train['win_rate']:.1f}% WR, "
                   f"PF={train['profit_factor']:.2f}, "
                   f"Return={train['return_pct']:+.1f}%")
             
-            print(f"  Test:  {test['total_trades']} trades, "
+            test_line = (f"  Test:  {test['total_trades']} trades, "
                   f"{test['win_rate']:.1f}% WR, "
                   f"PF={test['profit_factor']:.2f}, "
                   f"Return={test['return_pct']:+.1f}%")
+            
+            # Add leverage stats if available
+            if args.leverage:
+                train_line += f", DD={train.get('max_drawdown', 0):.1f}%, Liq={train.get('liquidations', 0)}"
+                test_line += f", DD={test.get('max_drawdown', 0):.1f}%, Liq={test.get('liquidations', 0)}"
+            
+            print(train_line)
+            print(test_line)
     
     # Print best parameters
     print(f"\n{'='*70}")
@@ -270,37 +360,35 @@ def main():
             else:
                 print(f"  {key}: {value}")
     
-    # Save results
+    # Save top 5 results only
     csv_data = []
-    for result in results:
+    for result in results[:5]:  # Only top 5
         row = {
             'signal_tf': result['signal_tf'],
             'atr_tf': result['atr_tf'],
-            'score': result['best_score']
+            'score': result['best_score'],
+            'total_trials': result.get('total_trials', 0)
         }
         if result['best_params']:
             row.update(result['best_params'])
+        if result['best_stats']:
+            # Add train/test stats
+            train = result['best_stats'].get('train', {})
+            test = result['best_stats'].get('test', {})
+            row['train_trades'] = train.get('total_trades', 0)
+            row['train_win_rate'] = train.get('win_rate', 0)
+            row['train_pf'] = train.get('profit_factor', 0)
+            row['train_return'] = train.get('return_pct', 0)
+            row['test_trades'] = test.get('total_trades', 0)
+            row['test_win_rate'] = test.get('win_rate', 0)
+            row['test_pf'] = test.get('profit_factor', 0)
+            row['test_return'] = test.get('return_pct', 0)
         csv_data.append(row)
     
     df = pd.DataFrame(csv_data)
     filename = 'optimize_timeframes_results.csv'
     df.to_csv(filename, index=False)
-    print(f"\nâœ… Results saved to {filename}")
-    
-    print(f"\n{'='*70}")
-    print("RECOMMENDATION")
-    print(f"{'='*70}")
-    
-    best = results[0]
-    print(f"\nUse these parameters for {best['signal_tf']}/{best['atr_tf']}:")
-    print(f"\nSIGNAL_TIMEFRAME = '{best['signal_tf']}'")
-    print(f"ATR_TIMEFRAME = '{best['atr_tf']}'")
-    print(f"BB_PERIOD = {best['best_params']['bb_period']}")
-    print(f"BB_STD = {best['best_params']['bb_std']:.2f}")
-    print(f"KC_PERIOD = {best['best_params']['kc_period']}")
-    print(f"KC_ATR_MULT = {best['best_params']['kc_atr_mult']:.2f}")
-    print("...")
-    print("\n(Full params shown above)")
+    print(f"\nTop 5 results saved to {filename}")
 
 
 if __name__ == "__main__":

@@ -67,6 +67,10 @@ FIXED_BASE_POSITION = 0.40
 FIXED_MIN_POSITION = 0.30
 FIXED_MAX_POSITION = 0.90
 
+# Fixed risk parameters (not optimized)
+FIXED_MAX_POSITIONS = 2
+FIXED_MAX_DAILY_LOSS = 0.03
+
 # Persistent storage
 OPTUNA_DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'optuna_history.db')
 DEFAULT_STUDY_NAME = "bb_squeeze_v1"
@@ -209,22 +213,6 @@ PARAM_SPACE = {
         'default': 5,
         'description': 'Setup validity duration'
     },
-    
-    # Risk
-    'max_positions': {
-        'type': 'int',
-        'low': 1,
-        'high': 5,
-        'default': 2,
-        'description': 'Maximum concurrent positions'
-    },
-    'max_daily_loss': {
-        'type': 'float',
-        'low': 0.02,
-        'high': 0.10,
-        'default': 0.03,
-        'description': 'Maximum daily loss %'
-    },
 }
 
 
@@ -339,7 +327,7 @@ def get_tf_minutes(tf: str) -> int:
     return {'1min': 1, '5min': 5, '15min': 15, '30min': 30, '1h': 60, '4h': 240, '1d': 1440}.get(tf, 60)
 
 
-def run_backtest(data: Dict, params: Dict[str, Any]) -> Tuple[float, Dict]:
+def run_backtest(data: Dict, params: Dict[str, Any], leverage_enabled: bool = False, maintenance_margin: float = 0.5) -> Tuple[float, Dict]:
     """Run backtest with given parameters."""
     
     signal_tf = params['signal_timeframe']
@@ -382,10 +370,12 @@ def run_backtest(data: Dict, params: Dict[str, Any]) -> Tuple[float, Dict]:
         initial_capital=INITIAL_CAPITAL,
         commission=0.0005,
         slippage_pct=0.0002,
-        max_positions=params['max_positions'],
-        max_daily_loss_pct=params['max_daily_loss'],
+        max_positions=FIXED_MAX_POSITIONS,
+        max_daily_loss_pct=FIXED_MAX_DAILY_LOSS,
         long_only=LONG_ONLY,
-        verbose=False
+        verbose=False,
+        leverage=leverage_enabled,
+        maintenance_margin_pct=maintenance_margin,
     )
     
     bt.analyzer = analyzer
@@ -393,7 +383,12 @@ def run_backtest(data: Dict, params: Dict[str, Any]) -> Tuple[float, Dict]:
     
     results = bt.run_backtest(trade_data)
     stats = results.statistics
-    score = calculate_score(stats)
+    
+    # Use appropriate scoring function
+    if leverage_enabled:
+        score = calculate_score_leverage(stats)
+    else:
+        score = calculate_score(stats)
     
     return score, stats
 
@@ -425,6 +420,47 @@ def calculate_score(stats: Dict) -> float:
     # Penalties
     score *= (1 - max_dd / 100)
     if pnl < 0:
+        score *= 0.5
+    
+    return score
+
+
+def calculate_score_leverage(stats: Dict) -> float:
+    """
+    Calculate optimization score for leverage mode.
+    
+    Same as spot scoring but with additional drawdown penalty:
+    - Max drawdown > 50% = halve the score
+    """
+    
+    if stats['total_trades'] < MIN_TRADES:
+        return -1000
+    
+    pnl = stats['total_pnl']
+    profit_factor = stats['profit_factor']
+    win_rate = stats['win_rate'] / 100
+    max_dd = stats['max_drawdown']
+    sharpe = stats['sharpe']
+    num_trades = stats['total_trades']
+    
+    # Composite score (same as spot)
+    pf_capped = min(profit_factor, 3.0)
+    sharpe_capped = max(min(sharpe, 3.0), -3.0)
+    
+    score = (
+        pf_capped * 2.0 +
+        sharpe_capped * 1.5 +
+        win_rate * 1.0 +
+        np.sqrt(num_trades) * 0.15
+    )
+    
+    # Standard penalties
+    score *= (1 - max_dd / 100)
+    if pnl < 0:
+        score *= 0.5
+    
+    # Leverage-specific penalty: halve score if max drawdown > 50%
+    if max_dd > 50:
         score *= 0.5
     
     return score
@@ -519,16 +555,16 @@ def show_history():
             continue
         
         print(f"  Study: {study_name}")
-        print(f"  ├── Total trials: {stats['total_trials']}")
-        print(f"  ├── Completed: {stats['completed']}, Failed: {stats['failed']}")
+        print(f"  â”œâ”€â”€ Total trials: {stats['total_trials']}")
+        print(f"  â”œâ”€â”€ Completed: {stats['completed']}, Failed: {stats['failed']}")
         
         if stats['best_score'] is not None:
-            print(f"  ├── Best score: {stats['best_score']:.4f}")
-            print(f"  ├── Avg score: {stats['avg_score']:.4f} ± {stats['score_std']:.4f}")
+            print(f"  â”œâ”€â”€ Best score: {stats['best_score']:.4f}")
+            print(f"  â”œâ”€â”€ Avg score: {stats['avg_score']:.4f} Â± {stats['score_std']:.4f}")
         
         if stats['first_trial']:
-            print(f"  ├── First trial: {stats['first_trial'].strftime('%Y-%m-%d %H:%M')}")
-            print(f"  └── Last trial: {stats['last_trial'].strftime('%Y-%m-%d %H:%M')}")
+            print(f"  â”œâ”€â”€ First trial: {stats['first_trial'].strftime('%Y-%m-%d %H:%M')}")
+            print(f"  â””â”€â”€ Last trial: {stats['last_trial'].strftime('%Y-%m-%d %H:%M')}")
         
         print()
     
@@ -571,11 +607,13 @@ class OptimizationResult:
 class BaseOptimizer:
     """Base optimizer class."""
     
-    def __init__(self, data: Dict, train_ratio: float = 0.7):
+    def __init__(self, data: Dict, train_ratio: float = 0.7, leverage_enabled: bool = False, maintenance_margin: float = 0.5):
         self.data = data
         self.train_ratio = train_ratio
         self.train_data, self.test_data = split_data(data, train_ratio)
         self.trials = []
+        self.leverage_enabled = leverage_enabled
+        self.maintenance_margin = maintenance_margin
     
     def sample_params(self) -> Dict[str, Any]:
         """Sample random parameters."""
@@ -595,12 +633,20 @@ class BaseOptimizer:
         if params['atr_target_mult'] <= params['atr_stop_mult']:
             return -1000, {}
         
-        train_score, train_stats = run_backtest(self.train_data, params)
+        train_score, train_stats = run_backtest(
+            self.train_data, params, 
+            leverage_enabled=self.leverage_enabled, 
+            maintenance_margin=self.maintenance_margin
+        )
         
-        if not use_test or train_stats['total_trades'] < MIN_TRADES:
+        if not use_test or train_stats.get('total_trades', 0) < MIN_TRADES:
             return train_score, train_stats
         
-        test_score, test_stats = run_backtest(self.test_data, params)
+        test_score, test_stats = run_backtest(
+            self.test_data, params,
+            leverage_enabled=self.leverage_enabled,
+            maintenance_margin=self.maintenance_margin
+        )
         
         # Combined score (favor test performance)
         if test_score < 0:
@@ -678,9 +724,11 @@ class BayesianOptimizer(BaseOptimizer):
         train_ratio: float = 0.7, 
         n_startup: int = 30,
         study_name: str = DEFAULT_STUDY_NAME,
-        reset: bool = False
+        reset: bool = False,
+        leverage_enabled: bool = False,
+        maintenance_margin: float = 0.5
     ):
-        super().__init__(data, train_ratio)
+        super().__init__(data, train_ratio, leverage_enabled, maintenance_margin)
         self.n_startup = n_startup
         self.study_name = study_name
         self.reset = reset
@@ -690,6 +738,10 @@ class BayesianOptimizer(BaseOptimizer):
         print(f"\n{'='*60}")
         print("BAYESIAN (TPE) OPTIMIZATION WITH HISTORY")
         print(f"{'='*60}")
+        if self.leverage_enabled:
+            print(f"MODE: LEVERAGE (maintenance margin: {self.maintenance_margin:.0%})")
+        else:
+            print(f"MODE: SPOT (no leverage)")
         
         # Delete existing study if reset requested
         if self.reset:
@@ -772,6 +824,15 @@ class BayesianOptimizer(BaseOptimizer):
         print(f"Total historical trials: {total_trials}")
         print(f"Best score (all time): {study.best_value:.4f}")
         
+        # Print leverage-specific stats if available
+        if self.leverage_enabled and best_stats:
+            train_stats = best_stats.get('train', best_stats)
+            test_stats = best_stats.get('test', {})
+            print(f"\nLEVERAGE STATS (best params):")
+            print(f"  Train - Liquidations: {train_stats.get('liquidations', 'N/A')}, Max DD: {train_stats.get('max_drawdown', 0):.1f}%")
+            if test_stats:
+                print(f"  Test  - Liquidations: {test_stats.get('liquidations', 'N/A')}, Max DD: {test_stats.get('max_drawdown', 0):.1f}%")
+        
         return OptimizationResult(
             best_params=best_params,
             best_score=study.best_value,
@@ -809,8 +870,6 @@ class GridSearchOptimizer(BaseOptimizer):
         'volume_period': 20,
         'atr_period': 14,
         'setup_validity_bars': 5,
-        'max_positions': 2,
-        'max_daily_loss': 0.03,
     }
     
     def optimize(self, n_trials: int = None) -> OptimizationResult:
@@ -941,7 +1000,7 @@ class WalkForwardOptimizer(BaseOptimizer):
         avg_test_score = np.mean([f['test_score'] for f in fold_results])
         std_test_score = np.std([f['test_score'] for f in fold_results])
         
-        print(f"\nAverage test score: {avg_test_score:.4f} ± {std_test_score:.4f}")
+        print(f"\nAverage test score: {avg_test_score:.4f} Â± {std_test_score:.4f}")
         
         return OptimizationResult(
             best_params=best_fold['params'],
@@ -970,7 +1029,7 @@ class WalkForwardOptimizer(BaseOptimizer):
 
 
 class MultiStageOptimizer:
-    """Multi-stage optimization: Random → Bayesian → Validation."""
+    """Multi-stage optimization: Random â†’ Bayesian â†’ Validation."""
     
     def __init__(self, data: Dict, train_ratio: float = 0.7):
         self.data = data
@@ -1124,9 +1183,9 @@ ATR_TARGET_MULT = {params['atr_target_mult']:.2f}
 # Setup
 SETUP_VALIDITY_BARS = {params['setup_validity_bars']}
 
-# Risk
-MAX_POSITIONS = {params['max_positions']}
-MAX_DAILY_LOSS = {params['max_daily_loss']:.2f}
+# Risk (FIXED)
+MAX_POSITIONS = {FIXED_MAX_POSITIONS}
+MAX_DAILY_LOSS = {FIXED_MAX_DAILY_LOSS:.2f}
 LONG_ONLY = False
 
 # Position Sizing (FIXED)

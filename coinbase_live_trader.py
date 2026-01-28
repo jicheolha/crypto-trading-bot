@@ -618,11 +618,9 @@ class CoinbaseLiveTrader:
         'DOP-20DEC30-CDE': {'contract_size': 5000.0, 'base': 'DOGE'},
     }
     
-    # Coinbase International intraday margin hours (in UTC)
-    # Intraday rates apply: 14:30 UTC (9:30 AM ET) to 21:00 UTC (4:00 PM ET) on trading days
-    # Outside these hours, overnight rates apply
-    INTRADAY_START_UTC = 14  # 14:00 UTC = 9:00 AM ET (being conservative, 30 min before market open)
-    INTRADAY_END_UTC = 21    # 21:00 UTC = 4:00 PM ET
+    # Always use conservative overnight margin rates (lower leverage)
+    # Intraday higher leverage is too risky
+    USE_CONSERVATIVE_MARGIN = True
     
     def __init__(
         self,
@@ -765,56 +763,54 @@ class CoinbaseLiveTrader:
                 overnight_short = 0.30
                 
                 if is_futures:
-                    # Get contract size from our specs
-                    if symbol in self.PERP_CONTRACT_SPECS:
-                        spec = self.PERP_CONTRACT_SPECS[symbol]
-                        contract_size = spec['contract_size']
+                    # Fetch contract details from API
+                    future_details = getattr(product, 'future_product_details', None)
+                    
+                    # Get contract size - prefer API, fallback to hardcoded specs
+                    if future_details and isinstance(future_details, dict):
+                        api_contract_size = future_details.get('contract_size')
+                        if api_contract_size:
+                            contract_size = float(api_contract_size)
+                            logger.info(f"  {symbol} contract_size from API: {contract_size}")
+                        elif symbol in self.PERP_CONTRACT_SPECS:
+                            contract_size = self.PERP_CONTRACT_SPECS[symbol]['contract_size']
+                            logger.warning(f"  {symbol} contract_size from hardcoded specs: {contract_size}")
+                        else:
+                            contract_size = 0.1
+                            logger.warning(f"  {symbol} using default contract_size: {contract_size}")
+                    elif symbol in self.PERP_CONTRACT_SPECS:
+                        contract_size = self.PERP_CONTRACT_SPECS[symbol]['contract_size']
+                        logger.warning(f"  {symbol} no API details, using hardcoded: {contract_size}")
                     else:
                         logger.warning(f"  No contract spec for {symbol}, using default 0.1")
                         contract_size = 0.1
                     
-                    # Fetch dynamic margin rates from API
-                    future_details = getattr(product, 'future_product_details', None)
-                    if future_details:
-                        # Handle both dict and object access
-                        if isinstance(future_details, dict):
-                            intraday = future_details.get('intraday_margin_rate', {})
-                            overnight = future_details.get('overnight_margin_rate', {})
-                        else:
-                            intraday = getattr(future_details, 'intraday_margin_rate', {}) or {}
-                            overnight = getattr(future_details, 'overnight_margin_rate', {}) or {}
+                    # Fetch dynamic margin rates from API - we only use overnight (conservative)
+                    if future_details and isinstance(future_details, dict):
+                        overnight = future_details.get('overnight_margin_rate', {})
                         
-                        # Get intraday margin rates (used during trading hours)
-                        if isinstance(intraday, dict):
-                            margin_rate_long = float(intraday.get('long_margin_rate', 0.25))
-                            margin_rate_short = float(intraday.get('short_margin_rate', 0.25))
-                        
-                        # Get overnight rates (for reference/logging only)
-                        overnight_long = 0.30
-                        overnight_short = 0.30
+                        # Get overnight rates (conservative - always used)
                         if isinstance(overnight, dict):
                             overnight_long = float(overnight.get('long_margin_rate', 0.30))
                             overnight_short = float(overnight.get('short_margin_rate', 0.30))
                         
-                        logger.info(f"  {symbol} margin rates: intraday L={margin_rate_long:.2%} S={margin_rate_short:.2%}, overnight L={overnight_long:.2%} S={overnight_short:.2%}")
+                        lev_long = 1.0 / overnight_long if overnight_long > 0 else 1.0
+                        logger.info(f"  {symbol} margin: {overnight_long:.1%} ({lev_long:.1f}x leverage)")
                 
-                # Store BOTH intraday and overnight rates - we'll pick dynamically based on time
+                # Store overnight rates only - we always use conservative rates
                 self.product_info[symbol] = {
                     'is_futures': is_futures,
                     'contract_size': contract_size,
-                    'margin_rate_long_intraday': margin_rate_long if is_futures else 1.0,
-                    'margin_rate_short_intraday': margin_rate_short if is_futures else 1.0,
-                    'margin_rate_long_overnight': overnight_long if is_futures else 1.0,
-                    'margin_rate_short_overnight': overnight_short if is_futures else 1.0,
+                    'margin_rate_long': overnight_long if is_futures else 1.0,
+                    'margin_rate_short': overnight_short if is_futures else 1.0,
                     'product_type': product_type
                 }
                 
                 # Log summary
                 if is_futures:
                     base = self.PERP_CONTRACT_SPECS.get(symbol, {}).get('base', '?')
-                    lev_intraday = 1.0 / margin_rate_long if margin_rate_long > 0 else 1.0
-                    lev_overnight = 1.0 / overnight_long if overnight_long > 0 else 1.0
-                    logger.info(f"{symbol}: {colored('FUTURES', Colors.CYAN)} | {contract_size} {base}/contract | {lev_intraday:.0f}x intraday / {lev_overnight:.1f}x overnight")
+                    lev = 1.0 / overnight_long if overnight_long > 0 else 1.0
+                    logger.info(f"{symbol}: {colored('FUTURES', Colors.CYAN)} | {contract_size} {base}/contract | {lev:.1f}x leverage")
                 else:
                     logger.info(f"{symbol}: SPOT")
                 
@@ -834,27 +830,12 @@ class CoinbaseLiveTrader:
     
     def is_intraday_hours(self) -> bool:
         """
-        Check if current time is within intraday margin hours.
+        Always return False to use conservative overnight margin rates.
         
-        Coinbase International uses different margin rates:
-        - Intraday: Lower margin (higher leverage) during US market hours
-        - Overnight: Higher margin (lower leverage) outside market hours
-        
-        Returns True if we're in intraday hours (can use lower margin rates).
+        We disable intraday higher leverage (10x) because it's too risky.
+        Always use overnight rates (~4x for BTC/ETH, ~2.5x for alts).
         """
-        now_utc = datetime.now(pytz.UTC)
-        hour_utc = now_utc.hour
-        weekday = now_utc.weekday()  # 0=Monday, 6=Sunday
-        
-        # Weekend = overnight rates (Saturday and Sunday)
-        if weekday >= 5:
-            return False
-        
-        # Intraday hours: roughly 9 AM - 5 PM ET = 14:00 - 22:00 UTC
-        # Being slightly conservative to avoid edge cases
-        is_intraday = self.INTRADAY_START_UTC <= hour_utc < self.INTRADAY_END_UTC
-        
-        return is_intraday
+        return False
     
     def get_current_margin_rate(self, symbol: str, direction: str) -> float:
         """Get margin rate - fetches live from API before each trade."""
@@ -869,27 +850,25 @@ class CoinbaseLiveTrader:
             future_details = getattr(product, 'future_product_details', None)
             
             if future_details:
-                is_intraday = self.is_intraday_hours()
-                
+                # Always use overnight (conservative) rates
                 if isinstance(future_details, dict):
-                    rates = future_details.get('intraday_margin_rate' if is_intraday else 'overnight_margin_rate', {})
+                    rates = future_details.get('overnight_margin_rate', {})
                 else:
-                    rates = getattr(future_details, 'intraday_margin_rate' if is_intraday else 'overnight_margin_rate', {}) or {}
+                    rates = getattr(future_details, 'overnight_margin_rate', {}) or {}
                 
                 if isinstance(rates, dict):
                     rate = float(rates.get('long_margin_rate' if direction == 'long' else 'short_margin_rate', 0.25))
-                    logger.debug(f"{symbol} fetched {'intraday' if is_intraday else 'overnight'} {direction} margin: {rate:.2%}")
+                    logger.debug(f"{symbol} margin rate: {rate:.2%} ({1/rate:.1f}x leverage)")
                     return rate
                     
         except Exception as e:
             logger.warning(f"Failed to fetch margin rate for {symbol}, using cached: {e}")
         
         # Fallback to cached rates
-        is_intraday = self.is_intraday_hours()
         if direction == 'long':
-            key = 'margin_rate_long_intraday' if is_intraday else 'margin_rate_long_overnight'
+            key = 'margin_rate_long'
         else:
-            key = 'margin_rate_short_intraday' if is_intraday else 'margin_rate_short_overnight'
+            key = 'margin_rate_short'
         
         return info.get(key, 0.25)
     
@@ -1502,7 +1481,7 @@ class CoinbaseLiveTrader:
             
             if is_new_candle:
                 self.last_candles[candle_key] = latest_completed
-                logger.info(f"New {self.signal_timeframe} candle CLOSED at {latest_completed}")
+                logger.info(f"[{signal_symbol}] New {self.signal_timeframe} candle CLOSED at {latest_completed}")
                 
                 df = self.analyzer.calculate_indicators(signal_df_for_detection.tail(100))
                 
@@ -1515,12 +1494,12 @@ class CoinbaseLiveTrader:
                         squeeze_state = colored("IN SQUEEZE", Colors.CYAN)
                     else:
                         squeeze_state = colored("NOT SQUEEZED", Colors.YELLOW)
-                    logger.info(f"   State: {squeeze_state} | Duration: {current['Squeeze_Duration']:.0f} bars")
-                    logger.info(f"   BB Width: {current['BB_Width']:.4f} | Momentum: {current['Momentum_Norm']:+.2f}")
-                    logger.info(f"   RSI: {current['RSI']:.1f} | Volume Ratio: {current['Volume_Ratio']:.2f}")
+                    logger.info(f"[{signal_symbol}] State: {squeeze_state} | Duration: {current['Squeeze_Duration']:.0f} bars")
+                    logger.info(f"[{signal_symbol}] BB Width: {current['BB_Width']:.4f} | Momentum: {current['Momentum_Norm']:+.2f}")
+                    logger.info(f"[{signal_symbol}] RSI: {current['RSI']:.1f} | Volume Ratio: {current['Volume_Ratio']:.2f}")
                     
                     if prev['Squeeze'] and not current['Squeeze']:
-                        logger.info(f"   {colored('SQUEEZE RELEASED', Colors.YELLOW)} after {prev['Squeeze_Duration']:.0f} bars!")
+                        logger.info(f"[{signal_symbol}] {colored('SQUEEZE RELEASED', Colors.YELLOW)} after {prev['Squeeze_Duration']:.0f} bars!")
             
             self.signal_generator.set_signal_data({signal_symbol: signal_df_for_detection})
             self.signal_generator.set_atr_data({signal_symbol: atr_df})
@@ -1545,10 +1524,10 @@ class CoinbaseLiveTrader:
                     dir_str = colored("LONG", Colors.GREEN)
                 else:
                     dir_str = colored("SHORT", Colors.MAGENTA)
-                logger.info(f"   SIGNAL: {dir_str}")
-                logger.info(f"   Entry: ${signal.entry_price:,.2f} | Stop: ${signal.stop_loss:,.2f} | Target: ${signal.take_profit:,.2f}")
-                logger.info(f"   Size: {signal.position_size:.0%} | Score: {signal.score:.2f}")
-                logger.info(f"   Reasons: {' '.join(signal.reasons)}")
+                logger.info(f"[{signal_symbol}] SIGNAL: {dir_str}")
+                logger.info(f"[{signal_symbol}] Entry: ${signal.entry_price:,.2f} | Stop: ${signal.stop_loss:,.2f} | Target: ${signal.take_profit:,.2f}")
+                logger.info(f"[{signal_symbol}] Size: {signal.position_size:.0%} | Score: {signal.score:.2f}")
+                logger.info(f"[{signal_symbol}] Reasons: {' '.join(signal.reasons)}")
                 
                 signal.symbol = trade_symbol
                 self.enter_position(trade_symbol, signal)
@@ -1558,17 +1537,17 @@ class CoinbaseLiveTrader:
                     prev = df.iloc[-2]
                     
                     if current['Squeeze']:
-                        logger.info(f"   No signal: Still in squeeze")
+                        logger.info(f"[{signal_symbol}] No signal: Still in squeeze")
                     elif not prev['Squeeze']:
-                        logger.info(f"   No signal: No squeeze to break out from")
+                        logger.info(f"[{signal_symbol}] No signal: No squeeze to break out from")
                     elif current['Volume_Ratio'] < self.signal_generator.min_volume_ratio:
-                        logger.info(f"   No signal: Volume too low ({current['Volume_Ratio']:.2f})")
+                        logger.info(f"[{signal_symbol}] No signal: Volume too low ({current['Volume_Ratio']:.2f})")
                     elif current['RSI'] > self.signal_generator.rsi_overbought:
-                        logger.info(f"   No signal: RSI overbought ({current['RSI']:.1f})")
+                        logger.info(f"[{signal_symbol}] No signal: RSI overbought ({current['RSI']:.1f})")
                     elif current['RSI'] < self.signal_generator.rsi_oversold:
-                        logger.info(f"   No signal: RSI oversold ({current['RSI']:.1f})")
+                        logger.info(f"[{signal_symbol}] No signal: RSI oversold ({current['RSI']:.1f})")
                     else:
-                        logger.info(f"   No signal: Conditions not met")
+                        logger.info(f"[{signal_symbol}] No signal: Conditions not met")
     
     def reset_daily(self):
         """Reset daily tracking."""
