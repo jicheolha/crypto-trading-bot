@@ -136,13 +136,13 @@ Keltrader detects volatility compression (squeeze) followed by expansion breakou
 
 ```
 ├── coinbase_live_trader.py   # Live trading engine with monitoring
-├── signal_generator.py       # BB Squeeze signal generation
+├── signal_generator.py       # BB Squeeze signal generation (redacted)
 ├── technical.py              # Technical indicators (BB, KC, RSI, ATR)
 ├── backtester.py             # Backtesting engine with leverage support
 ├── optimize.py               # Timeframe-specific optimizer
 ├── optimize_lib.py           # Core optimization library
 ├── permutation_test.py       # Overfitting detection
-├── diagnostics.py            # Pre-deployment system checks
+├── diagnostics.py            # Pre-deployment system checks (redacted)
 ├── data_utils.py             # Data fetching and caching
 ├── download_data.py          # Historical data downloader
 ├── run_backtest.py           # Backtest runner (redacted)
