@@ -9,3 +9,5 @@ data_cache/
 run_live_multi_asset.py
 run_backtest.py
 trading_bot_commands.md
+signal_generate.py
+download_data.py
