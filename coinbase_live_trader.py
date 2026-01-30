@@ -7,6 +7,7 @@ Features:
 - Win rate and profit factor tracking
 - Rolling performance metrics
 - Drift detection vs backtest
+- SYNC WITH COINBASE: Fetches real positions and balance from API
 
 Handles:
 - Spot trading (fractional amounts)
@@ -215,6 +216,9 @@ class TradingStats:
         signal_reasons: List[str] = None,
     ) -> Dict:
         """Record trade entry. Returns entry_data dict to store in position."""
+        # Increment trade counter on ENTRY
+        self.trade_counter += 1
+        
         # Calculate slippage
         if direction.lower() == 'long':
             slippage = (entry_price - signal_price) / signal_price if signal_price > 0 else 0
@@ -231,6 +235,7 @@ class TradingStats:
         position_pct = notional / self.current_balance if self.current_balance > 0 else 0
         
         return {
+            'trade_id': self.trade_counter,  # Store trade ID with position
             'entry_time': datetime.now(),
             'signal_price': signal_price,
             'entry_slippage': slippage,
@@ -254,7 +259,8 @@ class TradingStats:
         gross_pnl: float,
     ):
         """Record trade exit."""
-        self.trade_counter += 1
+        # Use trade_id from entry_data (already incremented on entry)
+        trade_id = entry_data.get('trade_id', self.trade_counter)
         
         entry_time = entry_data.get('entry_time', datetime.now())
         exit_time = datetime.now()
@@ -264,7 +270,7 @@ class TradingStats:
         pnl_pct = gross_pnl / notional if notional > 0 else 0
         
         trade = TradeRecord(
-            trade_id=self.trade_counter,
+            trade_id=trade_id,
             symbol=symbol,
             direction=direction.lower(),
             entry_time=entry_time,
@@ -457,7 +463,7 @@ class TradingStats:
         loss = abs(sum(p for p in self.rolling_pnls if p < 0))
         return profit / loss if loss > 0 else float('inf')
     
-    def print_status_report(self, open_positions: Dict = None):
+    def print_status_report(self, open_positions: Dict = None, unrealized_pnl: float = 0.0):
         """Print comprehensive status report."""
         uptime = datetime.now() - self.start_time
         uptime_str = f"{uptime.days}d {uptime.seconds // 3600}h {(uptime.seconds % 3600) // 60}m"
@@ -475,6 +481,9 @@ class TradingStats:
         print(f"  Current Balance:   ${self.current_balance:>12,.2f}  ({ret_pct:+.1%})")
         print(f"  Peak Balance:      ${self.peak_balance:>12,.2f}")
         print(f"  Cumulative P&L:    ${self.cumulative_pnl:>12,.2f}")
+        if unrealized_pnl != 0:
+            unreal_col = Colors.GREEN if unrealized_pnl >= 0 else Colors.RED
+            print(f"  Unrealized P&L:    {colored(f'${unrealized_pnl:>12,.2f}', unreal_col)}")
         print(f"  Current Drawdown:  {self.current_drawdown_pct:>12.2%}  (max: {self.max_drawdown_pct:.2%})")
         
         # Today
@@ -513,8 +522,9 @@ class TradingStats:
                 entry = pos.get('entry_price', 0)
                 stop = pos.get('stop', 0)
                 target = pos.get('target', 0)
+                size = pos.get('size', 0)
                 print(f"  [{direction}] {symbol}")
-                print(f"    Entry: ${entry:,.2f}  Stop: ${stop:,.2f}  Target: ${target:,.2f}")
+                print(f"    Size: {size} | Entry: ${entry:,.2f} | Stop: ${stop:,.2f} | Target: ${target:,.2f}")
         
         # Backtest comparison
         if self.backtest_stats and self.total_trades >= 10:
@@ -606,7 +616,7 @@ class TradingStats:
 class CoinbaseLiveTrader:
     """
     Live trader for Coinbase spot and futures markets.
-    Enhanced with professional monitoring.
+    Enhanced with professional monitoring and Coinbase position sync.
     """
     
     # Contract specs - contract_size is static, margin rates fetched dynamically from API
@@ -722,13 +732,15 @@ class CoinbaseLiveTrader:
             signal_timeframe_minutes=tf_minutes.get(signal_timeframe, 60)
         )
         
-        # State
+        # State - positions will be synced from Coinbase
         self.positions: Dict[str, dict] = {}
         self.last_candles: Dict[str, datetime] = {}
         self.running = False
         
         # Initialize professional monitoring
-        initial_balance = self.get_trading_balance()
+        initial_balance = self.get_futures_balance_details().get('available', 0)
+        if initial_balance <= 0:
+            initial_balance = self.get_trading_balance()
         if initial_balance <= 0:
             initial_balance = self.get_balance()
         if initial_balance <= 0:
@@ -919,7 +931,27 @@ class CoinbaseLiveTrader:
             return 0.0
     
     def get_futures_balance(self) -> float:
-        """Get futures trading balance."""
+        """Get futures trading balance (buying power)."""
+        details = self.get_futures_balance_details()
+        return details.get('buying_power', 0.0)
+    
+    def get_futures_balance_details(self) -> Dict:
+        """
+        Get detailed futures balance info from Coinbase.
+        
+        Returns dict with:
+        - buying_power: Available for new trades
+        - total_balance: Total USD balance
+        - unrealized_pnl: Unrealized P&L from open positions
+        - available: Available margin
+        """
+        result = {
+            'buying_power': 0.0,
+            'total_balance': 0.0,
+            'unrealized_pnl': 0.0,
+            'available': 0.0,
+        }
+        
         try:
             response = self.client.get_futures_balance_summary()
             
@@ -946,26 +978,19 @@ class CoinbaseLiveTrader:
                     pass
             
             if summary is None:
-                return 0.0
+                return result
             
-            for key in ['futures_buying_power', 'available_margin', 'total_usd_balance']:
+            # Extract values from summary
+            def get_value(obj, key):
                 val = None
-                
-                if isinstance(summary, dict):
-                    val = summary.get(key, {})
-                else:
-                    if hasattr(summary, key):
-                        val = getattr(summary, key)
-                    elif hasattr(summary, '__getitem__'):
-                        try:
-                            val = summary[key]
-                        except (KeyError, TypeError):
-                            pass
+                if isinstance(obj, dict):
+                    val = obj.get(key, {})
+                elif hasattr(obj, key):
+                    val = getattr(obj, key)
                 
                 if val:
-                    if isinstance(val, dict):
-                        if 'value' in val:
-                            return float(val['value'])
+                    if isinstance(val, dict) and 'value' in val:
+                        return float(val['value'])
                     elif hasattr(val, 'value'):
                         return float(val.value)
                     elif isinstance(val, (int, float, str)):
@@ -973,12 +998,22 @@ class CoinbaseLiveTrader:
                             return float(val)
                         except:
                             pass
+                return 0.0
             
-            return 0.0
+            result['buying_power'] = get_value(summary, 'futures_buying_power')
+            result['total_balance'] = get_value(summary, 'total_usd_balance')
+            result['unrealized_pnl'] = get_value(summary, 'unrealized_pnl')
+            result['available'] = get_value(summary, 'available_margin')
+            
+            # Fallback if buying_power is 0
+            if result['buying_power'] == 0:
+                result['buying_power'] = result['available'] or result['total_balance']
+            
+            return result
             
         except Exception as e:
             logger.debug(f"Futures balance not available: {e}")
-            return 0.0
+            return result
     
     def get_trading_balance(self) -> float:
         """Get appropriate balance for trading."""
@@ -993,6 +1028,141 @@ class CoinbaseLiveTrader:
                 return futures_bal
         
         return self.get_balance()
+    
+    # =========================================================================
+    # COINBASE POSITION SYNC - Fetch real positions from Coinbase
+    # =========================================================================
+    
+    def get_coinbase_positions(self) -> Dict[str, Dict]:
+        """
+        Fetch all open futures positions from Coinbase.
+        
+        Returns dict: {product_id: position_info}
+        """
+        positions = {}
+        
+        try:
+            response = self.client.list_futures_positions()
+            
+            # Extract positions list from response
+            pos_list = None
+            if hasattr(response, 'positions'):
+                pos_list = response.positions
+            elif isinstance(response, dict) and 'positions' in response:
+                pos_list = response['positions']
+            elif isinstance(response, list):
+                pos_list = response
+            
+            if not pos_list:
+                return positions
+            
+            for pos in pos_list:
+                # Extract position data
+                if isinstance(pos, dict):
+                    product_id = pos.get('product_id', '')
+                    side = pos.get('side', '')
+                    contracts = pos.get('number_of_contracts', '0')
+                    entry_price = pos.get('avg_entry_price', '0')
+                    unrealized_pnl = pos.get('unrealized_pnl', {}).get('value', '0') if isinstance(pos.get('unrealized_pnl'), dict) else pos.get('unrealized_pnl', '0')
+                    current_price = pos.get('current_price', '0')
+                else:
+                    product_id = getattr(pos, 'product_id', '')
+                    side = getattr(pos, 'side', '')
+                    contracts = getattr(pos, 'number_of_contracts', '0')
+                    entry_price = getattr(pos, 'avg_entry_price', '0')
+                    unrealized_pnl_obj = getattr(pos, 'unrealized_pnl', None)
+                    if unrealized_pnl_obj:
+                        if isinstance(unrealized_pnl_obj, dict):
+                            unrealized_pnl = unrealized_pnl_obj.get('value', '0')
+                        elif hasattr(unrealized_pnl_obj, 'value'):
+                            unrealized_pnl = unrealized_pnl_obj.value
+                        else:
+                            unrealized_pnl = str(unrealized_pnl_obj)
+                    else:
+                        unrealized_pnl = '0'
+                    current_price = getattr(pos, 'current_price', '0')
+                
+                # Skip if no position
+                try:
+                    num_contracts = int(contracts) if contracts else 0
+                except (ValueError, TypeError):
+                    num_contracts = 0
+                
+                if num_contracts == 0:
+                    continue
+                
+                # Only track positions for symbols we're trading
+                if product_id not in self.symbols:
+                    continue
+                
+                positions[product_id] = {
+                    'side': side.upper() if side else 'UNKNOWN',
+                    'size': abs(num_contracts),
+                    'entry_price': float(entry_price) if entry_price else 0.0,
+                    'unrealized_pnl': float(unrealized_pnl) if unrealized_pnl else 0.0,
+                    'current_price': float(current_price) if current_price else 0.0,
+                }
+                
+                logger.debug(f"Coinbase position: {product_id} {positions[product_id]}")
+            
+            return positions
+            
+        except Exception as e:
+            logger.error(f"Error fetching Coinbase positions: {e}")
+            import traceback
+            traceback.print_exc()
+            return positions
+    
+    def sync_positions_from_coinbase(self):
+        """
+        Sync internal positions with Coinbase reality.
+        
+        - Removes positions that no longer exist on Coinbase
+        - Logs any discrepancies
+        - Does NOT add positions that exist on Coinbase but not internally
+          (those would be manual trades we shouldn't manage)
+        """
+        coinbase_positions = self.get_coinbase_positions()
+        
+        # Check for positions in our tracking that don't exist on Coinbase
+        for symbol in list(self.positions.keys()):
+            if symbol not in coinbase_positions:
+                logger.warning(f"SYNC: Position {symbol} not found on Coinbase - removing from tracking")
+                logger.warning(f"  (Position may have been closed manually or by liquidation)")
+                del self.positions[symbol]
+            else:
+                # Update current price and unrealized P&L from Coinbase
+                cb_pos = coinbase_positions[symbol]
+                self.positions[symbol]['current_price'] = cb_pos['current_price']
+                self.positions[symbol]['unrealized_pnl'] = cb_pos['unrealized_pnl']
+                
+                # Check for size mismatch
+                if self.positions[symbol]['size'] != cb_pos['size']:
+                    logger.warning(f"SYNC: Size mismatch for {symbol}")
+                    logger.warning(f"  Internal: {self.positions[symbol]['size']}, Coinbase: {cb_pos['size']}")
+                    self.positions[symbol]['size'] = cb_pos['size']
+        
+        # Log positions on Coinbase that we're not tracking (informational only)
+        for symbol, cb_pos in coinbase_positions.items():
+            if symbol not in self.positions:
+                logger.info(f"SYNC: Found untracked position on Coinbase: {symbol} {cb_pos['side']} {cb_pos['size']} contracts")
+                logger.info(f"  (This may be a manual trade - bot will not manage it)")
+    
+    def position_exists_on_coinbase(self, symbol: str) -> bool:
+        """Check if a position exists on Coinbase for the given symbol."""
+        coinbase_positions = self.get_coinbase_positions()
+        return symbol in coinbase_positions
+    
+    def get_total_unrealized_pnl(self) -> float:
+        """Get total unrealized P&L from all tracked positions."""
+        total = 0.0
+        for symbol, pos in self.positions.items():
+            total += pos.get('unrealized_pnl', 0.0)
+        return total
+    
+    # =========================================================================
+    # END COINBASE POSITION SYNC
+    # =========================================================================
     
     def show_account_info(self):
         """Display account information."""
@@ -1037,13 +1207,15 @@ class CoinbaseLiveTrader:
                     total_usd += total_balance
                     logger.info(f"  {currency}: ${total_balance:,.2f} (available: ${avail:,.2f})")
             
-            # Futures balance
-            futures_bal = self.get_futures_balance()
-            if futures_bal > 0:
-                logger.info(f"  Futures Buying Power: ${futures_bal:,.2f}")
+            # Futures balance details
+            futures_details = self.get_futures_balance_details()
+            if futures_details['buying_power'] > 0:
+                logger.info(f"  Futures Buying Power: ${futures_details['buying_power']:,.2f}")
+                if futures_details['unrealized_pnl'] != 0:
+                    logger.info(f"  Futures Unrealized P&L: ${futures_details['unrealized_pnl']:+,.2f}")
             
             logger.info("")
-            logger.info(f"Total Trading Capital: ${max(total_usd, futures_bal):,.2f}")
+            logger.info(f"Total Trading Capital: ${max(total_usd, futures_details['buying_power']):,.2f}")
             logger.info("=" * 60)
             
         except Exception as e:
@@ -1168,80 +1340,116 @@ class CoinbaseLiveTrader:
             )
             return quantity
     
-    def place_order(self, symbol: str, side: str, size: float) -> Optional[str]:
-        """Place market order."""
-        try:
-            info = self.product_info.get(symbol, {})
-            is_futures = info.get('is_futures', False)
+    def place_order(self, symbol: str, side: str, size: float, max_retries: int = 3) -> Optional[str]:
+        """
+        Place market order with retry logic.
+        
+        Args:
+            symbol: Product ID
+            side: 'buy' or 'sell'
+            size: Number of contracts (futures) or quantity (spot)
+            max_retries: Number of retry attempts for transient errors
             
-            if is_futures:
-                size = int(size)
-                if size < 1:
-                    logger.warning(f"Cannot place order: size={size} < 1 contract")
-                    return None
-            
-            logger.info(f"Placing {side.upper()} order: {symbol} size={size}")
-            
-            client_order_id = f"{symbol.replace('/', '').replace('-', '')}-{int(time.time())}"
-            
-            if side.lower() == 'buy':
-                order = self.client.market_order_buy(
-                    client_order_id=client_order_id,
-                    product_id=symbol,
-                    base_size=str(size)
-                )
-            else:
-                order = self.client.market_order_sell(
-                    client_order_id=client_order_id,
-                    product_id=symbol,
-                    base_size=str(size)
-                )
-            
-            # Log response for debugging
-            logger.debug(f"Order response type: {type(order)}")
-            logger.debug(f"Order response: {order}")
-            if hasattr(order, '__dict__'):
-                logger.debug(f"Order __dict__: {order.__dict__}")
-            
-            if hasattr(order, 'success') and not order.success:
-                error_msg = "Unknown error"
-                if hasattr(order, 'error_response'):
-                    err = order.error_response
-                    logger.error(f"Error response object: {err}")
-                    logger.error(f"Error response type: {type(err)}")
-                    if hasattr(err, '__dict__'):
-                        logger.error(f"Error __dict__: {err.__dict__}")
-                    
-                    error_msg = getattr(err, 'error', 'Unknown')
-                    preview_reason = getattr(err, 'preview_failure_reason', '')
-                    message = getattr(err, 'message', '')
-                    
-                    logger.error(f"Order FAILED:")
-                    logger.error(f"  error: {error_msg}")
-                    logger.error(f"  preview_failure_reason: {preview_reason}")
-                    logger.error(f"  message: {message}")
-                    
-                    if preview_reason == 'PREVIEW_INSUFFICIENT_FUNDS_FOR_FUTURES':
-                        logger.error(f"  -> Transfer funds: Coinbase -> Transfer -> Spot to Futures")
-                
+        Returns:
+            Order ID if successful, None if failed
+        """
+        info = self.product_info.get(symbol, {})
+        is_futures = info.get('is_futures', False)
+        
+        if is_futures:
+            size = int(size)
+            if size < 1:
+                logger.warning(f"Cannot place order: size={size} < 1 contract")
                 return None
-            
-            if hasattr(order, 'success') and order.success:
-                order_id = order.success_response.order_id if hasattr(order.success_response, 'order_id') else str(order)
-                logger.info(f"Order placed: {order_id}")
-                return order_id
-            
-            if hasattr(order, 'order_id'):
-                order_id = order.order_id
-                logger.info(f"Order placed: {order_id}")
-                return order_id
-            
-            logger.warning(f"Order response unclear: {order}")
-            return None
-            
-        except Exception as e:
-            logger.error(f"Error placing order: {e}")
-            return None
+        
+        retry_delays = [5, 15, 30]  # Seconds between retries
+        
+        for attempt in range(max_retries):
+            try:
+                logger.info(f"Placing {side.upper()} order: {symbol} size={size}" + 
+                           (f" (attempt {attempt + 1}/{max_retries})" if attempt > 0 else ""))
+                
+                client_order_id = f"{symbol.replace('/', '').replace('-', '')}-{int(time.time())}"
+                
+                if side.lower() == 'buy':
+                    order = self.client.market_order_buy(
+                        client_order_id=client_order_id,
+                        product_id=symbol,
+                        base_size=str(size)
+                    )
+                else:
+                    order = self.client.market_order_sell(
+                        client_order_id=client_order_id,
+                        product_id=symbol,
+                        base_size=str(size)
+                    )
+                
+                # Log response for debugging
+                logger.debug(f"Order response type: {type(order)}")
+                logger.debug(f"Order response: {order}")
+                
+                if hasattr(order, 'success') and not order.success:
+                    error_msg = "Unknown error"
+                    retry_error = False
+                    
+                    if hasattr(order, 'error_response'):
+                        err = order.error_response
+                        
+                        # Handle dict vs object
+                        if isinstance(err, dict):
+                            error_msg = err.get('error', 'Unknown')
+                            preview_reason = err.get('preview_failure_reason', '')
+                            message = err.get('message', '')
+                        else:
+                            error_msg = getattr(err, 'error', 'Unknown')
+                            preview_reason = getattr(err, 'preview_failure_reason', '')
+                            message = getattr(err, 'message', '')
+                        
+                        logger.error(f"Order FAILED:")
+                        logger.error(f"  error: {error_msg}")
+                        logger.error(f"  preview_failure_reason: {preview_reason}")
+                        logger.error(f"  message: {message}")
+                        
+                        # Check for retryable errors
+                        if 'NO_LIQUIDITY' in str(error_msg) or 'NO_LIQUIDITY' in str(preview_reason):
+                            retry_error = True
+                            logger.warning(f"Liquidity error - will retry")
+                        
+                        if preview_reason == 'PREVIEW_INSUFFICIENT_FUNDS_FOR_FUTURES':
+                            logger.error(f"  -> Transfer funds: Coinbase -> Transfer -> Spot to Futures")
+                    
+                    # Retry if it's a transient error
+                    if retry_error and attempt < max_retries - 1:
+                        delay = retry_delays[attempt]
+                        logger.info(f"Retrying in {delay} seconds...")
+                        time.sleep(delay)
+                        continue
+                    
+                    return None
+                
+                if hasattr(order, 'success') and order.success:
+                    order_id = order.success_response.order_id if hasattr(order.success_response, 'order_id') else str(order)
+                    logger.info(f"Order placed: {order_id}")
+                    return order_id
+                
+                if hasattr(order, 'order_id'):
+                    order_id = order.order_id
+                    logger.info(f"Order placed: {order_id}")
+                    return order_id
+                
+                logger.warning(f"Order response unclear: {order}")
+                return None
+                
+            except Exception as e:
+                logger.error(f"Error placing order: {e}")
+                if attempt < max_retries - 1:
+                    delay = retry_delays[attempt]
+                    logger.info(f"Retrying in {delay} seconds...")
+                    time.sleep(delay)
+                else:
+                    return None
+        
+        return None
     
     def enter_position(self, symbol: str, signal):
         """Enter new position with monitoring."""
@@ -1275,7 +1483,7 @@ class CoinbaseLiveTrader:
         else:
             notional = price * size
         
-        # Record entry with monitoring
+        # Record entry with monitoring (this now increments trade_counter)
         entry_data = self.stats.record_entry(
             symbol=symbol,
             direction=signal.direction,
@@ -1298,10 +1506,17 @@ class CoinbaseLiveTrader:
             'target': signal.take_profit,
             'entry_time': datetime.now(),
             'order_id': order_id,
-            **entry_data  # Include monitoring data
+            'current_price': price,
+            'unrealized_pnl': 0.0,
+            **entry_data  # Include monitoring data (including trade_id)
         }
         
         size_str = f"{int(size)} contracts" if is_futures else f"{size:.6f}"
+        
+        # Get margin info for logging
+        margin_rate = self.get_current_margin_rate(symbol, signal.direction)
+        leverage = 1.0 / margin_rate if margin_rate > 0 else 1.0
+        margin_used = notional * margin_rate
         
         # Color direction
         if signal.direction == 'long':
@@ -1310,10 +1525,11 @@ class CoinbaseLiveTrader:
             dir_colored = colored("SHORT", Colors.MAGENTA)
         
         logger.info("=" * 70)
-        logger.info(f"TRADE #{self.stats.trade_counter + 1} | ENTRY | {dir_colored}")
+        logger.info(f"TRADE #{entry_data['trade_id']} | ENTRY | {dir_colored}")
         logger.info("=" * 70)
         logger.info(f"Symbol:      {symbol}")
-        logger.info(f"Size:        {size_str} (${notional:,.2f})")
+        logger.info(f"Size:        {size_str} (${notional:,.2f} notional)")
+        logger.info(f"Margin:      ${margin_used:,.2f} ({margin_rate:.1%} rate, {leverage:.1f}x leverage)")
         logger.info(f"Entry:       ${price:,.2f}")
         logger.info(f"Stop:        ${signal.stop_loss:,.2f}")
         logger.info(f"Target:      ${signal.take_profit:,.2f}")
@@ -1330,6 +1546,14 @@ class CoinbaseLiveTrader:
             return
         
         pos = self.positions[symbol]
+        
+        # CRITICAL: Check if position still exists on Coinbase before trying to exit
+        if not self.position_exists_on_coinbase(symbol):
+            logger.warning(f"Position {symbol} no longer exists on Coinbase - removing from tracking")
+            logger.warning(f"  (Position may have been closed manually)")
+            del self.positions[symbol]
+            return
+        
         price = self.get_price(symbol)
         
         if not price:
@@ -1372,15 +1596,24 @@ class CoinbaseLiveTrader:
             self.signal_generator.record_trade_result(total_pnl)
             
             del self.positions[symbol]
+        else:
+            # Order failed - position stays in tracking for retry
+            logger.error(f"Failed to exit {symbol} - will retry on next cycle")
     
     def check_exits(self):
         """Check exit conditions for all positions."""
+        # First, sync positions with Coinbase
+        self.sync_positions_from_coinbase()
+        
         for symbol in list(self.positions.keys()):
             pos = self.positions[symbol]
             price = self.get_price(symbol)
             
             if not price:
                 continue
+            
+            # Update current price
+            pos['current_price'] = price
             
             # Log position status
             if pos['side'] == 'LONG':
@@ -1567,8 +1800,22 @@ class CoinbaseLiveTrader:
         self.show_account_info()
         logger.info("")
         
+        # Sync positions from Coinbase on startup
+        logger.info("Syncing positions from Coinbase...")
+        self.sync_positions_from_coinbase()
+        if self.positions:
+            logger.info(f"Found {len(self.positions)} existing position(s)")
+            for symbol, pos in self.positions.items():
+                logger.info(f"  {symbol}: {pos['side']} {pos['size']} @ ${pos['entry_price']:,.2f}")
+        else:
+            logger.info("No existing positions found")
+        logger.info("")
+        
+        # Get unrealized P&L for status report
+        unrealized_pnl = self.get_total_unrealized_pnl()
+        
         # Print initial status
-        self.stats.print_status_report(self.positions)
+        self.stats.print_status_report(self.positions, unrealized_pnl)
         
         self.running = True
         
@@ -1581,11 +1828,15 @@ class CoinbaseLiveTrader:
                     self.check_exits()
                     self.check_entries()
                     
+                    # Periodic status log with unrealized P&L
                     if self.stats.tick_count % 10 == 0:
+                        unrealized_pnl = self.get_total_unrealized_pnl()
+                        unreal_str = f" | Unrealized: ${unrealized_pnl:+.2f}" if unrealized_pnl != 0 else ""
                         logger.info(
                             f"Positions: {len(self.positions)}/{self.max_positions} | "
                             f"Daily: ${self.stats.daily_pnl:+.2f} | "
                             f"Cumulative: ${self.stats.cumulative_pnl:+.2f}"
+                            f"{unreal_str}"
                         )
                     
                     # Save state every hour (no verbose print)

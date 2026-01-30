@@ -26,14 +26,23 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 # Always use overnight (conservative) rates - NO intraday 10x leverage
-LEVERAGE_RATES = {
+# Updated 2026-01-30 from Coinbase International API
+LEVERAGE_RATES_LONG = {
     # Format: 'BASE': margin_rate
     # Leverage = 1 / margin_rate
-    'BTC': 0.25,   # 4x leverage
-    'ETH': 0.25,   # 4x leverage
-    'SOL': 0.37,   # 2.7x leverage
-    'XRP': 0.39,   # 2.6x leverage
-    'DOGE': 0.50,  # 2x leverage
+    'BTC': 0.246,   # 4.1x leverage
+    'ETH': 0.249,   # 4.0x leverage
+    'SOL': 0.366,   # 2.7x leverage
+    'XRP': 0.389,   # 2.6x leverage
+    'DOGE': 0.499,  # 2.0x leverage
+}
+
+LEVERAGE_RATES_SHORT = {
+    'BTC': 0.306,   # 3.3x leverage
+    'ETH': 0.341,   # 2.9x leverage
+    'SOL': 0.560,   # 1.8x leverage
+    'XRP': 0.631,   # 1.6x leverage
+    'DOGE': 0.998,  # 1.0x leverage (basically no leverage)
 }
 
 # Default for unknown assets
@@ -150,14 +159,17 @@ class BBSqueezeBacktester:
             return symbol.split('-')[0]
         return symbol
     
-    def _get_margin_rate(self, symbol: str) -> float:
-        """Get margin rate for symbol - always uses conservative overnight rates."""
+    def _get_margin_rate(self, symbol: str, direction: str = 'long') -> float:
+        """Get margin rate for symbol - uses direction-specific overnight rates."""
         base = self._extract_base_currency(symbol)
-        return LEVERAGE_RATES.get(base, DEFAULT_MARGIN_RATE)
+        if direction == 'long':
+            return LEVERAGE_RATES_LONG.get(base, DEFAULT_MARGIN_RATE)
+        else:
+            return LEVERAGE_RATES_SHORT.get(base, DEFAULT_MARGIN_RATE)
     
-    def _get_leverage(self, symbol: str) -> float:
+    def _get_leverage(self, symbol: str, direction: str = 'long') -> float:
         """Get leverage multiplier for symbol."""
-        margin_rate = self._get_margin_rate(symbol)
+        margin_rate = self._get_margin_rate(symbol, direction)
         return 1.0 / margin_rate if margin_rate > 0 else 1.0
     
     def _calculate_liquidation_price(
@@ -299,7 +311,7 @@ class BBSqueezeBacktester:
         
         # Leverage calculations
         if self.leverage_enabled:
-            margin_rate = self._get_margin_rate(symbol)
+            margin_rate = self._get_margin_rate(symbol, signal.direction)
             leverage = 1.0 / margin_rate
             
             # position_value is the margin we're using
