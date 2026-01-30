@@ -1742,7 +1742,64 @@ class CoinbaseLiveTrader:
         # CRITICAL: Check if position still exists on Coinbase before trying to exit
         if not self.position_exists_on_coinbase(symbol):
             logger.warning(f"Position {symbol} no longer exists on Coinbase - removing from tracking")
-            logger.warning(f"  (Position may have been closed manually)")
+            logger.warning(f"  (Position may have been closed manually or liquidated)")
+            
+            # Calculate P&L using current price (best estimate)
+            price = self.get_price(symbol)
+            if price:
+                info = self.product_info.get(symbol, {})
+                is_futures = info.get('is_futures', False)
+                
+                if is_futures:
+                    contract_size = info.get('contract_size', 0.1)
+                    if pos['side'] == 'LONG':
+                        pnl_per_contract = (price - pos['entry_price']) * contract_size
+                    else:
+                        pnl_per_contract = (pos['entry_price'] - price) * contract_size
+                    total_pnl = pnl_per_contract * pos['size']
+                else:
+                    if pos['side'] == 'LONG':
+                        total_pnl = (price - pos['entry_price']) * pos['size']
+                    else:
+                        total_pnl = (pos['entry_price'] - price) * pos['size']
+                
+                # Record exit with monitoring
+                self.stats.record_exit(
+                    symbol=symbol,
+                    direction=pos['side'],
+                    entry_data=pos,
+                    exit_price=price,
+                    size=pos['size'],
+                    stop_loss=pos['stop'],
+                    take_profit=pos['target'],
+                    exit_reason="Closed externally",
+                    gross_pnl=total_pnl,
+                )
+                
+                # Send Telegram notification
+                entry_time = pos.get('entry_time', datetime.now())
+                duration_hours = (datetime.now() - entry_time).total_seconds() / 3600
+                notional = pos.get('notional', 0)
+                pnl_pct = total_pnl / notional if notional > 0 else 0
+                trade_id = pos.get('trade_id', 0)
+                
+                self.telegram.send_trade_exit(
+                    symbol=symbol,
+                    direction=pos['side'],
+                    pnl=total_pnl,
+                    pnl_pct=pnl_pct,
+                    exit_reason="Closed externally (manual/liquidation)",
+                    duration_hours=duration_hours,
+                    cumulative_pnl=self.stats.cumulative_pnl,
+                    balance=self.stats.current_balance,
+                    trade_id=trade_id
+                )
+                
+                self.signal_generator.record_trade_result(total_pnl)
+                logger.info(f"  Estimated P&L: ${total_pnl:+,.2f} (using current price ${price:,.2f})")
+            else:
+                logger.warning(f"  Could not calculate P&L - no price available")
+            
             del self.positions[symbol]
             return
         
