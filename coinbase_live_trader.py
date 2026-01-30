@@ -8,6 +8,7 @@ Features:
 - Rolling performance metrics
 - Drift detection vs backtest
 - SYNC WITH COINBASE: Fetches real positions and balance from API
+- TELEGRAM NOTIFICATIONS: Real-time alerts to your phone
 
 Handles:
 - Spot trading (fractional amounts)
@@ -21,6 +22,7 @@ import json
 import time
 import logging
 import statistics
+import requests
 from collections import deque
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -41,6 +43,176 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
+
+
+# =============================================================================
+# TELEGRAM NOTIFIER
+# =============================================================================
+
+class TelegramNotifier:
+    """
+    Send notifications to Telegram.
+    
+    Setup:
+    1. Message @BotFather on Telegram, send /newbot
+    2. Save the bot token
+    3. Message your bot, then visit:
+       https://api.telegram.org/bot<TOKEN>/getUpdates
+       to find your chat_id
+    4. Set environment variables:
+       TELEGRAM_BOT_TOKEN=your_token
+       TELEGRAM_CHAT_ID=your_chat_id
+    """
+    
+    def __init__(self, bot_token: str = None, chat_id: str = None):
+        self.bot_token = bot_token or os.environ.get('TELEGRAM_BOT_TOKEN')
+        self.chat_id = chat_id or os.environ.get('TELEGRAM_CHAT_ID')
+        self.enabled = bool(self.bot_token and self.chat_id)
+        
+        if self.enabled:
+            logger.info("Telegram notifications ENABLED")
+        else:
+            logger.info("Telegram notifications DISABLED (no token/chat_id)")
+    
+    def send(self, message: str, silent: bool = False) -> bool:
+        """Send a message to Telegram."""
+        if not self.enabled:
+            return False
+        
+        try:
+            url = f"https://api.telegram.org/bot{self.bot_token}/sendMessage"
+            payload = {
+                'chat_id': self.chat_id,
+                'text': message,
+                'parse_mode': 'HTML',
+                'disable_notification': silent
+            }
+            response = requests.post(url, json=payload, timeout=10)
+            
+            if response.status_code == 200:
+                return True
+            else:
+                logger.warning(f"Telegram send failed: {response.status_code} {response.text}")
+                return False
+                
+        except Exception as e:
+            logger.warning(f"Telegram error: {e}")
+            return False
+    
+    def send_trade_entry(self, symbol: str, direction: str, size: float, 
+                         price: float, notional: float, stop: float, 
+                         target: float, margin_rate: float, leverage: float,
+                         trade_id: int):
+        """Send trade entry notification."""
+        emoji = "🟢" if direction.lower() == 'long' else "🔴"
+        
+        # Extract base asset
+        if '-' in symbol:
+            base = symbol.split('-')[0][:3]  # BIP -> BTC
+            base_map = {'BIP': 'BTC', 'ETP': 'ETH', 'SLP': 'SOL', 'XPP': 'XRP', 'DOP': 'DOGE'}
+            base = base_map.get(symbol.split('-')[0], base)
+        else:
+            base = symbol.split('/')[0] if '/' in symbol else symbol[:3]
+        
+        msg = f"""{emoji} <b>TRADE #{trade_id} ENTRY</b>
+
+<b>{direction.upper()} {base}</b>
+Contracts: {int(size)}
+Entry: ${price:,.2f}
+Notional: ${notional:,.2f}
+Leverage: {leverage:.1f}x ({margin_rate:.1%} margin)
+
+Stop: ${stop:,.2f}
+Target: ${target:,.2f}"""
+        
+        self.send(msg)
+    
+    def send_trade_exit(self, symbol: str, direction: str, pnl: float,
+                        pnl_pct: float, exit_reason: str, duration_hours: float,
+                        cumulative_pnl: float, balance: float, trade_id: int):
+        """Send trade exit notification."""
+        emoji = "💰" if pnl >= 0 else "💸"
+        pnl_emoji = "✅" if pnl >= 0 else "❌"
+        
+        # Extract base asset
+        if '-' in symbol:
+            base_map = {'BIP': 'BTC', 'ETP': 'ETH', 'SLP': 'SOL', 'XPP': 'XRP', 'DOP': 'DOGE'}
+            base = base_map.get(symbol.split('-')[0], symbol[:3])
+        else:
+            base = symbol.split('/')[0] if '/' in symbol else symbol[:3]
+        
+        # Format duration
+        if duration_hours >= 24:
+            dur_str = f"{duration_hours/24:.1f}d"
+        else:
+            dur_str = f"{duration_hours:.1f}h"
+        
+        msg = f"""{emoji} <b>TRADE #{trade_id} EXIT</b>
+
+<b>{direction.upper()} {base}</b> - {exit_reason}
+P&L: {pnl_emoji} <b>${pnl:+,.2f}</b> ({pnl_pct:+.1%})
+Duration: {dur_str}
+
+Cumulative: ${cumulative_pnl:+,.2f}
+Balance: ${balance:,.2f}"""
+        
+        self.send(msg)
+    
+    def send_daily_summary(self, trades: int, wins: int, losses: int,
+                           daily_pnl: float, cumulative_pnl: float, 
+                           balance: float, drawdown_pct: float):
+        """Send daily summary notification."""
+        win_rate = wins / trades * 100 if trades > 0 else 0
+        emoji = "📈" if daily_pnl >= 0 else "📉"
+        
+        msg = f"""{emoji} <b>DAILY SUMMARY</b>
+
+Trades: {trades} ({wins}W / {losses}L)
+Win Rate: {win_rate:.0f}%
+Daily P&L: <b>${daily_pnl:+,.2f}</b>
+
+Cumulative: ${cumulative_pnl:+,.2f}
+Balance: ${balance:,.2f}
+Drawdown: {drawdown_pct:.1%}"""
+        
+        self.send(msg)
+    
+    def send_squeeze_alert(self, symbol: str, squeeze_bars: int, 
+                           bb_width: float, momentum: float):
+        """Send squeeze alert (optional, for monitoring)."""
+        # Extract base asset
+        base = symbol.split('/')[0] if '/' in symbol else symbol.split('-')[0]
+        
+        direction = "bullish 📈" if momentum > 0 else "bearish 📉"
+        
+        msg = f"""👀 <b>SQUEEZE ALERT</b>
+
+{base} in squeeze for {squeeze_bars} bars
+BB Width: {bb_width:.4f}
+Momentum: {momentum:+.2f} ({direction})"""
+        
+        self.send(msg, silent=True)  # Silent for alerts
+    
+    def send_error(self, error_msg: str):
+        """Send error notification."""
+        msg = f"""⚠️ <b>ERROR</b>
+
+{error_msg}"""
+        self.send(msg)
+    
+    def send_startup(self, symbols: List[str], balance: float, 
+                     max_positions: int, signal_tf: str):
+        """Send startup notification."""
+        symbols_str = ', '.join([s.split('-')[0] if '-' in s else s.split('/')[0] for s in symbols])
+        
+        msg = f"""🚀 <b>BOT STARTED</b>
+
+Symbols: {symbols_str}
+Balance: ${balance:,.2f}
+Max Positions: {max_positions}
+Signal TF: {signal_tf}"""
+        
+        self.send(msg)
 
 
 # =============================================================================
@@ -753,9 +925,15 @@ class CoinbaseLiveTrader:
         )
         self.stats.load_state()
         
+        # Initialize Telegram notifications
+        self.telegram = TelegramNotifier()
+        
         # For status report timing
         self.last_status_report = datetime.now()
         self.status_report_interval = 3600  # 1 hour
+        
+        # For daily summary
+        self.last_daily_summary = datetime.now().date()
         
         logger.info(f"Initialized trader for {len(symbols)} symbols")
     
@@ -1537,6 +1715,20 @@ class CoinbaseLiveTrader:
         logger.info(f"Reasons:     {' '.join(signal.reasons)}")
         logger.info("=" * 70)
         
+        # Send Telegram notification
+        self.telegram.send_trade_entry(
+            symbol=symbol,
+            direction=signal.direction,
+            size=size,
+            price=price,
+            notional=notional,
+            stop=signal.stop_loss,
+            target=signal.take_profit,
+            margin_rate=margin_rate,
+            leverage=leverage,
+            trade_id=entry_data['trade_id']
+        )
+        
         if is_futures:
             logger.warning(f"Bot will MANUALLY monitor price and exit at stop/target")
     
@@ -1591,6 +1783,25 @@ class CoinbaseLiveTrader:
                 take_profit=pos['target'],
                 exit_reason=reason,
                 gross_pnl=total_pnl,
+            )
+            
+            # Send Telegram notification
+            entry_time = pos.get('entry_time', datetime.now())
+            duration_hours = (datetime.now() - entry_time).total_seconds() / 3600
+            notional = pos.get('notional', 0)
+            pnl_pct = total_pnl / notional if notional > 0 else 0
+            trade_id = pos.get('trade_id', 0)
+            
+            self.telegram.send_trade_exit(
+                symbol=symbol,
+                direction=pos['side'],
+                pnl=total_pnl,
+                pnl_pct=pnl_pct,
+                exit_reason=reason,
+                duration_hours=duration_hours,
+                cumulative_pnl=self.stats.cumulative_pnl,
+                balance=self.stats.current_balance,
+                trade_id=trade_id
             )
             
             self.signal_generator.record_trade_result(total_pnl)
@@ -1817,6 +2028,15 @@ class CoinbaseLiveTrader:
         # Print initial status
         self.stats.print_status_report(self.positions, unrealized_pnl)
         
+        # Send startup notification
+        balance = self.get_trading_balance()
+        self.telegram.send_startup(
+            symbols=self.symbols,
+            balance=balance,
+            max_positions=self.max_positions,
+            signal_tf=self.signal_timeframe
+        )
+        
         self.running = True
         
         try:
@@ -1827,6 +2047,9 @@ class CoinbaseLiveTrader:
                     self.reset_daily()
                     self.check_exits()
                     self.check_entries()
+                    
+                    # Check for daily summary (send at midnight)
+                    self._check_daily_summary()
                     
                     # Periodic status log with unrealized P&L
                     if self.stats.tick_count % 10 == 0:
@@ -1850,6 +2073,7 @@ class CoinbaseLiveTrader:
                     raise
                 except Exception as e:
                     logger.error(f"Error: {e}")
+                    self.telegram.send_error(str(e))
                     import traceback
                     traceback.print_exc()
                     time.sleep(10)
@@ -1858,6 +2082,23 @@ class CoinbaseLiveTrader:
             logger.info("Shutting down...")
             self.stats.save_state()
             self.running = False
+    
+    def _check_daily_summary(self):
+        """Send daily summary at midnight."""
+        today = datetime.now().date()
+        if today != self.last_daily_summary:
+            # Day changed - send summary for previous day
+            if self.stats.daily_trades > 0 or self.stats.daily_pnl != 0:
+                self.telegram.send_daily_summary(
+                    trades=self.stats.daily_trades,
+                    wins=self.stats.daily_wins,
+                    losses=self.stats.daily_losses,
+                    daily_pnl=self.stats.daily_pnl,
+                    cumulative_pnl=self.stats.cumulative_pnl,
+                    balance=self.stats.current_balance,
+                    drawdown_pct=self.stats.current_drawdown_pct
+                )
+            self.last_daily_summary = today
     
     def stop(self):
         """Stop the bot."""

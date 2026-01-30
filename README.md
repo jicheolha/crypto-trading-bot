@@ -1,13 +1,15 @@
 # Keltrader
 
-Keltrader is a fully automatic algorithmic trading system that trades cryptocurrency perpetual futures 24/7. The bot identifies low-volatility consolidation patterns and enters positions when volatility expands, capturingmomentum breakouts in either direction.
+Keltrader is a fully automatic algorithmic trading system that trades cryptocurrency perpetual futures 24/7. The bot identifies low-volatility consolidation patterns and enters positions when volatility expands, capturing momentum breakouts in either direction.
 
 **Capabilities:**
 - Real-time signal generation using Bollinger Band / Keltner Channel squeeze detection
 - Multi-asset portfolio management with dynamic position sizing
 - Automated stop-loss and take-profit levels dynamically set by ATR
+- Direction-specific margin rates (LONG vs SHORT have different leverage)
 - Bayesian hyperparameter optimization with walk-forward validation
 - Live trade journaling, P&L tracking, and performance monitoring
+- **Telegram notifications** for trade alerts, daily summaries, and errors
 - Leveraged vs. Spot mode backtesting
 
 Currently deployed live on DigitalOcean trading BTC, ETH, SOL, XRP, and DOGE perp futures on Coinbase International Exchange.
@@ -76,6 +78,43 @@ Keltrader detects volatility compression (squeeze) followed by expansion breakou
 
 ---
 
+## Telegram Notifications
+
+Real-time alerts sent directly to your phone:
+
+| Event | Notification |
+|-------|--------------|
+| 🚀 Bot startup | Symbols, balance, settings |
+| 🟢 Long entry | Price, contracts, leverage, stop/target |
+| 🔴 Short entry | Price, contracts, leverage, stop/target |
+| 💰 Winning exit | P&L, duration, cumulative stats |
+| 💸 Losing exit | P&L, duration, cumulative stats |
+| 📈 Daily summary | Trades, win rate, P&L, balance |
+| ⚠️ Errors | Error details for debugging |
+
+**Setup:**
+1. Create bot via @BotFather on Telegram
+2. Get chat ID from `/getUpdates` API
+3. Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` environment variables
+
+---
+
+## Futures Contracts
+
+The bot trades these Coinbase International perpetual futures with direction-specific margin rates:
+
+| Contract | Asset | Contract Size | LONG Leverage | SHORT Leverage |
+|----------|-------|---------------|---------------|----------------|
+| BIP-20DEC30-CDE | BTC | 0.01 BTC | ~4.1x | ~3.3x |
+| ETP-20DEC30-CDE | ETH | 0.1 ETH | ~4.0x | ~2.9x |
+| SLP-20DEC30-CDE | SOL | 5 SOL | ~2.7x | ~1.8x |
+| XPP-20DEC30-CDE | XRP | 500 XRP | ~2.6x | ~1.6x |
+| DOP-20DEC30-CDE | DOGE | 5000 DOGE | ~2.0x | ~1.0x |
+
+*Note: SHORT positions require more margin (less leverage) than LONG positions.*
+
+---
+
 ## Individual Asset Performance
 
 ### BTC/USD
@@ -135,36 +174,22 @@ Keltrader detects volatility compression (squeeze) followed by expansion breakou
 ## Project Structure
 
 ```
-├── coinbase_live_trader.py   # Live trading engine with monitoring
-├── signal_generator.py       # BB Squeeze signal generation (redacted)
+├── coinbase_live_trader.py   # Live trading engine with Telegram notifications
+├── signal_generator.py       # BB Squeeze signal generation
 ├── technical.py              # Technical indicators (BB, KC, RSI, ATR)
 ├── backtester.py             # Backtesting engine with leverage support
 ├── optimize.py               # Timeframe-specific optimizer
 ├── optimize_lib.py           # Core optimization library
 ├── permutation_test.py       # Overfitting detection
-├── diagnostics.py            # Pre-deployment system checks (redacted)
+├── diagnostics.py            # Pre-deployment system checks
 ├── data_utils.py             # Data fetching and caching
 ├── download_data.py          # Historical data downloader
-├── run_backtest.py           # Backtest runner (redacted)
-├── run_live_multi_asset.py   # Live trading configuration (redacted)
+├── run_backtest.py           # Backtest runner
+├── run_live_multi_asset.py   # Live trading configuration
 ├── utils.py                  # Shared utilities
-├── trading_bot_commands.md   # Server deployment guide (redacted)
+├── trading_bot_commands.md   # Server deployment guide
 └── requirements.txt          # Python dependencies
 ```
-
----
-
-## Futures Contracts
-
-The bot trades these Coinbase International perpetual futures:
-
-| Contract | Asset | Contract Size | Leverage |
-|----------|-------|---------------|----------|
-| BIP-20DEC30-CDE | BTC | 0.01 BTC | ~4x |
-| ETP-20DEC30-CDE | ETH | 0.1 ETH | ~4x |
-| SLP-20DEC30-CDE | SOL | 5 SOL | ~2.7x |
-| XPP-20DEC30-CDE | XRP | 500 XRP | ~2.6x |
-| DOP-20DEC30-CDE | DOGE | 5000 DOGE | ~2x |
 
 ---
 
@@ -174,4 +199,4 @@ This software is for educational purposes only. Cryptocurrency trading involves 
 
 ---
 
-**Version**: 2.1.0 | **Last Updated**: January 2026
+**Version**: 2.2.0 | **Last Updated**: January 2026
