@@ -11,3 +11,4 @@ trading_bot_commands.md
 signal_generator.py
 download_data.py
 diagnostics.py
+coinbase_live_trader.py
