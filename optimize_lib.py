@@ -555,16 +555,16 @@ def show_history():
             continue
         
         print(f"  Study: {study_name}")
-        print(f"  â”œâ”€â”€ Total trials: {stats['total_trials']}")
-        print(f"  â”œâ”€â”€ Completed: {stats['completed']}, Failed: {stats['failed']}")
+        print(f"  |-- Total trials: {stats['total_trials']}")
+        print(f"  |-- Completed: {stats['completed']}, Failed: {stats['failed']}")
         
         if stats['best_score'] is not None:
-            print(f"  â”œâ”€â”€ Best score: {stats['best_score']:.4f}")
-            print(f"  â”œâ”€â”€ Avg score: {stats['avg_score']:.4f} Â± {stats['score_std']:.4f}")
+            print(f"  |-- Best score: {stats['best_score']:.4f}")
+            print(f"  |-- Avg score: {stats['avg_score']:.4f} +/- {stats['score_std']:.4f}")
         
         if stats['first_trial']:
-            print(f"  â”œâ”€â”€ First trial: {stats['first_trial'].strftime('%Y-%m-%d %H:%M')}")
-            print(f"  â””â”€â”€ Last trial: {stats['last_trial'].strftime('%Y-%m-%d %H:%M')}")
+            print(f"  |-- First trial: {stats['first_trial'].strftime('%Y-%m-%d %H:%M')}")
+            print(f"  Ã¢â€â€|-- Last trial: {stats['last_trial'].strftime('%Y-%m-%d %H:%M')}")
         
         print()
     
@@ -1000,7 +1000,7 @@ class WalkForwardOptimizer(BaseOptimizer):
         avg_test_score = np.mean([f['test_score'] for f in fold_results])
         std_test_score = np.std([f['test_score'] for f in fold_results])
         
-        print(f"\nAverage test score: {avg_test_score:.4f} Â± {std_test_score:.4f}")
+        print(f"\nAverage test score: {avg_test_score:.4f} +/- {std_test_score:.4f}")
         
         return OptimizationResult(
             best_params=best_fold['params'],
@@ -1029,7 +1029,7 @@ class WalkForwardOptimizer(BaseOptimizer):
 
 
 class MultiStageOptimizer:
-    """Multi-stage optimization: Random â†’ Bayesian â†’ Validation."""
+    """Multi-stage optimization: Random Ã¢â€ â€™ Bayesian Ã¢â€ â€™ Validation."""
     
     def __init__(self, data: Dict, train_ratio: float = 0.7):
         self.data = data

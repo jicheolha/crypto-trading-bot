@@ -69,9 +69,6 @@ class BBSqueezeAnalyzer:
         df['BB_Lower'] = df['BB_Mid'] - (self.bb_std * df['BB_Std'])
         df['BB_Width'] = (df['BB_Upper'] - df['BB_Lower']) / df['BB_Mid']
         
-        # Percent B - where price is within bands (0 = lower, 1 = upper)
-        df['BB_PercentB'] = (df['close'] - df['BB_Lower']) / (df['BB_Upper'] - df['BB_Lower'])
-        
         # ATR for Keltner Channels
         high_low = df['high'] - df['low']
         high_close = abs(df['high'] - df['close'].shift(1))

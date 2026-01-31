@@ -6,7 +6,7 @@ Detects overfitting by testing if strategy performance is due to
 real patterns or random chance.
 
 Method:
-1. Run strategy on REAL data Ã¢â€ â€™ get actual performance metrics
+1. Run strategy on REAL data -> get actual performance metrics
 2. Shuffle returns N times (destroys temporal patterns)
 3. Run strategy on each shuffled dataset
 4. Calculate p-values: % of shuffled results that beat real results
@@ -450,7 +450,7 @@ def run_permutation_test(
             progress = (i + 1) / n_permutations * 100
             bar_len = 40
             filled = int(bar_len * (i + 1) / n_permutations)
-            bar = 'Ã¢â€“Ë†' * filled + 'Ã¢â€“â€˜' * (bar_len - filled)
+            bar = '#' * filled + '-' * (bar_len - filled)
             print(f"\r  [{bar}] {progress:5.1f}% ({i+1}/{n_permutations})", end='', flush=True)
         
         # Permute data
@@ -623,17 +623,17 @@ def print_results(result: PermutationTestResult):
     avg_p = np.mean(list(result.p_values.values()))
     
     if avg_p < 0.05:
-        print("  Ã¢Å“â€œ Your strategy's performance is unlikely due to random chance")
-        print("  Ã¢Å“â€œ The patterns it exploits appear to be real market structure")
-        print("  Ã¢Å“â€œ Proceed with cautious optimism (but always use proper risk management)")
+        print("  [+] Your strategy's performance is unlikely due to random chance")
+        print("  [+] The patterns it exploits appear to be real market structure")
+        print("  [+] Proceed with cautious optimism (but always use proper risk management)")
     elif avg_p < 0.20:
-        print("  Ã¢Å¡Â  Results are inconclusive")
-        print("  Ã¢Å¡Â  Consider testing on different time periods")
-        print("  Ã¢Å¡Â  Try reducing parameters to avoid overfitting")
+        print("  [?] Results are inconclusive")
+        print("  [?] Consider testing on different time periods")
+        print("  [?] Try reducing parameters to avoid overfitting")
     else:
-        print("  Ã¢Å“â€” Your strategy performs similarly on random data")
-        print("  Ã¢Å“â€” The optimized parameters likely fit noise, not signal")
-        print("  Ã¢Å“â€” Consider simplifying the strategy or using different parameters")
+        print("  [-] Your strategy performs similarly on random data")
+        print("  [-] The optimized parameters likely fit noise, not signal")
+        print("  [-] Consider simplifying the strategy or using different parameters")
     
     print(f"\n{'='*70}")
 

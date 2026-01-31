@@ -54,28 +54,28 @@ def infer_timeframe_from_index(index) -> str:
     """
     Infer timeframe from a pandas DatetimeIndex.
     
-    Returns timeframe string like '1min', '1h', '1d'.
+    Returns timeframe string like '1m', '1h', '1d'.
     """
     if len(index) < 2:
-        return '1min'
+        return '1m'
     
     # Calculate median difference between timestamps
     diffs = index.to_series().diff().dropna()
     if len(diffs) == 0:
-        return '1min'
+        return '1m'
     
     median_diff = diffs.median()
     minutes = median_diff.total_seconds() / 60
     
-    # Map to nearest standard timeframe
+    # Map to nearest standard timeframe (shorter format)
     if minutes <= 1.5:
-        return '1min'
+        return '1m'
     elif minutes <= 7:
-        return '5min'
+        return '5m'
     elif minutes <= 20:
-        return '15min'
+        return '15m'
     elif minutes <= 45:
-        return '30min'
+        return '30m'
     elif minutes <= 120:
         return '1h'
     elif minutes <= 360:
