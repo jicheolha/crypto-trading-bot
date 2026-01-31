@@ -1,18 +1,18 @@
 # Keltrader
 
-Keltrader is a fully automatic algorithmic trading system that trades cryptocurrency perpetual futures. The bot identifies low-volatility consolidation periods and enters positions when volatility expands, capturing momentum breakouts in either direction.
+Keltrader is a market-neutral, regularized bot that trades cryptocurrency perpetual futures. The bot identifies low-volatility consolidation periods and enters positions when volatility expands, capturing momentum breakouts in either direction. Certain files are redacted to protect the trading edge of the author.
 
-**Capabilities:**
-- Real-time signal generation using Bollinger Band / Keltner Channel squeeze detection
-- Multi-asset portfolio management with dynamic position sizing
-- Automated stop-loss and take-profit levels dynamically set by ATR
-- Direction-specific margin rates (LONG vs SHORT have different leverage)
-- Bayesian hyperparameter optimization with walk-forward validation
-- Live trade journaling, P&L tracking, and performance monitoring
-- **Telegram notifications** for trade alerts, daily summaries, and errors
-- Leveraged vs. Spot mode backtesting
+**Key Capabilities:**
+- Live multi-asset trading on Coinbase using Advanced API
+- Signal generation from underlying crypto asset
+- Stop-loss and take-profit execution using ATR
+- Bayesian hyperparameter optimization
+- Monte Carlo Permutation Testing
+- Data mining and management (~6 years)
+- Backtesting with spot vs. leverage mode
+- Telegram notifications  
 
-Currently deployed live on DigitalOcean trading BTC, ETH, SOL, XRP, and DOGE perp futures on Coinbase International Exchange.
+Currently deployed live on a cloud server trading BTC, ETH, SOL, XRP, and DOGE perp futures on Coinbase exchange. 
 
 ---
 
@@ -39,69 +39,43 @@ Spot trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
 
 ![Multi-Asset Equity Curve with Leverage](equity_curve_DOGEUSD_BTCUSD_ETHUSD_SOLUSD_XRPUSD_leverage.png)
 
-Same strategy with maintenance margin of 0.67 and leverage levels set by Coinbase:
+Same strategy with maintenance margin of 0.67 and margin levels set by Coinbase:
 
 | Metric | Value |
 |--------|-------|
-| Total Trades | 508 |
-| Win Rate | **67.1%** |
-| Profit Factor | 1.82 |
-| Sharpe Ratio | **1.85** |
-| Max Drawdown | 47.6% |
-| Total Return | +120,441.6% |
-| Avg Leverage | 3.2x |
-| Liquidations | 16 |
+| Total Trades | 544 |
+| Win Rate | **66.7%** |
+| Profit Factor | 1.95 |
+| Total P&L | $+4,278,184 |
+| Sharpe Ratio | **1.92** |
+| Max Drawdown | 24.5% |
+| Total Return | +4,088.0% |
+| Avg Leverage | 2.7x |
+| Liquidations | 10 |
 
-*Longs: 197 | Shorts: 311 | Wins: 341 | Losses: 167*
-
-**Note:** Higher returns come with higher drawdown (47.6% vs 27.5%) and more liquidation risk.
+*Longs: 209 | Shorts: 335 | Wins: 363 | Losses: 181*
 
 ---
 
 ## Strategy
 
-Keltrader detects volatility compression (squeeze) followed by expansion breakouts.
+Keltrader detects price breakouts preceded by volatility compressions (squeeze).
 
 **Entry Conditions:**
-- Bollinger Bands contract inside Keltner Channels (squeeze)
-- Squeeze releases with volume confirmation
+- Bollinger Bands contract inside Keltner Channels
+- Squeeze releases under minimum volume threshold
 - RSI filter rejects overbought longs / oversold shorts
 
 **Exit Conditions:**
 - ATR-based stop loss and take profit
 - Maximum hold period (7 days)
-
-**Timeframes:**
-- Signal generation: 4h
-- ATR calculation: 1h
-- Trade execution: Real-time
-
----
-
-## Telegram Notifications
-
-Real-time alerts sent directly to your phone:
-
-| Event | Notification |
-|-------|--------------|
-| 🚀 Bot startup | Symbols, balance, settings |
-| 🟢 Long entry | Price, contracts, leverage, stop/target |
-| 🔴 Short entry | Price, contracts, leverage, stop/target |
-| 💰 Winning exit | P&L, duration, cumulative stats |
-| 💸 Losing exit | P&L, duration, cumulative stats |
-| 📈 Daily summary | Trades, win rate, P&L, balance |
-| ⚠️ Errors | Error details for debugging |
-
-**Setup:**
-1. Create bot via @BotFather on Telegram
-2. Get chat ID from `/getUpdates` API
-3. Set `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` environment variables
+- Liquidation
 
 ---
 
 ## Futures Contracts
 
-The bot trades these Coinbase International perpetual futures with direction-specific margin rates:
+The bot trades these perpetual futures with direction-specific margin rates set by Coinbase:
 
 | Contract | Asset | Contract Size | LONG Leverage | SHORT Leverage |
 |----------|-------|---------------|---------------|----------------|
@@ -110,8 +84,6 @@ The bot trades these Coinbase International perpetual futures with direction-spe
 | SLP-20DEC30-CDE | SOL | 5 SOL | ~2.7x | ~1.8x |
 | XPP-20DEC30-CDE | XRP | 500 XRP | ~2.6x | ~1.6x |
 | DOP-20DEC30-CDE | DOGE | 5000 DOGE | ~2.0x | ~1.0x |
-
-*Note: SHORT positions require more margin (less leverage) than LONG positions.*
 
 ---
 
@@ -174,20 +146,19 @@ The bot trades these Coinbase International perpetual futures with direction-spe
 ## Project Structure
 
 ```
-├── coinbase_live_trader.py   # Live trading engine with Telegram notifications
-├── signal_generator.py       # BB Squeeze signal generation
-├── technical.py              # Technical indicators (BB, KC, RSI, ATR)
-├── backtester.py             # Backtesting engine with leverage support
-├── optimize.py               # Timeframe-specific optimizer
-├── optimize_lib.py           # Core optimization library
-├── permutation_test.py       # Overfitting detection
-├── diagnostics.py            # Pre-deployment system checks
+├── coinbase_live_trader.py   # Live trading engine with notifications (redacted)
 ├── data_utils.py             # Data fetching and caching
-├── download_data.py          # Historical data downloader
-├── run_backtest.py           # Backtest runner
-├── run_live_multi_asset.py   # Live trading configuration
+├── signal_generator.py       # BB Squeeze signal generation (redacted)
+├── technical.py              # Technical indicators
+├── backtester.py             # Backtesting engine
+├── optimize.py               # Optimizer
+├── optimize_lib.py           # Optimization library
+├── permutation_test.py       # Overfitting test
 ├── utils.py                  # Shared utilities
-├── trading_bot_commands.md   # Server deployment guide
+├── diagnostics.py            # Pre-deployment system checks (redacted)
+├── download_data.py          # Historical data downloader (redacted)
+├── run_backtest.py           # Backtest runner (redacted)
+├── run_live_multi_asset.py   # Live trading configuration (redacted)
 └── requirements.txt          # Python dependencies
 ```
 
