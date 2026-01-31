@@ -1,6 +1,8 @@
 # Keltrader
 
-Keltrader is a market-neutral, regularized bot that trades cryptocurrency perpetual futures. The bot identifies low-volatility consolidation periods and enters positions when volatility expands, capturing momentum breakouts in either direction. Certain files are redacted to protect the trading edge of the author.
+Keltrader is a robust, market-neutral crypto trading bot. Identifies low-volatility consolidation periods and enters position when volatility expands, indicating momentum breakouts in either direction. Has a Sharpe Ratio of ~2.0 and win rate of ~70%. Deployed 24/7 on a cloud server trading BTC, ETH, SOL, XRP, and DOGE perp futures on Coinbase exchange. 
+
+Disclaimer: Certain files are redacted to protect the author's trading edge. 
 
 **Key Capabilities:**
 - Live multi-asset trading on Coinbase using Advanced API
@@ -11,8 +13,6 @@ Keltrader is a market-neutral, regularized bot that trades cryptocurrency perpet
 - Data mining and management (~6 years)
 - Backtesting with spot vs. leverage mode
 - Telegram notifications  
-
-Currently deployed live on a cloud server trading BTC, ETH, SOL, XRP, and DOGE perp futures on Coinbase exchange. 
 
 ---
 
