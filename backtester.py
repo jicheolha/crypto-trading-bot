@@ -16,7 +16,7 @@ import numpy as np
 
 from technical import BBSqueezeAnalyzer
 from signal_generator import BBSqueezeSignalGenerator, TradeSignal
-from utils import infer_timeframe_from_index
+
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,6 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 # Always use overnight (conservative) rates - NO intraday 10x leverage
-# Updated 2026-01-30 from Coinbase International API
 LEVERAGE_RATES_LONG = {
     # Format: 'BASE': margin_rate
     # Leverage = 1 / margin_rate
@@ -147,9 +146,6 @@ class BBSqueezeBacktester:
         
         # Stats
         self.liquidation_count = 0
-        
-        # Inferred from data
-        self._trade_timeframe = '1min'
     
     def _extract_base_currency(self, symbol: str) -> str:
         """Extract base currency from symbol (e.g., 'BTC/USD' -> 'BTC')."""
@@ -204,9 +200,7 @@ class BBSqueezeBacktester:
         """
         self._reset()
         
-        # Infer timeframe from data for Sharpe calculation
-        first_df = next(iter(data.values()))
-        self._trade_timeframe = infer_timeframe_from_index(first_df.index)
+
         
         # Get all timestamps
         all_times = set()
@@ -405,32 +399,41 @@ class BBSqueezeBacktester:
                 return
         
         # Stop loss (check with high/low for realism)
+        # Fill at exact stop price (no slippage - limit orders fill at specified price)
         if pos.direction == 'long' and low <= pos.stop_loss:
-            # Use stop price, not low (assuming stop order fills at stop)
-            self._close(symbol, pos.stop_loss, ts, "Stop loss hit")
+            self._close(symbol, pos.stop_loss, ts, "Stop loss hit", exact_price=True)
             return
         elif pos.direction == 'short' and high >= pos.stop_loss:
-            self._close(symbol, pos.stop_loss, ts, "Stop loss hit")
+            self._close(symbol, pos.stop_loss, ts, "Stop loss hit", exact_price=True)
             return
         
         # Take profit (check with high/low)
+        # Fill at exact target price (no slippage - limit orders fill at specified price)
         if pos.direction == 'long' and high >= pos.take_profit:
-            self._close(symbol, pos.take_profit, ts, "Take profit hit")
+            self._close(symbol, pos.take_profit, ts, "Take profit hit", exact_price=True)
             return
         elif pos.direction == 'short' and low <= pos.take_profit:
-            self._close(symbol, pos.take_profit, ts, "Take profit hit")
+            self._close(symbol, pos.take_profit, ts, "Take profit hit", exact_price=True)
             return
     
-    def _close(self, symbol: str, price: float, ts: datetime, reason: str):
-        """Close position."""
+    def _close(self, symbol: str, price: float, ts: datetime, reason: str, exact_price: bool = False):
+        """Close position.
+        
+        Args:
+            symbol: Symbol to close
+            price: Exit price
+            ts: Timestamp
+            reason: Exit reason
+            exact_price: If True, use exact price without slippage (for stop/target orders)
+        """
         if symbol not in self.positions:
             return
         
         pos = self.positions[symbol]
         pos.exit_time = ts
         
-        # Apply slippage (except for liquidation which uses exact price)
-        if reason == "LIQUIDATED":
+        # Apply slippage only for market orders, not for exact stop/target fills
+        if exact_price or reason == "LIQUIDATED":
             exit_price = price
         elif pos.direction == 'long':
             exit_price = price * (1 - self.slippage_pct)
