@@ -25,14 +25,14 @@ Spot trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
 
 | Metric | Value |
 |--------|-------|
-| Total Trades | 494 |
-| Win Rate | **66.6%** |
-| Profit Factor | 1.97 |
-| Sharpe Ratio | **2.20** |
-| Max Drawdown | 27.5% |
-| Total Return | +1,751.9% |
+| Total Trades | 512 |
+| Win Rate | **67.2%** |
+| Profit Factor | 1.94 |
+| Sharpe Ratio | **2.27** |
+| Max Drawdown | 27.4% |
+| Total Return (after commission & slippage)| +1689.1% |
 
-*Longs: 199 | Shorts: 295 | Wins: 329 | Losses: 165*
+*Longs: 204 | Shorts: 308 | Wins: 344 | Losses: 168*
 
 ---
 
@@ -50,7 +50,7 @@ Same strategy with maintenance margin of 0.67 and margin levels set by Coinbase:
 | Total P&L | $+1,230,775,958 |
 | Sharpe Ratio | **2.41** |
 | Max Drawdown | 54.9% |
-| Total Return | +1153689.5% |
+| Total Return  (after commission & slippage) | +1153689.5% |
 | Avg Leverage | 2.7x |
 | Liquidations | 3 |
 
