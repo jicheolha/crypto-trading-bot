@@ -1,6 +1,6 @@
 # Keltrader
 
-Keltrader is a robust, market-neutral crypto trading bot. Identifies low-volatility consolidation periods and enters position when volatility expands, indicating momentum breakouts in either direction. Has a Sharpe ratio of ~2.0 and win rate of ~70%. Deployed 24/7 on a cloud server trading BTC, ETH, SOL, XRP, and DOGE perp futures on Coinbase exchange. 
+Keltrader is a robust, market-neutral crypto trading bot. Identifies low-volatility consolidation periods and enters position when volatility expands, indicating momentum breakouts in either direction. Has a Sharpe ratio of ~2.5 and win rate of ~70%. Deployed 24/7 on a cloud server trading BTC, ETH, SOL, XRP, and DOGE perp futures on Coinbase exchange. 
 
 
 **Key Capabilities:**
@@ -28,7 +28,7 @@ Spot trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
 | Total Trades | 494 |
 | Win Rate | **66.6%** |
 | Profit Factor | 1.97 |
-| Sharpe Ratio | **1.83** |
+| Sharpe Ratio | **2.20** |
 | Max Drawdown | 27.5% |
 | Total Return | +1,751.9% |
 
@@ -44,17 +44,17 @@ Same strategy with maintenance margin of 0.67 and margin levels set by Coinbase:
 
 | Metric | Value |
 |--------|-------|
-| Total Trades | 544 |
-| Win Rate | **66.7%** |
-| Profit Factor | 1.95 |
-| Total P&L | $+4,278,184 |
-| Sharpe Ratio | **1.92** |
-| Max Drawdown | 24.5% |
-| Total Return | +4,088.0% |
+| Total Trades | 400 |
+| Win Rate | **67.5%** |
+| Profit Factor | 1.68 |
+| Total P&L | $+1,230,775,958 |
+| Sharpe Ratio | **2.41** |
+| Max Drawdown | 54.9% |
+| Total Return | +1153689.5% |
 | Avg Leverage | 2.7x |
-| Liquidations | 10 |
+| Liquidations | 3 |
 
-*Longs: 209 | Shorts: 335 | Wins: 363 | Losses: 181*
+*Longs: 161 | Shorts: 239 | Wins: 270 | Losses: 130*
 
 ---
 
