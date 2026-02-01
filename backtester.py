@@ -559,7 +559,7 @@ class BBSqueezeBacktester:
             daily_returns = daily_equity.pct_change().dropna()
             
             if len(daily_returns) > 1 and daily_returns.std() > 0:
-                sharpe = daily_returns.mean() / daily_returns.std() * np.sqrt(252)
+                sharpe = daily_returns.mean() / daily_returns.std() * np.sqrt(365)
             else:
                 sharpe = 0
         except Exception:
