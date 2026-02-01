@@ -19,7 +19,7 @@ Keltrader is a robust, market-neutral crypto trading bot. Identifies low-volatil
 
 ## Spot Trading Performance (2021-2025)
 
-![Multi-Asset Equity Curve](plots/equity_curve_DOGEUSD_BTCUSD_ETHUSD_SOLUSD_XRPUSD.png)
+![Multi-Asset Equity Curve](equity_curve_DOGEUSD_BTCUSD_ETHUSD_SOLUSD_XRPUSD.png)
 
 Spot trading DOGE, BTC, ETH, SOL, and XRP simultaneously:
 
