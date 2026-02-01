@@ -1,0 +1,1662 @@
+==============================
+CRYPTO TRADING BOT - BACKTEST
+==============================
+Symbols: ['DOGE/USD', 'BTC/USD', 'ETH/USD', 'SOL/USD', 'XRP/USD']
+Period: 2190 days (6.0 years)
+Timeframes: Trade=1min, Signal=4h, ATR=1h
+Position: 14% base, 10%-25% range
+Leverage: ENABLED (maintenance margin: 67%)
+
+Loading data...
+Loading DOGE/USD...
+  Loaded DOGE/USD 1min from cache (982520 bars)
+  Loaded DOGE/USD 4h from cache (10556 bars)
+  Loaded DOGE/USD 1h from cache (36663 bars)
+Loading BTC/USD...
+  Loaded BTC/USD 1min from cache (1430087 bars)
+  Loaded BTC/USD 4h from cache (10934 bars)
+  Loaded BTC/USD 1h from cache (42779 bars)
+Loading ETH/USD...
+  Loaded ETH/USD 1min from cache (1356200 bars)
+  Loaded ETH/USD 4h from cache (10863 bars)
+  Loaded ETH/USD 1h from cache (40752 bars)
+Loading SOL/USD...
+  Loaded SOL/USD 1min from cache (1118839 bars)
+  Loaded SOL/USD 4h from cache (8093 bars)
+  Loaded SOL/USD 1h from cache (30278 bars)
+Loading XRP/USD...
+  Loaded XRP/USD 1min from cache (222027 bars)
+  Loaded XRP/USD 4h from cache (4352 bars)
+  Loaded XRP/USD 1h from cache (16537 bars)
+Symbols loaded: 5/5
+Period: 2021-01-01 to 2025-12-28
+
+Running backtest...
+
+==================================================================================================================================
+TRADE LOG
+==================================================================================================================================
+Type    Timestamp         Asset    Dir     Lev        Price    Size            P&L Duration   Exit Reason
+----------------------------------------------------------------------------------------------------------------------------------
+ENTRY   2021-01-14 12:10  DOGE     SHORT    1x $       0.01   19.3%                           SQ7 V2.2 M-0.1 RSI52
+EXIT    2021-01-14 14:58                       $       0.01                $-1,718 2h 48m     Stop loss hit
+
+ENTRY   2021-01-14 14:58  DOGE     SHORT    1x $       0.01   19.3%                           SQ7 V2.2 M-0.1 RSI52
+EXIT    2021-01-15 16:03                       $       0.01                $+2,007 1d 1h      Take profit hit
+
+ENTRY   2021-01-21 08:22  BTC      SHORT    3x $  34,208.93   25.0%                           SQ21 V2.7 M-3.1 RSI36
+EXIT    2021-01-21 12:05                       $  31,825.30                $+5,670 3h 43m     Take profit hit
+
+ENTRY   2021-01-21 16:00  ETH      SHORT    3x $   1,178.44   14.0%                           SQ3 V1.4 M-0.1 RSI51
+EXIT    2021-01-24 04:46                       $   1,312.66                $-4,976 2d 12h     *** LIQUIDATED ***
+
+ENTRY   2021-01-24 04:46  ETH      SHORT    3x $   1,315.54   14.0%                           SQ2 V1.1 M-0.0 RSI48
+EXIT    2021-01-25 00:07                       $   1,397.73                $-2,608 19h 21m    Stop loss hit
+
+ENTRY   2021-01-27 16:00  BTC      SHORT    3x $  30,329.84   15.3%                           SQ23 V2.1 M-1.3 RSI42
+EXIT    2021-01-28 18:45                       $  32,518.00                $-3,569 1d 2h      Stop loss hit
+
+ENTRY   2021-01-29 08:48  BTC      LONG     4x $  34,229.47   15.6%                           SQ7 V4.5 M2.9 RSI66
+EXIT    2021-01-29 09:29                       $  37,614.40                $+5,886 41m        Take profit hit
+
+ENTRY   2021-01-29 09:29  BTC      LONG     4x $  37,660.77   22.2%                           SQ7 V4.5 M2.9 RSI66
+EXIT    2021-01-29 19:22                       $  34,566.41                $-7,510 9h 53m     *** LIQUIDATED ***
+
+ENTRY   2021-02-07 12:00  ETH      SHORT    3x $   1,623.79   18.2%                           SQ11 V1.1 M-0.3 RSI42
+EXIT    2021-02-07 16:13                       $   1,517.31                $+3,231 4h 13m     Take profit hit
+
+ENTRY   2021-02-15 00:00  DOGE     SHORT    1x $       0.06   18.5%                           SQ8 V1.4 M-3.8 RSI28
+EXIT    2021-02-15 02:22                       $       0.05                $+3,625 2h 22m     Take profit hit
+
+ENTRY   2021-02-15 02:22  DOGE     SHORT    1x $       0.05   18.5%                           SQ8 V1.4 M-3.8 RSI28
+EXIT    2021-02-15 14:02                       $       0.06                $-5,162 11h 40m    Stop loss hit
+
+ENTRY   2021-02-17 16:00  SOL      SHORT    2x $       8.30   21.8%                           SQ12 V2.4 M-1.4 RSI46
+EXIT    2021-02-18 14:54                       $       8.94                $-2,859 22h 54m    Stop loss hit
+
+ENTRY   2021-02-17 20:00  DOGE     SHORT    1x $       0.05   23.0%                           SQ11 V1.6 M-3.9 RSI33
+EXIT    2021-02-19 00:00                       $       0.06                $-1,788 1d 4h      Stop loss hit
+
+ENTRY   2021-02-17 16:00  BTC      LONG     4x $  51,402.09   20.9%                           SQ37 V1.3 M3.3 RSI65
+EXIT    2021-02-19 16:25                       $  54,136.62                $+4,241 2d 0h      Take profit hit
+
+ENTRY   2021-02-22 12:00  ETH      SHORT    3x $   1,804.85   25.0%                           SQ10 V3.8 M-1.8 RSI36
+EXIT    2021-02-22 14:14                       $   1,648.67                $+5,942 2h 14m     Take profit hit
+
+ENTRY   2021-02-22 14:14  ETH      SHORT    3x $   1,646.70   25.0%                           SQ10 V3.8 M-1.8 RSI36
+EXIT    2021-02-23 09:09                       $   1,422.04                $+9,986 18h 55m    Take profit hit
+
+ENTRY   2021-02-23 04:00  BTC      SHORT    3x $  52,087.87   19.3%                           SQ5 V2.3 M-1.6 RSI36
+EXIT    2021-02-26 07:35                       $  44,992.37                $+8,417 3d 3h      Take profit hit
+
+ENTRY   2021-02-26 00:00  SOL      LONG     3x $      13.80   17.7%                           SQ2 V1.6 M2.3 RSI62
+EXIT    2021-02-28 03:10                       $      12.27                $-6,262 2d 3h      Stop loss hit
+
+ENTRY   2021-03-01 16:00  BTC      SHORT    3x $  49,199.06   16.1%                           SQ8 V1.2 M-0.1 RSI59
+EXIT    2021-03-03 10:06                       $  51,669.11                $-2,992 1d 18h     Stop loss hit
+
+ENTRY   2021-03-08 01:21  DOGE     LONG     2x $       0.05   17.6%                           SQ26 V4.4 M3.0 RSI67
+EXIT    2021-03-08 03:26                       $       0.06                $+2,302 2h 5m      Take profit hit
+
+ENTRY   2021-03-08 03:26  DOGE     LONG     2x $       0.06   25.0%                           SQ26 V4.4 M3.0 RSI67
+EXIT    2021-03-08 06:16                       $       0.06                $+3,843 2h 50m     Take profit hit
+
+ENTRY   2021-03-07 00:00  ETH      LONG     4x $   1,655.64   14.7%                           SQ18 V1.4 M1.6 RSI55
+EXIT    2021-03-08 19:16                       $   1,764.90                $+4,202 1d 19h     Take profit hit
+
+ENTRY   2021-03-13 16:00  ETH      LONG     4x $   1,886.42   20.9%                           SQ15 V1.1 M2.4 RSI62
+EXIT    2021-03-15 06:36                       $   1,799.69                $-4,660 1d 14h     Stop loss hit
+
+ENTRY   2021-03-18 00:00  BTC      SHORT    3x $  59,220.79   14.0%                           SQ2 V1.2 M-0.1 RSI47
+EXIT    2021-03-21 09:43                       $  55,604.47                $+3,178 3d 9h      Take profit hit
+
+ENTRY   2021-03-22 04:26  SOL      LONG     3x $      15.39   22.2%                           SQ9 V7.8 M5.2 RSI68
+EXIT    2021-03-22 08:12                       $      16.29                $+4,152 3h 46m     Take profit hit
+
+ENTRY   2021-03-22 16:00  ETH      SHORT    3x $   1,781.68   20.9%                           SQ33 V1.2 M-2.1 RSI41
+EXIT    2021-03-22 20:42                       $   1,720.70                $+2,524 4h 42m     Take profit hit
+
+ENTRY   2021-03-22 16:00  BTC      SHORT    3x $  57,162.05   20.9%                           SQ13 V1.4 M-2.0 RSI39
+EXIT    2021-03-22 20:45                       $  54,815.60                $+3,383 4h 45m     Take profit hit
+
+ENTRY   2021-03-22 20:00  DOGE     SHORT    1x $       0.06   23.0%                           SQ34 V1.6 M-2.5 RSI30
+EXIT    2021-03-23 06:22                       $       0.05                $+1,376 10h 22m    Take profit hit
+
+ENTRY   2021-04-03 04:00  SOL      LONG     3x $      21.07   20.9%                           SQ11 V1.5 M3.4 RSI63
+EXIT    2021-04-03 10:22                       $      22.38                $+4,542 6h 22m     Take profit hit
+
+ENTRY   2021-04-07 16:00  ETH      SHORT    3x $   1,969.61   20.0%                           SQ17 V1.5 M-1.4 RSI44
+EXIT    2021-04-09 00:02                       $   2,085.05                $-4,540 1d 8h      Stop loss hit
+
+ENTRY   2021-04-07 20:00  BTC      SHORT    3x $  56,010.11   20.9%                           SQ14 V1.4 M-2.3 RSI41
+EXIT    2021-04-10 02:01                       $  58,458.83                $-3,975 2d 6h      Stop loss hit
+
+ENTRY   2021-04-06 16:00  DOGE     LONG     2x $       0.06   20.9%                           SQ10 V1.2 M1.7 RSI60
+EXIT    2021-04-11 09:27                       $       0.07                $+6,675 4d 17h     Take profit hit
+
+ENTRY   2021-04-14 16:00  SOL      SHORT    2x $      25.88   23.0%                           SQ18 V1.5 M-1.8 RSI46
+EXIT    2021-04-15 21:00                       $      27.90                $-4,249 1d 5h      Stop loss hit
+
+ENTRY   2021-04-18 00:59  SOL      SHORT    2x $      23.91   25.0%                           SQ17 V3.1 M-3.9 RSI35
+EXIT    2021-04-18 03:34                       $      21.75                $+5,111 2h 35m     Take profit hit
+
+ENTRY   2021-04-18 03:34  SOL      SHORT    2x $      21.95   25.0%                           SQ17 V3.1 M-3.9 RSI35
+EXIT    2021-04-18 05:24                       $      24.33                $-6,425 1h 50m     Stop loss hit
+
+ENTRY   2021-04-18 20:00  SOL      LONG     3x $      30.31   19.3%                           SQ4 V5.3 M2.7 RSI63
+EXIT    2021-04-19 17:56                       $      35.92               $+12,261 21h 56m    Take profit hit
+
+ENTRY   2021-04-18 04:00  ETH      SHORT    3x $   2,189.88   21.8%                           SQ10 V2.5 M-1.2 RSI43
+EXIT    2021-04-21 14:38                       $   2,412.11                $-8,632 3d 10h     Stop loss hit
+
+ENTRY   2021-04-23 00:00  BTC      SHORT    3x $  51,637.84   25.0%                           SQ13 V2.3 M-3.4 RSI39
+EXIT    2021-04-23 07:51                       $  47,688.98                $+8,348 7h 51m     Take profit hit
+
+ENTRY   2021-04-22 12:00  SOL      LONG     3x $      36.50   18.5%                           SQ8 V1.1 M3.8 RSI59
+EXIT    2021-04-23 08:08                       $      32.04                $-8,041 20h 8m     *** LIQUIDATED ***
+
+ENTRY   2021-04-25 12:00  SOL      LONG     3x $      42.41   20.9%                           SQ13 V1.2 M3.8 RSI65
+EXIT    2021-04-25 22:46                       $      48.19               $+10,080 10h 46m    Take profit hit
+
+ENTRY   2021-04-28 12:00  DOGE     LONG     2x $       0.32   20.9%                           SQ14 V1.4 M2.6 RSI61
+EXIT    2021-05-01 21:44                       $       0.38               $+10,536 3d 9h      Take profit hit
+
+ENTRY   2021-05-01 16:00  SOL      LONG     3x $      47.70   20.9%                           SQ24 V1.3 M2.5 RSI67
+EXIT    2021-05-04 00:12                       $      44.48                $-5,738 2d 8h      Stop loss hit
+
+ENTRY   2021-04-30 20:00  BTC      LONG     4x $  57,105.71   20.9%                           SQ11 V1.4 M3.5 RSI61
+EXIT    2021-05-05 00:00                       $  55,045.74                $-4,366 4d 4h      Stop loss hit
+
+ENTRY   2021-05-09 20:00  DOGE     SHORT    1x $       0.57   12.7%                           SQ17 V1.1 M-0.3 RSI47
+EXIT    2021-05-12 23:57                       $       0.40                $+5,403 3d 3h      Take profit hit
+
+ENTRY   2021-05-12 22:11  BTC      SHORT    3x $  52,679.46   13.5%                           SQ5 V3.2 M-4.6 RSI29
+EXIT    2021-05-12 23:58                       $  48,976.43                $+4,451 1h 47m     Take profit hit
+
+ENTRY   2021-05-13 20:00  ETH      SHORT    3x $   3,661.95   18.2%                           SQ16 V1.2 M-0.8 RSI41
+EXIT    2021-05-14 14:46                       $   4,079.02                $-9,153 18h 46m    *** LIQUIDATED ***
+
+ENTRY   2021-05-16 04:00  SOL      LONG     3x $      47.83   18.2%                           SQ25 V1.1 M1.4 RSI53
+EXIT    2021-05-16 19:08                       $      42.94                $-7,211 15h 8m     Stop loss hit
+
+ENTRY   2021-05-12 23:58  BTC      SHORT    3x $  48,790.24   19.3%                           SQ5 V3.2 M-4.6 RSI29
+EXIT    2021-05-17 03:16                       $  44,052.35                $+9,165 4d 3h      Take profit hit
+
+ENTRY   2021-05-17 03:16  BTC      SHORT    3x $  44,029.89   20.4%                           SQ7 V1.9 M-5.3 RSI34
+EXIT    2021-05-19 04:43                       $  39,030.09               $+10,742 2d 1h      Take profit hit
+
+ENTRY   2021-05-19 08:00  DOGE     SHORT    1x $       0.42   20.9%                           SQ15 V1.2 M-3.7 RSI31
+EXIT    2021-05-19 11:31                       $       0.35                $+5,636 3h 31m     Take profit hit
+
+ENTRY   2021-05-19 11:31  DOGE     SHORT    1x $       0.34   20.9%                           SQ15 V1.2 M-3.7 RSI31
+EXIT    2021-05-19 12:54                       $       0.25                $+9,508 1h 23m     Take profit hit
+
+ENTRY   2021-05-20 00:00  SOL      SHORT    2x $      35.62   21.8%                           SQ19 V2.2 M-1.4 RSI40
+EXIT    2021-05-20 07:36                       $      42.28               $-12,934 7h 36m     *** LIQUIDATED ***
+
+ENTRY   2021-05-22 16:00  SOL      SHORT    2x $      35.40   18.5%                           SQ7 V1.4 M-3.7 RSI33
+EXIT    2021-05-23 06:21                       $      28.79               $+10,390 14h 21m    Take profit hit
+
+ENTRY   2021-05-23 08:00  BTC      SHORT    3x $  35,817.08   23.0%                           SQ17 V1.6 M-2.6 RSI47
+EXIT    2021-05-23 16:07                       $  32,491.96               $+12,992 8h 7m      Take profit hit
+
+ENTRY   2021-05-19 16:00  ETH      SHORT    3x $   2,724.45   20.4%                           SQ7 V2.0 M-3.7 RSI29
+EXIT    2021-05-26 16:00                       $   2,749.39                  $-971 7d 0h      Time exit
+
+ENTRY   2021-05-31 12:00  SOL      SHORT    2x $      31.79   14.0%                           SQ3 V1.2 M-0.1 RSI48
+EXIT    2021-06-02 16:24                       $      34.71                $-4,095 2d 4h      Stop loss hit
+
+ENTRY   2021-05-28 16:00  BTC      SHORT    3x $  36,755.01   18.2%                           SQ11 V1.4 M-0.9 RSI42
+EXIT    2021-06-04 16:00                       $  36,872.17                  $-390 7d 0h      Time exit
+
+ENTRY   2021-06-05 09:38  BTC      SHORT    3x $  37,529.62   10.8%                           SQ2 V1.7 M-0.8 RSI46
+EXIT    2021-06-05 12:04                       $  35,621.22                $+3,073 2h 26m     Take profit hit
+
+ENTRY   2021-06-07 20:48  DOGE     SHORT    1x $       0.35   20.4%                           SQ9 V1.5 M-5.4 RSI39
+EXIT    2021-06-08 02:48                       $       0.33                $+2,376 6h 0m      Take profit hit
+
+ENTRY   2021-06-08 00:00  BTC      SHORT    3x $  33,793.24   20.4%                           SQ6 V1.7 M-4.8 RSI29
+EXIT    2021-06-08 14:19                       $  31,635.26                $+7,503 14h 19m    Take profit hit
+
+ENTRY   2021-06-08 04:00  SOL      SHORT    2x $      37.53   14.0%                           SQ2 V1.2 M-0.5 RSI48
+EXIT    2021-06-09 06:23                       $      43.05                $-6,718 1d 2h      Stop loss hit
+
+ENTRY   2021-06-14 12:00  DOGE     LONG     2x $       0.32   16.1%                           SQ6 V1.2 M0.5 RSI54
+EXIT    2021-06-14 16:08                       $       0.34                $+2,678 4h 8m      Take profit hit
+
+ENTRY   2021-06-08 04:00  ETH      SHORT    3x $   2,484.21   20.9%                           SQ24 V1.1 M-2.3 RSI41
+EXIT    2021-06-15 04:00                       $   2,589.79                $-4,804 7d 0h      Time exit
+
+ENTRY   2021-06-14 16:00  SOL      SHORT    2x $      39.99   14.0%                           SQ4 V1.1 M-0.7 RSI51
+EXIT    2021-06-18 14:09                       $      36.73                $+3,576 3d 22h     Take profit hit
+
+ENTRY   2021-06-18 16:00  SOL      SHORT    2x $      35.80   20.9%                           SQ12 V1.4 M-2.1 RSI27
+EXIT    2021-06-20 10:25                       $      32.96                $+5,311 1d 18h     Take profit hit
+
+ENTRY   2021-06-21 08:00  ETH      SHORT    3x $   2,012.16   19.3%                           SQ3 V4.0 M-4.6 RSI32
+EXIT    2021-06-22 12:27                       $   1,803.23               $+10,887 1d 4h      Take profit hit
+
+ENTRY   2021-07-07 10:00  SOL      LONG     3x $      35.23   16.1%                           SQ5 V1.3 M2.6 RSI61
+EXIT    2021-07-07 12:04                       $      37.29                $+5,003 2h 4m      Take profit hit
+
+ENTRY   2021-07-08 04:00  DOGE     SHORT    1x $       0.22   16.1%                           SQ3 V1.2 M-4.6 RSI27
+EXIT    2021-07-08 22:29                       $       0.20                $+2,099 18h 29m    Take profit hit
+
+ENTRY   2021-07-08 12:00  BTC      SHORT    3x $  32,633.69   18.5%                           SQ7 V1.2 M-2.2 RSI41
+EXIT    2021-07-10 00:32                       $  34,190.96                $-5,909 1d 12h     Stop loss hit
+
+ENTRY   2021-07-12 16:00  SOL      SHORT    2x $      30.81   18.5%                           SQ9 V1.4 M-5.0 RSI35
+EXIT    2021-07-13 12:36                       $      29.47                $+2,829 20h 36m    Take profit hit
+
+ENTRY   2021-07-13 04:00  ETH      SHORT    3x $   2,030.19   20.9%                           SQ14 V1.1 M-2.9 RSI36
+EXIT    2021-07-13 19:13                       $   1,942.09                $+5,208 15h 13m    Take profit hit
+
+ENTRY   2021-07-19 12:00  SOL      SHORT    2x $      24.75   22.2%                           SQ6 V2.3 M-5.4 RSI30
+EXIT    2021-07-20 03:18                       $      23.02                $+5,672 15h 18m    Take profit hit
+
+ENTRY   2021-07-20 01:14  BTC      SHORT    3x $  30,584.65   25.0%                           SQ14 V2.3 M-4.1 RSI31
+EXIT    2021-07-20 09:58                       $  29,443.62                $+6,272 8h 44m     Take profit hit
+
+ENTRY   2021-07-24 16:00  SOL      LONG     3x $      28.42   16.1%                           SQ3 V1.2 M3.6 RSI62
+EXIT    2021-07-25 14:03                       $      26.69                $-5,867 22h 3m     Stop loss hit
+
+ENTRY   2021-07-29 16:06  SOL      LONG     3x $      29.83   17.7%                           SQ3 V1.7 M2.7 RSI57
+EXIT    2021-07-29 20:09                       $      31.63                $+6,107 4h 3m      Take profit hit
+
+ENTRY   2021-07-30 00:00  ETH      LONG     4x $   2,385.40   23.0%                           SQ13 V1.7 M3.1 RSI55
+EXIT    2021-07-31 20:36                       $   2,489.46                $+8,676 1d 20h     Take profit hit
+
+ENTRY   2021-08-04 20:00  ETH      LONG     4x $   2,699.22   23.0%                           SQ12 V1.9 M2.6 RSI58
+EXIT    2021-08-05 12:44                       $   2,566.25               $-10,405 16h 44m    Stop loss hit
+
+ENTRY   2021-08-06 16:00  DOGE     LONG     2x $       0.21   22.2%                           SQ8 V2.5 M1.6 RSI65
+EXIT    2021-08-07 02:09                       $       0.21                $+3,068 10h 9m     Take profit hit
+
+ENTRY   2021-08-11 16:00  DOGE     LONG     2x $       0.28   20.9%                           SQ10 V1.3 M3.8 RSI57
+EXIT    2021-08-12 14:57                       $       0.26                $-7,378 22h 57m    Stop loss hit
+
+ENTRY   2021-08-11 00:00  SOL      LONG     3x $      40.67   20.9%                           SQ10 V1.1 M2.4 RSI63
+EXIT    2021-08-13 09:08                       $      44.06               $+10,364 2d 9h      Take profit hit
+
+ENTRY   2021-08-13 20:00  BTC      LONG     4x $  46,437.09   16.1%                           SQ5 V1.1 M2.9 RSI64
+EXIT    2021-08-14 09:40                       $  48,128.62                $+5,209 13h 40m    Take profit hit
+
+ENTRY   2021-08-15 04:00  DOGE     LONG     2x $       0.30   20.9%                           SQ20 V1.5 M2.0 RSI54
+EXIT    2021-08-15 21:25                       $       0.33                $+9,615 17h 25m    Take profit hit
+
+ENTRY   2021-08-20 00:00  BTC      LONG     4x $  46,752.24   14.0%                           SQ3 V1.3 M0.5 RSI53
+EXIT    2021-08-20 15:50                       $  48,616.34                $+5,293 15h 50m    Take profit hit
+
+ENTRY   2021-08-20 00:00  ETH      SHORT    3x $   3,184.37   14.0%                           SQ2 V1.3 M-0.1 RSI50
+EXIT    2021-08-23 03:00                       $   3,314.91                $-4,027 3d 3h      Stop loss hit
+
+ENTRY   2021-08-26 08:00  SOL      SHORT    2x $      67.46   25.0%                           SQ15 V2.1 M-2.2 RSI42
+EXIT    2021-08-26 13:58                       $      72.89                $-8,588 5h 58m     Stop loss hit
+
+ENTRY   2021-08-31 08:00  ETH      LONG     4x $   3,362.22   15.6%                           SQ8 V2.0 M3.2 RSI59
+EXIT    2021-09-01 09:10                       $   3,546.08                $+7,742 1d 1h      Take profit hit
+
+ENTRY   2021-09-02 00:00  DOGE     LONG     2x $       0.29   25.0%                           SQ19 V4.7 M2.2 RSI67
+EXIT    2021-09-05 19:18                       $       0.31                $+7,655 3d 19h     Take profit hit
+
+ENTRY   2021-09-02 04:00  BTC      LONG     4x $  49,648.64   18.2%                           SQ19 V1.1 M1.5 RSI56
+EXIT    2021-09-05 20:53                       $  51,562.89                $+6,730 3d 16h     Take profit hit
+
+ENTRY   2021-09-07 14:25  DOGE     SHORT    1x $       0.28   25.0%                           SQ21 V3.7 M-3.6 RSI29
+EXIT    2021-09-07 14:57                       $       0.25                $+7,333 32m        Take profit hit
+
+ENTRY   2021-09-07 14:25  ETH      SHORT    3x $   3,683.21   25.0%                           SQ11 V5.8 M-3.4 RSI26
+EXIT    2021-09-07 14:59                       $   3,414.19               $+13,340 34m        Take profit hit
+
+ENTRY   2021-09-07 14:59  ETH      SHORT    3x $   3,407.30   25.0%                           SQ11 V5.8 M-3.4 RSI26
+EXIT    2021-09-07 15:08                       $   3,138.17               $+15,710 9m         Take profit hit
+
+ENTRY   2021-09-07 15:08  ETH      SHORT    3x $   3,113.03   25.0%                           SQ11 V5.8 M-3.4 RSI26
+EXIT    2021-09-07 15:40                       $   3,467.58               $-24,497 32m        *** LIQUIDATED ***
+
+ENTRY   2021-09-07 14:57  DOGE     SHORT    1x $       0.24   25.0%                           SQ21 V3.7 M-3.6 RSI29
+EXIT    2021-09-14 14:57                       $       0.24                $+1,490 7d 0h      Time exit
+
+ENTRY   2021-09-07 15:40  ETH      SHORT    3x $   3,463.54   25.0%                           SQ11 V5.8 M-3.4 RSI26
+EXIT    2021-09-14 15:40                       $   3,398.19                $+3,505 7d 0h      Time exit
+
+ENTRY   2021-09-20 00:23  BTC      SHORT    3x $  46,856.48   25.0%                           SQ16 V2.5 M-2.6 RSI34
+EXIT    2021-09-20 03:03                       $  45,265.82                $+7,305 2h 40m     Take profit hit
+
+ENTRY   2021-09-20 03:03  BTC      SHORT    3x $  45,259.46   25.0%                           SQ16 V2.5 M-2.6 RSI34
+EXIT    2021-09-20 11:50                       $  43,300.67                $+9,598 8h 47m     Take profit hit
+
+ENTRY   2021-09-23 16:00  ETH      SHORT    3x $   3,096.65   14.0%                           SQ5 V1.2 M-1.0 RSI51
+EXIT    2021-09-24 09:15                       $   2,926.12                $+6,361 17h 15m    Take profit hit
+
+ENTRY   2021-09-23 16:00  BTC      SHORT    3x $  43,809.95   15.4%                           SQ4 V1.8 M-1.2 RSI50
+EXIT    2021-09-24 11:04                       $  41,839.92                $+6,356 19h 4m     Take profit hit
+
+ENTRY   2021-10-01 10:27  SOL      LONG     3x $     144.73   17.7%                           SQ5 V1.5 M3.2 RSI64
+EXIT    2021-10-01 11:27                       $     155.02               $+10,123 1h 0m      Take profit hit
+
+ENTRY   2021-10-01 10:28  DOGE     LONG     2x $       0.21   25.0%                           SQ27 V2.5 M3.2 RSI67
+EXIT    2021-10-01 17:32                       $       0.22                $+6,171 7h 4m      Take profit hit
+
+ENTRY   2021-10-01 11:27  SOL      LONG     3x $     155.20   17.7%                           SQ5 V1.5 M3.2 RSI64
+EXIT    2021-10-02 13:42                       $     166.88               $+11,221 1d 2h      Take profit hit
+
+ENTRY   2021-10-10 20:15  SOL      SHORT    2x $     153.19   20.9%                           SQ18 V1.2 M-2.3 RSI37
+EXIT    2021-10-10 21:17                       $     146.78                $+4,900 1h 2m      Take profit hit
+
+ENTRY   2021-10-06 16:00  ETH      LONG     4x $   3,618.48   23.0%                           SQ12 V1.8 M2.7 RSI59
+EXIT    2021-10-10 23:39                       $   3,423.57               $-16,266 4d 7h      Stop loss hit
+
+ENTRY   2021-10-10 21:17  SOL      SHORT    2x $     146.44   20.9%                           SQ18 V1.2 M-2.3 RSI37
+EXIT    2021-10-11 08:12                       $     153.32                $-5,571 10h 55m    Stop loss hit
+
+ENTRY   2021-10-14 08:00  ETH      LONG     4x $   3,633.53   14.7%                           SQ38 V1.0 M2.1 RSI67
+EXIT    2021-10-14 13:30                       $   3,759.21                $+6,146 5h 30m     Take profit hit
+
+ENTRY   2021-10-14 12:00  DOGE     SHORT    1x $       0.24   10.0%                           SQ5 V1.2 M-0.9 RSI49
+EXIT    2021-10-15 08:27                       $       0.23                $+1,455 20h 27m    Take profit hit
+
+ENTRY   2021-10-15 04:00  BTC      LONG     4x $  59,459.89   20.9%                           SQ16 V1.5 M2.3 RSI56
+EXIT    2021-10-15 20:17                       $  62,086.87               $+11,629 16h 17m    Take profit hit
+
+ENTRY   2021-10-20 13:42  ETH      LONG     4x $   3,959.35   25.0%                           SQ19 V2.5 M2.8 RSI62
+EXIT    2021-10-20 16:21                       $   4,101.07               $+11,530 2h 39m     Take profit hit
+
+ENTRY   2021-10-20 16:00  SOL      LONG     3x $     168.53   25.0%                           SQ21 V3.6 M3.4 RSI66
+EXIT    2021-10-21 00:00                       $     177.30               $+11,765 8h 0m      Take profit hit
+
+ENTRY   2021-10-25 16:00  SOL      LONG     3x $     218.04   16.1%                           SQ5 V1.0 M3.0 RSI54
+EXIT    2021-10-26 14:05                       $     203.86                $-9,832 22h 5m     Stop loss hit
+
+ENTRY   2021-10-25 00:00  DOGE     LONG     2x $       0.28   25.0%                           SQ57 V2.8 M1.9 RSI62
+EXIT    2021-10-27 08:02                       $       0.25               $-20,151 2d 8h      Stop loss hit
+
+ENTRY   2021-10-29 12:00  BTC      LONG     4x $  60,878.32   10.8%                           SQ2 V1.9 M0.4 RSI48
+EXIT    2021-11-02 10:06                       $  63,417.01                $+5,746 3d 22h     Take profit hit
+
+ENTRY   2021-11-11 12:00  BTC      LONG     4x $  65,303.78   14.0%                           SQ4 V1.2 M1.0 RSI48
+EXIT    2021-11-12 16:40                       $  62,453.42                $-8,139 1d 4h      Stop loss hit
+
+ENTRY   2021-11-16 00:18  ETH      SHORT    3x $   4,470.74   25.0%                           SQ33 V3.8 M-4.0 RSI37
+EXIT    2021-11-16 01:05                       $   4,282.95                $+9,610 47m        Take profit hit
+
+ENTRY   2021-11-16 00:11  BTC      SHORT    3x $  62,687.46   19.3%                           SQ3 V3.5 M-3.5 RSI40
+EXIT    2021-11-16 04:23                       $  60,473.97                $+6,945 4h 12m     Take profit hit
+
+ENTRY   2021-11-16 01:05  ETH      SHORT    3x $   4,278.07   25.0%                           SQ33 V3.8 M-4.0 RSI37
+EXIT    2021-11-18 16:03                       $   4,049.24               $+12,858 2d 14h     Take profit hit
+
+ENTRY   2021-11-26 08:01  DOGE     SHORT    1x $       0.21   25.0%                           SQ18 V12.6 M-4.0 RSI34
+EXIT    2021-11-26 08:26                       $       0.19                $+6,860 25m        Take profit hit
+
+ENTRY   2021-11-26 08:07  SOL      SHORT    2x $     196.69   25.0%                           SQ24 V3.0 M-4.3 RSI35
+EXIT    2021-11-26 12:14                       $     183.50               $+10,255 4h 7m      Take profit hit
+
+ENTRY   2021-11-26 08:26  DOGE     SHORT    1x $       0.19   25.0%                           SQ18 V12.6 M-4.0 RSI34
+EXIT    2021-11-27 04:47                       $       0.21                $-6,946 20h 21m    Stop loss hit
+
+ENTRY   2021-12-04 00:00  DOGE     SHORT    1x $       0.20   19.3%                           SQ5 V2.2 M-3.2 RSI30
+EXIT    2021-12-04 04:54                       $       0.19                $+4,483 4h 54m     Take profit hit
+
+ENTRY   2021-12-03 20:00  BTC      SHORT    3x $  53,631.28   25.0%                           SQ15 V3.9 M-2.4 RSI33
+EXIT    2021-12-04 04:54                       $  50,749.81               $+15,443 8h 54m     Take profit hit
+
+ENTRY   2021-12-04 00:00  SOL      SHORT    2x $     211.68   15.4%                           SQ3 V1.7 M-1.0 RSI42
+EXIT    2021-12-04 05:03                       $     187.91               $+10,903 5h 3m      Take profit hit
+
+ENTRY   2021-12-06 20:00  ETH      SHORT    3x $   4,199.36   14.0%                           SQ2 V1.2 M-0.6 RSI43
+EXIT    2021-12-09 00:06                       $   4,484.03               $-10,815 2d 4h      Stop loss hit
+
+ENTRY   2021-12-13 16:00  SOL      SHORT    2x $     158.60   22.2%                           SQ6 V2.8 M-5.4 RSI32
+EXIT    2021-12-13 19:40                       $     148.29                $+9,593 3h 40m     Take profit hit
+
+ENTRY   2021-12-13 16:00  DOGE     SHORT    1x $       0.16   25.0%                           SQ11 V3.1 M-4.2 RSI37
+EXIT    2021-12-14 10:34                       $       0.17                $-4,840 18h 34m    Stop loss hit
+
+ENTRY   2021-12-13 19:40  SOL      SHORT    2x $     149.08   22.2%                           SQ6 V2.8 M-5.4 RSI32
+EXIT    2021-12-14 12:22                       $     160.02               $-11,335 16h 42m    Stop loss hit
+
+ENTRY   2021-12-13 20:00  BTC      SHORT    3x $  46,654.57   23.0%                           SQ17 V1.6 M-1.9 RSI40
+EXIT    2021-12-15 19:05                       $  48,946.65               $-14,276 1d 23h     Stop loss hit
+
+ENTRY   2021-12-13 20:00  ETH      SHORT    3x $   3,760.68   23.0%                           SQ10 V1.7 M-3.5 RSI35
+EXIT    2021-12-16 00:00                       $   3,981.08               $-15,250 2d 4h      Stop loss hit
+
+ENTRY   2021-12-17 20:00  BTC      SHORT    3x $  46,759.90   13.0%                           SQ6 V1.2 M-1.8 RSI43
+EXIT    2021-12-21 04:25                       $  48,719.80                $-6,076 3d 8h      Stop loss hit
+
+ENTRY   2021-12-22 12:00  DOGE     LONG     2x $       0.17   15.3%                           SQ20 V2.7 M1.4 RSI56
+EXIT    2021-12-23 07:11                       $       0.18                $+4,266 19h 11m    Take profit hit
+
+ENTRY   2021-12-24 16:00  ETH      LONG     4x $   4,099.46   18.5%                           SQ6 V1.1 M1.9 RSI56
+EXIT    2021-12-28 01:38                       $   4,000.18                $-6,175 3d 9h      Stop loss hit
+
+ENTRY   2021-12-28 12:00  BTC      SHORT    3x $  49,151.93   20.9%                           SQ10 V1.4 M-1.7 RSI37
+EXIT    2021-12-28 19:09                       $  47,351.55                $+8,155 7h 9m      Take profit hit
+
+ENTRY   2022-01-05 19:01  DOGE     SHORT    1x $       0.17   25.0%                           SQ34 V6.6 M-3.6 RSI31
+EXIT    2022-01-05 19:49                       $       0.16                $+4,253 48m        Take profit hit
+
+ENTRY   2022-01-05 20:00  ETH      SHORT    3x $   3,651.28   25.0%                           SQ12 V5.4 M-2.5 RSI38
+EXIT    2022-01-05 22:28                       $   3,499.67               $+10,251 2h 28m     Take profit hit
+
+ENTRY   2022-01-05 19:49  DOGE     SHORT    1x $       0.16   25.0%                           SQ34 V6.6 M-3.6 RSI31
+EXIT    2022-01-05 22:34                       $       0.15                $+4,550 2h 45m     Take profit hit
+
+ENTRY   2022-01-05 20:00  BTC      SHORT    3x $  44,666.23   25.0%                           SQ34 V4.5 M-3.8 RSI29
+EXIT    2022-01-05 22:34                       $  42,499.42               $+13,378 2h 34m     Take profit hit
+
+ENTRY   2022-01-05 22:28  ETH      SHORT    3x $   3,457.54   25.0%                           SQ12 V5.4 M-2.5 RSI38
+EXIT    2022-01-07 03:31                       $   3,251.23               $+16,028 1d 5h      Take profit hit
+
+ENTRY   2022-01-05 22:34  BTC      SHORT    3x $  42,539.22   25.0%                           SQ34 V4.5 M-3.8 RSI29
+EXIT    2022-01-10 14:21                       $  39,923.92               $+18,534 4d 15h     Take profit hit
+
+ENTRY   2022-01-10 16:00  DOGE     SHORT    1x $       0.14   25.0%                           SQ15 V2.6 M-3.9 RSI37
+EXIT    2022-01-11 11:26                       $       0.15                $-5,134 19h 26m    Stop loss hit
+
+ENTRY   2022-01-12 12:00  DOGE     LONG     2x $       0.16   19.3%                           SQ7 V2.3 M1.3 RSI57
+EXIT    2022-01-12 15:30                       $       0.16                $+7,704 3h 30m     Take profit hit
+
+ENTRY   2022-01-12 15:30  DOGE     LONG     2x $       0.16   19.3%                           SQ7 V2.3 M1.3 RSI57
+EXIT    2022-01-13 05:03                       $       0.17                $+8,499 13h 33m    Take profit hit
+
+ENTRY   2022-01-12 16:00  SOL      LONG     3x $     147.97   23.0%                           SQ23 V1.7 M2.5 RSI61
+EXIT    2022-01-13 14:18                       $     156.65               $+14,843 22h 18m    Take profit hit
+
+ENTRY   2022-01-21 00:02  ETH      SHORT    3x $   2,986.10   19.3%                           SQ5 V4.4 M-4.8 RSI30
+EXIT    2022-01-21 12:31                       $   2,803.96               $+14,765 12h 29m    Take profit hit
+
+ENTRY   2022-01-21 00:00  SOL      SHORT    2x $     127.92   22.2%                           SQ6 V4.8 M-4.3 RSI32
+EXIT    2022-01-21 12:33                       $     117.94               $+13,227 12h 33m    Take profit hit
+
+ENTRY   2022-01-21 01:38  BTC      SHORT    3x $  40,294.94   25.0%                           SQ10 V5.6 M-4.4 RSI31
+EXIT    2022-01-21 12:36                       $  38,130.00               $+19,021 10h 58m    Take profit hit
+
+ENTRY   2022-01-26 12:00  ETH      LONG     4x $   2,544.76   18.2%                           SQ11 V1.3 M0.5 RSI58
+EXIT    2022-01-26 19:02                       $   2,684.38               $+18,922 7h 2m      Take profit hit
+
+ENTRY   2022-01-26 12:00  SOL      SHORT    2x $      97.76   16.1%                           SQ9 V1.0 M-1.1 RSI54
+EXIT    2022-01-26 22:06                       $      89.79               $+11,099 10h 6m     Take profit hit
+
+ENTRY   2022-02-04 20:01  DOGE     LONG     2x $       0.14   16.1%                           SQ2 V1.2 M2.0 RSI58
+EXIT    2022-02-05 00:36                       $       0.15                $+6,705 4h 35m     Take profit hit
+
+ENTRY   2022-02-04 16:00  ETH      LONG     4x $   2,877.61   16.1%                           SQ5 V1.3 M3.3 RSI63
+EXIT    2022-02-06 23:44                       $   3,064.27               $+21,058 2d 7h      Take profit hit
+
+ENTRY   2022-02-11 16:07  DOGE     SHORT    1x $       0.15   16.1%                           SQ3 V1.2 M-2.5 RSI27
+EXIT    2022-02-11 19:05                       $       0.15                $+3,228 2h 58m     Take profit hit
+
+ENTRY   2022-02-11 19:05  DOGE     SHORT    1x $       0.15   16.1%                           SQ3 V1.2 M-2.5 RSI27
+EXIT    2022-02-13 11:04                       $       0.15                $-3,584 1d 15h     Stop loss hit
+
+ENTRY   2022-02-11 20:00  ETH      SHORT    3x $   3,001.08   23.0%                           SQ20 V1.9 M-1.7 RSI40
+EXIT    2022-02-15 23:26                       $   3,163.48               $-19,774 4d 3h      Stop loss hit
+
+ENTRY   2022-02-17 20:00  DOGE     SHORT    1x $       0.14   14.7%                           SQ24 V1.0 M-2.7 RSI42
+EXIT    2022-02-21 21:51                       $       0.13                $+3,950 4d 1h      Take profit hit
+
+ENTRY   2022-02-21 21:51  DOGE     SHORT    1x $       0.13   25.0%                           SQ11 V3.3 M-4.2 RSI37
+EXIT    2022-02-22 03:14                       $       0.12                $+8,137 5h 23m     Take profit hit
+
+ENTRY   2022-02-22 04:00  SOL      SHORT    2x $      81.60   23.0%                           SQ10 V1.5 M-3.2 RSI39
+EXIT    2022-02-23 02:14                       $      88.77               $-19,101 22h 14m    Stop loss hit
+
+ENTRY   2022-02-24 04:00  BTC      SHORT    3x $  34,844.78   22.2%                           SQ9 V2.4 M-3.6 RSI39
+EXIT    2022-02-24 18:53                       $  36,811.04               $-20,931 14h 53m    Stop loss hit
+
+ENTRY   2022-02-24 04:00  ETH      SHORT    3x $   2,391.82   25.0%                           SQ16 V2.6 M-3.7 RSI38
+EXIT    2022-02-25 00:00                       $   2,556.39               $-25,715 20h 0m     Stop loss hit
+
+ENTRY   2022-02-28 20:00  SOL      LONG     3x $      96.36   14.7%                           SQ10 V1.4 M3.0 RSI64
+EXIT    2022-03-02 03:47                       $     104.84               $+16,069 1d 7h      Take profit hit
+
+ENTRY   2022-03-04 00:00  ETH      SHORT    3x $   2,830.79   14.0%                           SQ3 V1.1 M-0.6 RSI44
+EXIT    2022-03-04 14:16                       $   2,675.77               $+10,589 14h 16m    Take profit hit
+
+ENTRY   2022-03-04 00:00  SOL      SHORT    2x $      95.51   14.0%                           SQ4 V1.2 M-0.1 RSI44
+EXIT    2022-03-04 19:43                       $      88.92                $+8,128 19h 43m    Take profit hit
+
+ENTRY   2022-03-09 04:00  BTC      LONG     4x $  41,280.35   20.4%                           SQ9 V1.9 M1.7 RSI60
+EXIT    2022-03-10 05:07                       $  39,251.95               $-20,276 1d 1h      Stop loss hit
+
+ENTRY   2022-03-16 16:00  SOL      LONG     3x $      83.98   25.0%                           SQ22 V3.1 M1.9 RSI60
+EXIT    2022-03-17 01:36                       $      88.85               $+18,609 9h 36m     Take profit hit
+
+ENTRY   2022-03-16 12:00  ETH      LONG     4x $   2,694.87   20.9%                           SQ23 V1.2 M2.1 RSI60
+EXIT    2022-03-17 14:10                       $   2,831.89               $+20,012 1d 2h      Take profit hit
+
+ENTRY   2022-03-16 20:00  BTC      LONG     4x $  40,807.40   20.9%                           SQ23 V1.4 M2.2 RSI63
+EXIT    2022-03-22 04:27                       $  43,177.84               $+23,888 5d 8h      Take profit hit
+
+ENTRY   2022-03-23 12:00  DOGE     LONG     2x $       0.12   22.2%                           SQ9 V2.5 M2.6 RSI58
+EXIT    2022-03-23 15:46                       $       0.13                $+6,781 3h 46m     Take profit hit
+
+ENTRY   2022-03-23 15:46  DOGE     LONG     2x $       0.13   22.2%                           SQ9 V2.5 M2.6 RSI58
+EXIT    2022-03-23 16:56                       $       0.13                $+7,724 1h 10m     Take profit hit
+
+ENTRY   2022-03-24 00:00  SOL      LONG     3x $      95.08   23.0%                           SQ15 V1.8 M1.7 RSI61
+EXIT    2022-03-24 10:50                       $     100.63               $+19,996 10h 50m    Take profit hit
+
+ENTRY   2022-03-24 16:00  ETH      LONG     4x $   3,117.36   18.5%                           SQ6 V1.2 M3.0 RSI65
+EXIT    2022-03-27 20:38                       $   3,244.62               $+17,057 3d 4h      Take profit hit
+
+ENTRY   2022-03-27 20:00  DOGE     LONG     2x $       0.14   22.2%                           SQ6 V2.3 M3.8 RSI62
+EXIT    2022-03-28 03:04                       $       0.15               $+16,168 7h 4m      Take profit hit
+
+ENTRY   2022-03-28 04:00  SOL      LONG     3x $     106.93   20.4%                           SQ6 V1.6 M4.5 RSI61
+EXIT    2022-03-28 14:47                       $     112.49               $+17,238 10h 47m    Take profit hit
+
+ENTRY   2022-03-31 16:00  BTC      SHORT    3x $  46,498.43   16.8%                           SQ5 V2.1 M-0.4 RSI38
+EXIT    2022-03-31 23:48                       $  45,201.32                $+9,317 7h 48m     Take profit hit
+
+ENTRY   2022-04-01 00:00  ETH      SHORT    3x $   3,280.83   17.7%                           SQ8 V1.7 M-0.4 RSI42
+EXIT    2022-04-01 14:49                       $   3,411.25               $-13,140 14h 49m    Stop loss hit
+
+ENTRY   2022-04-05 12:00  DOGE     LONG     2x $       0.15   22.2%                           SQ6 V8.5 M3.4 RSI66
+EXIT    2022-04-05 16:10                       $       0.16               $+21,399 4h 10m     Take profit hit
+
+ENTRY   2022-04-06 00:00  SOL      SHORT    2x $     126.64   23.0%                           SQ11 V1.6 M-1.8 RSI34
+EXIT    2022-04-06 15:18                       $     115.80               $+22,287 15h 18m    Take profit hit
+
+ENTRY   2022-04-06 12:00  BTC      SHORT    3x $  44,821.60   25.0%                           SQ15 V2.7 M-2.6 RSI35
+EXIT    2022-04-06 17:04                       $  43,490.10               $+15,436 5h 4m      Take profit hit
+
+ENTRY   2022-04-11 09:07  ETH      SHORT    3x $   3,157.12   25.0%                           SQ15 V2.4 M-4.0 RSI35
+EXIT    2022-04-11 11:36                       $   3,033.23               $+19,172 2h 29m     Take profit hit
+
+ENTRY   2022-04-11 08:09  BTC      SHORT    3x $  42,271.53   19.3%                           SQ3 V2.2 M-5.1 RSI33
+EXIT    2022-04-11 13:31                       $  40,869.17               $+13,903 5h 22m     Take profit hit
+
+ENTRY   2022-04-11 12:00  SOL      SHORT    2x $     104.30   19.3%                           SQ2 V2.2 M-4.7 RSI26
+EXIT    2022-04-18 04:24                       $      95.80               $+19,550 6d 16h     Take profit hit
+
+ENTRY   2022-04-11 11:36  ETH      SHORT    3x $   3,033.85   25.0%                           SQ15 V2.4 M-4.0 RSI35
+EXIT    2022-04-18 07:49                       $   2,895.92               $+23,260 6d 20h     Take profit hit
+
+ENTRY   2022-04-18 07:49  ETH      SHORT    3x $   2,889.02   22.2%                           SQ8 V2.5 M-3.9 RSI38
+EXIT    2022-04-18 17:56                       $   2,988.91               $-17,147 10h 7m     Stop loss hit
+
+ENTRY   2022-04-19 16:00  SOL      LONG     3x $     106.53   18.5%                           SQ6 V1.2 M1.7 RSI59
+EXIT    2022-04-21 20:40                       $     101.85               $-16,440 2d 4h      Stop loss hit
+
+ENTRY   2022-04-25 04:00  ETH      SHORT    3x $   2,874.16   12.4%                           SQ3 V1.5 M-6.0 RSI26
+EXIT    2022-04-25 18:48                       $   2,966.33                $-8,465 14h 48m    Stop loss hit
+
+ENTRY   2022-05-05 00:00  SOL      LONG     3x $      92.81   16.1%                           SQ14 V1.6 M1.7 RSI58
+EXIT    2022-05-05 14:23                       $      88.20               $-15,599 14h 23m    Stop loss hit
+
+ENTRY   2022-05-09 08:04  DOGE     SHORT    1x $       0.12   15.6%                           SQ8 V2.6 M-3.9 RSI28
+EXIT    2022-05-09 10:44                       $       0.12                $+5,144 2h 40m     Take profit hit
+
+ENTRY   2022-05-09 10:44  DOGE     SHORT    1x $       0.12   22.2%                           SQ8 V2.6 M-3.9 RSI28
+EXIT    2022-05-09 16:49                       $       0.11                $+8,603 6h 5m      Take profit hit
+
+ENTRY   2022-05-25 12:00  ETH      SHORT    3x $   1,938.82   16.1%                           SQ8 V1.4 M-0.6 RSI49
+EXIT    2022-05-26 08:21                       $   1,864.27               $+12,620 20h 21m    Take profit hit
+
+ENTRY   2022-05-30 01:30  ETH      LONG     4x $   1,820.82   14.0%                           SQ4 V1.4 M-0.3 RSI52
+EXIT    2022-05-30 03:47                       $   1,886.61               $+14,343 2h 17m     Take profit hit
+
+ENTRY   2022-05-30 01:59  BTC      LONG     4x $  29,741.43   23.0%                           SQ37 V1.8 M2.3 RSI66
+EXIT    2022-05-30 06:08                       $  30,445.58               $+15,636 4h 9m      Take profit hit
+
+ENTRY   2022-05-30 03:47  ETH      LONG     4x $   1,881.57   14.0%                           SQ4 V1.4 M-0.3 RSI52
+EXIT    2022-05-30 20:25                       $   1,953.78               $+15,812 16h 38m    Take profit hit
+
+ENTRY   2022-06-01 16:00  SOL      SHORT    2x $      42.88   15.4%                           SQ5 V1.6 M-1.1 RSI46
+EXIT    2022-06-01 20:31                       $      39.84               $+14,740 4h 31m     Take profit hit
+
+ENTRY   2022-06-10 16:00  ETH      SHORT    3x $   1,725.05   22.2%                           SQ8 V2.9 M-4.1 RSI39
+EXIT    2022-06-11 08:37                       $   1,638.73               $+25,046 16h 37m    Take profit hit
+
+ENTRY   2022-06-10 16:00  DOGE     SHORT    1x $       0.08   20.4%                           SQ8 V1.8 M-4.9 RSI31
+EXIT    2022-06-11 11:02                       $       0.07                $+6,625 19h 2m     Take profit hit
+
+ENTRY   2022-06-10 16:00  BTC      SHORT    3x $  29,405.08   18.5%                           SQ8 V1.4 M-3.0 RSI45
+EXIT    2022-06-11 13:06                       $  28,312.40               $+17,219 21h 6m     Take profit hit
+
+ENTRY   2022-06-16 00:00  SOL      LONG     3x $      34.71   19.3%                           SQ9 V2.4 M0.2 RSI50
+EXIT    2022-06-16 13:53                       $      30.47               $-53,384 13h 53m    *** LIQUIDATED ***
+
+ENTRY   2022-06-18 08:00  ETH      SHORT    3x $   1,000.71   20.9%                           SQ15 V1.2 M-3.9 RSI32
+EXIT    2022-06-18 19:42                       $     920.36               $+37,748 11h 42m    Take profit hit
+
+ENTRY   2022-06-18 08:00  BTC      SHORT    3x $  19,188.70   20.9%                           SQ13 V1.0 M-4.5 RSI32
+EXIT    2022-06-18 20:07                       $  17,995.98               $+32,520 12h 7m     Take profit hit
+
+ENTRY   2022-06-18 16:00  SOL      SHORT    2x $      29.81   18.2%                           SQ13 V1.1 M-0.9 RSI51
+EXIT    2022-06-19 10:58                       $      32.63               $-24,265 18h 58m    Stop loss hit
+
+ENTRY   2022-06-19 20:01  DOGE     LONG     2x $       0.06   15.4%                           SQ4 V1.5 M1.3 RSI58
+EXIT    2022-06-21 14:11                       $       0.07               $+35,959 1d 18h     Take profit hit
+
+ENTRY   2022-06-20 12:00  SOL      LONG     3x $      36.22   20.9%                           SQ10 V1.3 M1.7 RSI59
+EXIT    2022-06-24 12:24                       $      40.91               $+60,246 4d 0h      Take profit hit
+
+ENTRY   2022-06-28 16:00  BTC      SHORT    3x $  20,584.52   25.0%                           SQ16 V2.3 M-2.1 RSI35
+EXIT    2022-06-30 06:29                       $  19,814.95               $+27,496 1d 14h     Take profit hit
+
+ENTRY   2022-07-04 16:00  ETH      LONG     4x $   1,110.79   20.9%                           SQ16 V1.2 M2.0 RSI62
+EXIT    2022-07-05 06:14                       $   1,170.01               $+41,666 14h 14m    Take profit hit
+
+ENTRY   2022-07-10 12:00  DOGE     SHORT    1x $       0.07   16.1%                           SQ9 V1.2 M-1.1 RSI44
+EXIT    2022-07-11 01:22                       $       0.07                $+4,637 13h 22m    Take profit hit
+
+ENTRY   2022-07-14 16:00  SOL      LONG     3x $      35.25   16.8%                           SQ4 V2.7 M0.0 RSI55
+EXIT    2022-07-14 21:41                       $      37.18               $+24,497 5h 41m     Take profit hit
+
+ENTRY   2022-07-15 00:00  BTC      SHORT    3x $  20,577.24   16.1%                           SQ7 V1.0 M-0.1 RSI52
+EXIT    2022-07-16 16:53                       $  21,465.94               $-23,209 1d 16h     Stop loss hit
+
+ENTRY   2022-07-18 08:00  BTC      LONG     4x $  22,261.00   16.1%                           SQ5 V1.3 M4.2 RSI68
+EXIT    2022-07-19 16:31                       $  23,379.45               $+32,073 1d 8h      Take profit hit
+
+ENTRY   2022-07-25 20:00  SOL      SHORT    2x $      37.96   16.1%                           SQ2 V1.1 M-3.9 RSI28
+EXIT    2022-07-26 06:57                       $      35.50               $+18,752 10h 57m    Take profit hit
+
+ENTRY   2022-07-26 00:00  ETH      SHORT    3x $   1,435.30   20.9%                           SQ31 V1.2 M-2.1 RSI36
+EXIT    2022-07-27 18:02                       $   1,535.34               $-44,294 1d 18h     Stop loss hit
+
+ENTRY   2022-08-02 00:00  BTC      SHORT    3x $  23,245.30   18.2%                           SQ14 V1.0 M-1.4 RSI36
+EXIT    2022-08-08 08:46                       $  24,092.87               $-21,807 6d 8h      Stop loss hit
+
+ENTRY   2022-08-08 12:00  ETH      LONG     4x $   1,788.86   12.4%                           SQ4 V1.8 M4.2 RSI66
+EXIT    2022-08-09 10:28                       $   1,728.78               $-16,441 22h 28m    Stop loss hit
+
+ENTRY   2022-08-17 16:00  SOL      SHORT    2x $      41.04   11.3%                           SQ2 V1.0 M-3.5 RSI26
+EXIT    2022-08-19 00:19                       $      38.70               $+10,868 1d 8h      Take profit hit
+
+ENTRY   2022-08-19 06:00  ETH      SHORT    3x $   1,817.46   23.0%                           SQ12 V1.9 M-4.5 RSI29
+EXIT    2022-08-19 06:38                       $   1,731.87               $+30,320 38m        Take profit hit
+
+ENTRY   2022-08-19 06:38  ETH      SHORT    3x $   1,728.14   23.0%                           SQ12 V1.9 M-4.5 RSI29
+EXIT    2022-08-19 21:56                       $   1,642.53               $+32,962 15h 18m    Take profit hit
+
+ENTRY   2022-08-26 16:00  ETH      SHORT    3x $   1,590.89   14.0%                           SQ2 V1.4 M-1.3 RSI45
+EXIT    2022-08-26 23:48                       $   1,488.58               $+26,881 7h 48m     Take profit hit
+
+ENTRY   2022-08-26 16:00  BTC      SHORT    3x $  20,765.85   20.9%                           SQ26 V1.5 M-2.2 RSI38
+EXIT    2022-08-27 15:40                       $  19,901.43               $+28,878 23h 40m    Take profit hit
+
+ENTRY   2022-08-26 16:00  SOL      SHORT    2x $      33.27   20.9%                           SQ28 V1.5 M-2.6 RSI40
+EXIT    2022-08-27 16:20                       $      31.06               $+25,311 1d 0h      Take profit hit
+
+ENTRY   2022-09-06 00:00  ETH      LONG     4x $   1,620.37   19.3%                           SQ2 V2.5 M2.7 RSI50
+EXIT    2022-09-06 12:25                       $   1,686.54               $+34,604 12h 25m    Take profit hit
+
+ENTRY   2022-09-06 20:00  DOGE     SHORT    1x $       0.06   20.9%                           SQ49 V1.1 M-2.3 RSI38
+EXIT    2022-09-09 00:38                       $       0.06               $-11,259 2d 4h      Stop loss hit
+
+ENTRY   2022-09-06 20:00  BTC      SHORT    3x $  18,825.64   20.9%                           SQ44 V1.5 M-3.6 RSI32
+EXIT    2022-09-09 03:25                       $  19,546.66               $-30,279 2d 7h      Stop loss hit
+
+ENTRY   2022-09-12 16:00  SOL      LONG     3x $      37.23   15.6%                           SQ8 V3.8 M4.1 RSI65
+EXIT    2022-09-13 15:24                       $      34.53               $-34,103 23h 24m    Stop loss hit
+
+ENTRY   2022-09-13 12:30  ETH      SHORT    3x $   1,678.05   15.6%                           SQ9 V3.9 M-2.1 RSI35
+EXIT    2022-09-14 00:01                       $   1,570.81               $+31,871 11h 31m    Take profit hit
+
+ENTRY   2022-09-17 16:00  DOGE     SHORT    1x $       0.06   16.1%                           SQ8 V1.4 M-0.3 RSI56
+EXIT    2022-09-18 09:47                       $       0.06                $+4,037 17h 47m    Take profit hit
+
+ENTRY   2022-09-19 02:05  BTC      SHORT    3x $  19,455.61   20.9%                           SQ15 V1.5 M-4.1 RSI32
+EXIT    2022-09-19 02:50                       $  18,679.01               $+29,555 45m        Take profit hit
+
+ENTRY   2022-09-19 02:50  BTC      SHORT    3x $  18,708.11   20.9%                           SQ15 V1.5 M-4.1 RSI32
+EXIT    2022-09-19 14:40                       $  19,392.12               $-28,699 11h 50m    Stop loss hit
+
+ENTRY   2022-09-19 00:00  SOL      SHORT    2x $      31.09   16.1%                           SQ4 V1.2 M-3.2 RSI37
+EXIT    2022-09-19 19:38                       $      32.91               $-18,650 19h 38m    Stop loss hit
+
+ENTRY   2022-09-23 16:00  DOGE     LONG     2x $       0.06   17.6%                           SQ15 V4.7 M3.0 RSI65
+EXIT    2022-09-24 01:09                       $       0.07               $+25,729 9h 9m      Take profit hit
+
+ENTRY   2022-10-02 20:00  ETH      SHORT    3x $   1,306.13   20.9%                           SQ29 V1.2 M-2.5 RSI32
+EXIT    2022-10-02 23:06                       $   1,269.90               $+18,509 3h 6m      Take profit hit
+
+ENTRY   2022-10-02 23:06  ETH      SHORT    3x $   1,273.83   20.9%                           SQ29 V1.2 M-2.5 RSI32
+EXIT    2022-10-03 14:24                       $   1,313.49               $-21,814 15h 18m    Stop loss hit
+
+ENTRY   2022-10-04 08:00  ETH      LONG     4x $   1,351.47   14.0%                           SQ4 V1.2 M1.0 RSI57
+EXIT    2022-10-05 13:41                       $   1,316.42               $-16,379 1d 5h      Stop loss hit
+
+ENTRY   2022-10-07 16:00  BTC      SHORT    3x $  19,555.89   11.3%                           SQ7 V1.3 M-0.5 RSI39
+EXIT    2022-10-11 00:12                       $  18,980.47               $+11,574 3d 8h      Take profit hit
+
+ENTRY   2022-10-11 00:00  SOL      SHORT    2x $      31.87   14.3%                           SQ8 V1.8 M-5.0 RSI29
+EXIT    2022-10-11 23:21                       $      30.70               $+10,096 23h 21m    Take profit hit
+
+ENTRY   2022-10-20 00:00  BTC      SHORT    3x $  19,117.27   16.1%                           SQ7 V1.0 M-0.9 RSI47
+EXIT    2022-10-21 12:13                       $  18,674.96               $+13,194 1d 12h     Take profit hit
+
+ENTRY   2022-10-20 00:00  ETH      SHORT    3x $   1,284.23   16.1%                           SQ6 V1.1 M-0.9 RSI48
+EXIT    2022-10-22 15:00                       $   1,317.51               $-13,810 2d 15h     Stop loss hit
+
+ENTRY   2022-10-23 17:51  BTC      LONG     4x $  19,376.68   20.9%                           SQ14 V1.3 M2.0 RSI64
+EXIT    2022-10-23 21:23                       $  19,577.96                $+9,299 3h 32m     Take profit hit
+
+ENTRY   2022-10-23 20:00  SOL      LONG     3x $      28.83   15.4%                           SQ2 V1.8 M-0.0 RSI50
+EXIT    2022-10-25 16:00                       $      29.82               $+15,740 1d 20h     Take profit hit
+
+ENTRY   2022-11-04 20:00  SOL      LONG     3x $      33.52   14.0%                           SQ5 V1.2 M1.2 RSI56
+EXIT    2022-11-05 12:01                       $      35.61               $+26,807 16h 1m     Take profit hit
+
+ENTRY   2022-11-20 16:05  DOGE     SHORT    1x $       0.08   20.9%                           SQ58 V1.5 M-3.9 RSI31
+EXIT    2022-11-20 21:46                       $       0.08               $+10,173 5h 41m     Take profit hit
+
+ENTRY   2022-11-20 20:07  ETH      SHORT    3x $   1,180.38   25.0%                           SQ13 V2.5 M-4.3 RSI34
+EXIT    2022-11-20 21:58                       $   1,134.19               $+32,894 1h 51m     Take profit hit
+
+ENTRY   2022-11-21 00:00  BTC      SHORT    3x $  16,266.01   23.0%                           SQ55 V1.8 M-4.0 RSI36
+EXIT    2022-11-21 19:28                       $  15,837.16               $+23,311 19h 28m    Take profit hit
+
+ENTRY   2022-11-20 21:58  ETH      SHORT    3x $   1,138.91   25.0%                           SQ13 V2.5 M-4.3 RSI34
+EXIT    2022-11-21 19:34                       $   1,082.66               $+42,901 21h 36m    Take profit hit
+
+ENTRY   2022-11-30 04:00  BTC      LONG     4x $  16,847.45   16.1%                           SQ4 V1.3 M1.7 RSI62
+EXIT    2022-12-05 02:47                       $  17,324.93               $+23,035 4d 22h     Take profit hit
+
+ENTRY   2022-12-07 06:51  ETH      SHORT    3x $   1,251.66   16.1%                           SQ2 V1.3 M-2.4 RSI41
+EXIT    2022-12-07 08:05                       $   1,220.56               $+14,806 1h 14m     Take profit hit
+
+ENTRY   2022-12-11 22:00  DOGE     SHORT    1x $       0.09   25.0%                           SQ11 V2.2 M-4.2 RSI35
+EXIT    2022-12-11 22:38                       $       0.09                $+8,549 38m        Take profit hit
+
+ENTRY   2022-12-08 20:00  BTC      LONG     4x $  17,262.08   14.0%                           SQ2 V1.2 M1.3 RSI47
+EXIT    2022-12-12 00:14                       $  16,979.27               $-12,503 3d 4h      Stop loss hit
+
+ENTRY   2022-12-08 20:00  ETH      LONG     4x $   1,284.66   16.8%                           SQ2 V2.1 M0.7 RSI46
+EXIT    2022-12-12 00:43                       $   1,251.26               $-23,254 3d 4h      Stop loss hit
+
+ENTRY   2022-12-11 22:38  DOGE     SHORT    1x $       0.09   25.0%                           SQ11 V2.2 M-4.2 RSI35
+EXIT    2022-12-12 02:53                       $       0.09                $+8,841 4h 15m     Take profit hit
+
+ENTRY   2022-12-12 02:05  SOL      SHORT    2x $      13.34   17.6%                           SQ12 V2.3 M-4.4 RSI34
+EXIT    2022-12-12 02:54                       $      12.90               $+12,862 49m        Take profit hit
+
+ENTRY   2022-12-12 02:54  SOL      SHORT    2x $      12.89   25.0%                           SQ12 V2.3 M-4.4 RSI34
+EXIT    2022-12-12 20:58                       $      13.27               $-17,630 18h 4m     Stop loss hit
+
+ENTRY   2022-12-12 04:00  ETH      SHORT    3x $   1,243.41   16.8%                           SQ4 V2.7 M-0.8 RSI33
+EXIT    2022-12-12 21:03                       $   1,270.18               $-14,028 17h 3m     Stop loss hit
+
+ENTRY   2022-12-13 12:21  ETH      LONG     4x $   1,297.26   13.5%                           SQ4 V3.7 M3.2 RSI66
+EXIT    2022-12-13 13:30                       $   1,332.56               $+18,313 1h 9m      Take profit hit
+
+ENTRY   2022-12-13 13:30  ETH      LONG     4x $   1,341.51   19.3%                           SQ4 V3.7 M3.2 RSI66
+EXIT    2022-12-15 01:44                       $   1,299.88               $-31,440 1d 12h     Stop loss hit
+
+ENTRY   2022-12-20 12:00  ETH      SHORT    3x $   1,212.80   14.0%                           SQ5 V1.4 M-0.5 RSI67
+EXIT    2022-12-27 12:00                       $   1,219.22                $-2,975 7d 0h      Time exit
+
+ENTRY   2022-12-24 08:00  SOL      SHORT    2x $      11.35   20.9%                           SQ27 V1.4 M-3.7 RSI28
+EXIT    2022-12-27 14:36                       $      10.96               $+15,712 3d 6h      Take profit hit
+
+ENTRY   2022-12-22 20:00  DOGE     LONG     2x $       0.08   16.8%                           SQ2 V2.6 M0.0 RSI49
+EXIT    2022-12-28 03:03                       $       0.07               $-20,633 5d 7h      Stop loss hit
+
+ENTRY   2022-12-27 14:36  SOL      SHORT    2x $      10.92   19.3%                           SQ3 V2.9 M-6.2 RSI26
+EXIT    2022-12-28 05:13                       $      10.54               $+14,722 14h 37m    Take profit hit
+
+ENTRY   2023-01-02 08:00  ETH      LONG     4x $   1,213.37   20.9%                           SQ19 V1.5 M2.7 RSI62
+EXIT    2023-01-04 02:35                       $   1,231.48               $+15,244 1d 18h     Take profit hit
+
+ENTRY   2023-01-02 04:00  BTC      LONG     4x $  16,662.84   20.9%                           SQ17 V1.0 M1.8 RSI58
+EXIT    2023-01-04 03:07                       $  16,795.02                $+7,930 1d 23h     Take profit hit
+
+ENTRY   2023-01-09 00:00  DOGE     LONG     2x $       0.07   25.0%                           SQ33 V3.0 M2.9 RSI62
+EXIT    2023-01-09 09:39                       $       0.08               $+20,816 9h 39m     Take profit hit
+
+ENTRY   2023-01-13 21:00  DOGE     LONG     2x $       0.08   25.0%                           SQ14 V3.4 M3.9 RSI67
+EXIT    2023-01-13 23:10                       $       0.08               $+30,577 2h 10m     Take profit hit
+
+ENTRY   2023-01-13 23:10  DOGE     LONG     2x $       0.08   25.0%                           SQ14 V3.4 M3.9 RSI67
+EXIT    2023-01-14 01:39                       $       0.09               $+34,769 2h 29m     Take profit hit
+
+ENTRY   2023-01-18 20:00  SOL      SHORT    2x $      21.74   18.2%                           SQ11 V1.2 M-1.1 RSI39
+EXIT    2023-01-20 20:34                       $      23.84               $-43,100 2d 0h      Stop loss hit
+
+ENTRY   2023-01-20 20:05  ETH      LONG     4x $   1,626.56   18.5%                           SQ6 V1.3 M3.1 RSI65
+EXIT    2023-01-21 10:13                       $   1,678.59               $+30,937 14h 8m     Take profit hit
+
+ENTRY   2023-01-25 00:00  ETH      SHORT    3x $   1,553.18   20.4%                           SQ9 V1.7 M-2.0 RSI28
+EXIT    2023-01-25 21:55                       $   1,615.86               $-32,941 21h 55m    Stop loss hit
+
+ENTRY   2023-01-27 16:00  ETH      SHORT    3x $   1,575.91   14.0%                           SQ4 V1.3 M-0.2 RSI46
+EXIT    2023-01-29 18:40                       $   1,625.98               $-17,440 2d 2h      Stop loss hit
+
+ENTRY   2023-01-29 20:00  SOL      LONG     3x $      26.33   14.7%                           SQ24 V1.3 M3.2 RSI66
+EXIT    2023-01-30 09:03                       $      24.97               $-27,401 13h 3m     Stop loss hit
+
+ENTRY   2023-01-29 20:00  ETH      LONG     4x $   1,655.33   14.7%                           SQ12 V1.4 M2.3 RSI58
+EXIT    2023-01-30 09:05                       $   1,607.04               $-22,970 13h 5m     Stop loss hit
+
+ENTRY   2023-01-29 16:00  BTC      LONG     4x $  23,537.22   23.0%                           SQ35 V1.6 M3.8 RSI68
+EXIT    2023-01-31 00:00                       $  22,989.94               $-28,951 1d 8h      Stop loss hit
+
+ENTRY   2023-01-31 16:00  DOGE     LONG     2x $       0.09   15.6%                           SQ9 V3.1 M3.1 RSI63
+EXIT    2023-02-07 16:00                       $       0.09               $-12,113 7d 0h      Time exit
+
+ENTRY   2023-02-09 16:00  DOGE     SHORT    1x $       0.09   17.6%                           SQ11 V2.8 M-3.9 RSI33
+EXIT    2023-02-09 21:30                       $       0.08               $+15,070 5h 30m     Take profit hit
+
+ENTRY   2023-02-09 20:00  SOL      SHORT    2x $      21.76   17.6%                           SQ12 V3.5 M-3.6 RSI30
+EXIT    2023-02-09 22:54                       $      20.08               $+29,343 2h 54m     Take profit hit
+
+ENTRY   2023-02-09 22:54  SOL      SHORT    2x $      20.05   25.0%                           SQ12 V3.5 M-3.6 RSI30
+EXIT    2023-02-12 16:37                       $      21.82               $-49,574 2d 17h     Stop loss hit
+
+ENTRY   2023-02-15 12:01  SOL      LONG     3x $      22.16   25.0%                           SQ10 V2.1 M2.4 RSI63
+EXIT    2023-02-15 20:08                       $      23.09               $+34,087 8h 7m      Take profit hit
+
+ENTRY   2023-02-19 12:58  SOL      LONG     3x $      24.39   17.7%                           SQ5 V1.9 M4.8 RSI60
+EXIT    2023-02-19 22:09                       $      25.41               $+24,649 9h 11m     Take profit hit
+
+ENTRY   2023-02-22 12:00  BTC      SHORT    3x $  24,145.15   23.0%                           SQ17 V1.5 M-1.7 RSI36
+EXIT    2023-02-24 16:01                       $  23,307.60               $+32,348 2d 4h      Take profit hit
+
+ENTRY   2023-02-22 08:00  ETH      SHORT    3x $   1,643.19   18.2%                           SQ16 V1.3 M-1.5 RSI36
+EXIT    2023-02-25 20:44                       $   1,574.51               $+27,732 3d 12h     Take profit hit
+
+ENTRY   2023-03-03 01:28  DOGE     SHORT    1x $       0.08   25.0%                           SQ22 V9.8 M-4.4 RSI31
+EXIT    2023-03-03 01:42                       $       0.07               $+13,456 14m        Take profit hit
+
+ENTRY   2023-03-03 01:42  DOGE     SHORT    1x $       0.07   25.0%                           SQ22 V9.8 M-4.4 RSI31
+EXIT    2023-03-03 17:46                       $       0.08               $-12,803 16h 4m     Stop loss hit
+
+ENTRY   2023-03-07 16:00  SOL      SHORT    2x $      20.41   23.0%                           SQ11 V1.6 M-3.7 RSI35
+EXIT    2023-03-08 06:41                       $      19.57               $+22,053 14h 41m    Take profit hit
+
+ENTRY   2023-03-08 20:00  BTC      SHORT    3x $  22,002.42   23.0%                           SQ17 V1.7 M-2.6 RSI31
+EXIT    2023-03-09 01:20                       $  21,449.21               $+24,838 5h 20m     Take profit hit
+
+ENTRY   2023-03-09 18:30  ETH      SHORT    3x $   1,513.07   23.0%                           SQ22 V1.8 M-3.8 RSI30
+EXIT    2023-03-09 20:20                       $   1,474.11               $+23,251 1h 50m     Take profit hit
+
+ENTRY   2023-03-09 20:00  DOGE     SHORT    1x $       0.07   25.0%                           SQ20 V5.2 M-3.7 RSI28
+EXIT    2023-03-10 07:33                       $       0.07               $-21,863 11h 33m    Stop loss hit
+
+ENTRY   2023-03-13 00:00  BTC      LONG     4x $  22,257.62   20.0%                           SQ11 V1.6 M1.1 RSI56
+EXIT    2023-03-13 15:08                       $  24,176.51               $+95,098 15h 8m     Take profit hit
+
+ENTRY   2023-03-13 04:00  SOL      LONG     3x $      19.64   18.2%                           SQ17 V1.0 M1.4 RSI61
+EXIT    2023-03-14 12:55                       $      21.98               $+80,497 1d 8h      Take profit hit
+
+ENTRY   2023-03-20 16:00  DOGE     SHORT    1x $       0.07   16.1%                           SQ8 V1.3 M-0.9 RSI43
+EXIT    2023-03-21 17:13                       $       0.08               $-12,111 1d 1h      Stop loss hit
+
+ENTRY   2023-03-18 04:00  SOL      LONG     3x $      22.77   20.9%                           SQ18 V1.1 M1.8 RSI57
+EXIT    2023-03-24 17:24                       $      20.56               $-85,747 6d 13h     Stop loss hit
+
+ENTRY   2023-03-28 12:00  BTC      SHORT    3x $  27,124.38   14.7%                           SQ11 V1.1 M-1.8 RSI41
+EXIT    2023-03-29 06:28                       $  28,028.13               $-23,333 18h 28m    Stop loss hit
+
+ENTRY   2023-03-29 12:00  BTC      LONG     4x $  28,361.84   10.0%                           SQ5 V1.4 M1.3 RSI61
+EXIT    2023-03-31 07:40                       $  27,561.33               $-16,555 1d 19h     Stop loss hit
+
+ENTRY   2023-03-29 08:00  ETH      LONG     4x $   1,805.58   12.7%                           SQ15 V1.2 M1.4 RSI61
+EXIT    2023-04-04 13:09                       $   1,874.61               $+27,334 6d 5h      Take profit hit
+
+ENTRY   2023-04-04 16:00  ETH      LONG     4x $   1,862.51   18.5%                           SQ7 V1.4 M2.0 RSI60
+EXIT    2023-04-05 02:37                       $   1,925.09               $+35,098 10h 37m    Take profit hit
+
+ENTRY   2023-04-10 12:00  BTC      LONG     4x $  28,325.87   20.9%                           SQ43 V1.1 M1.7 RSI63
+EXIT    2023-04-10 16:50                       $  28,815.94               $+20,878 4h 50m     Take profit hit
+
+ENTRY   2023-04-11 00:00  SOL      LONG     3x $      20.92   25.0%                           SQ72 V4.7 M1.8 RSI64
+EXIT    2023-04-11 04:31                       $      21.59               $+32,039 4h 31m     Take profit hit
+
+ENTRY   2023-04-13 16:00  DOGE     LONG     2x $       0.09   18.5%                           SQ9 V1.3 M2.3 RSI65
+EXIT    2023-04-14 01:54                       $       0.09               $+23,157 9h 54m     Take profit hit
+
+ENTRY   2023-04-19 20:00  BTC      SHORT    3x $  29,252.16   18.5%                           SQ6 V1.4 M-2.9 RSI33
+EXIT    2023-04-20 16:03                       $  28,245.55               $+31,499 20h 3m     Take profit hit
+
+ENTRY   2023-04-19 12:00  ETH      SHORT    3x $   1,980.50   20.9%                           SQ16 V1.1 M-2.7 RSI35
+EXIT    2023-04-21 12:06                       $   1,893.60               $+40,915 2d 0h      Take profit hit
+
+ENTRY   2023-04-20 16:00  DOGE     SHORT    1x $       0.09   25.0%                           SQ29 V2.8 M-2.0 RSI36
+EXIT    2023-04-21 20:05                       $       0.08               $+39,444 1d 4h      Take profit hit
+
+ENTRY   2023-04-26 08:00  BTC      LONG     4x $  28,410.02   23.0%                           SQ14 V1.9 M2.8 RSI64
+EXIT    2023-04-26 12:22                       $  29,426.00               $+54,315 4h 22m     Take profit hit
+
+ENTRY   2023-04-26 12:00  DOGE     LONG     2x $       0.08   20.9%                           SQ11 V1.0 M1.7 RSI59
+EXIT    2023-04-26 19:38                       $       0.08               $-19,250 7h 38m     Stop loss hit
+
+ENTRY   2023-04-26 12:00  ETH      LONG     4x $   1,916.38   23.0%                           SQ14 V1.6 M2.2 RSI64
+EXIT    2023-04-26 19:39                       $   1,849.51               $-54,841 7h 39m     Stop loss hit
+
+ENTRY   2023-05-08 04:01  DOGE     SHORT    1x $       0.08   11.3%                           SQ2 V1.2 M-2.4 RSI35
+EXIT    2023-05-08 17:02                       $       0.07                $+6,488 13h 1m     Take profit hit
+
+ENTRY   2023-05-08 16:00  SOL      SHORT    2x $      21.44   17.6%                           SQ11 V3.7 M-1.7 RSI41
+EXIT    2023-05-10 17:16                       $      20.34               $+25,990 2d 1h      Take profit hit
+
+ENTRY   2023-05-17 20:00  DOGE     LONG     2x $       0.07   20.9%                           SQ33 V1.4 M2.6 RSI64
+EXIT    2023-05-18 17:57                       $       0.07               $-25,440 21h 57m    Stop loss hit
+
+ENTRY   2023-05-24 20:00  BTC      SHORT    3x $  26,288.47   20.9%                           SQ53 V1.1 M-1.5 RSI40
+EXIT    2023-05-25 07:06                       $  25,603.84               $+28,516 11h 6m     Take profit hit
+
+ENTRY   2023-05-31 12:00  DOGE     SHORT    1x $       0.07   19.3%                           SQ8 V3.6 M-1.0 RSI36
+EXIT    2023-06-02 19:10                       $       0.07                $-6,057 2d 7h      Stop loss hit
+
+ENTRY   2023-06-05 15:52  DOGE     SHORT    1x $       0.07   19.3%                           SQ4 V3.7 M-5.2 RSI29
+EXIT    2023-06-05 16:00                       $       0.07                $+8,971 8m         Take profit hit
+
+ENTRY   2023-06-05 15:23  BTC      SHORT    3x $  26,594.17   25.0%                           SQ18 V3.1 M-4.6 RSI28
+EXIT    2023-06-05 16:01                       $  25,931.56               $+32,992 38m        Take profit hit
+
+ENTRY   2023-06-29 04:13  ETH      SHORT    3x $   1,837.51   23.0%                           SQ28 V1.8 M-1.7 RSI42
+EXIT    2023-06-30 04:41                       $   1,881.54               $-27,998 1d 0h      Stop loss hit
+
+ENTRY   2023-06-30 20:12  ETH      LONG     4x $   1,927.86   22.2%                           SQ9 V2.6 M1.8 RSI58
+EXIT    2023-07-07 00:02                       $   1,839.52               $-68,817 6d 3h      Stop loss hit
+
+ENTRY   2023-07-13 17:36  DOGE     LONG     2x $       0.07   17.6%                           SQ21 V2.8 M4.9 RSI68
+EXIT    2023-07-14 15:49                       $       0.07               $+23,035 22h 13m    Take profit hit
+
+ENTRY   2023-07-22 23:17  ETH      SHORT    3x $   1,858.45   25.0%                           SQ23 V7.0 M-3.7 RSI35
+EXIT    2023-07-23 04:48                       $   1,874.60               $-10,911 5h 31m     Stop loss hit
+
+ENTRY   2023-07-24 12:17  BTC      SHORT    3x $  29,216.18   25.0%                           SQ41 V4.4 M-3.5 RSI31
+EXIT    2023-07-31 12:25                       $  29,405.47                $-9,169 7d 0h      Time exit
+
+ENTRY   2023-07-24 12:32  ETH      SHORT    3x $   1,848.39   17.7%                           SQ5 V1.6 M-3.7 RSI31
+EXIT    2023-07-31 12:35                       $   1,870.48               $-10,395 7d 0h      Time exit
+
+ENTRY   2023-08-02 08:04  BTC      LONG     4x $  29,558.59   10.8%                           SQ5 V1.7 M0.9 RSI54
+EXIT    2023-08-04 20:45                       $  28,920.68               $-15,346 2d 12h     Stop loss hit
+
+ENTRY   2023-08-08 01:15  DOGE     SHORT    1x $       0.07   13.5%                           SQ7 V3.2 M-1.1 RSI46
+EXIT    2023-08-09 12:23                       $       0.08                $-6,902 1d 11h     Stop loss hit
+
+ENTRY   2023-08-15 19:07  ETH      SHORT    3x $   1,830.14   17.6%                           SQ25 V12.2 M-3.5 RSI36
+EXIT    2023-08-15 19:09                       $   1,812.67                $+7,296 2m         Take profit hit
+
+ENTRY   2023-08-16 20:15  BTC      SHORT    3x $  29,093.95   23.0%                           SQ23 V1.7 M-3.4 RSI32
+EXIT    2023-08-17 00:00                       $  28,704.32               $+15,212 3h 45m     Take profit hit
+
+ENTRY   2023-08-15 19:09  ETH      SHORT    3x $   1,815.12   25.0%                           SQ25 V12.2 M-3.5 RSI36
+EXIT    2023-08-17 00:44                       $   1,791.77               $+14,241 1d 5h      Take profit hit
+
+ENTRY   2023-08-29 14:17  ETH      LONG     4x $   1,654.89   25.0%                           SQ12 V9.2 M3.1 RSI67
+EXIT    2023-08-29 14:33                       $   1,593.15               $-60,676 16m        Stop loss hit
+
+ENTRY   2023-08-29 14:33  ETH      LONG     4x $   1,710.33   25.0%                           SQ12 V9.2 M3.1 RSI67
+EXIT    2023-08-31 17:00                       $   1,648.56               $-60,691 2d 2h      Stop loss hit
+
+ENTRY   2023-09-04 08:11  BTC      SHORT    3x $  25,972.11   12.4%                           SQ4 V1.8 M-6.9 RSI47
+EXIT    2023-09-04 21:20                       $  25,733.33                $+5,202 13h 9m     Take profit hit
+
+ENTRY   2023-09-18 09:36  BTC      LONG     4x $  26,862.27   25.0%                           SQ13 V2.6 M4.9 RSI67
+EXIT    2023-09-18 11:17                       $  27,200.86               $+18,211 1h 41m     Take profit hit
+
+ENTRY   2023-09-18 11:17  BTC      LONG     4x $  27,203.18   25.0%                           SQ13 V2.6 M4.9 RSI67
+EXIT    2023-09-18 17:38                       $  26,831.15               $-21,587 6h 21m     Stop loss hit
+
+ENTRY   2023-09-25 00:26  BTC      SHORT    3x $  26,144.02   17.7%                           SQ4 V1.6 M-6.2 RSI26
+EXIT    2023-09-27 11:30                       $  26,491.48               $-11,788 2d 11h     Stop loss hit
+
+ENTRY   2023-09-28 16:00  BTC      LONG     4x $  27,091.02   14.7%                           SQ10 V1.1 M2.4 RSI66
+EXIT    2023-10-01 22:17                       $  27,561.74               $+14,706 3d 6h      Take profit hit
+
+ENTRY   2023-10-10 20:45  ETH      SHORT    3x $   1,553.18   22.2%                           SQ7 V4.0 M-2.0 RSI27
+EXIT    2023-10-11 00:46                       $   1,572.13               $-12,237 4h 1m      Stop loss hit
+
+ENTRY   2023-10-12 08:48  ETH      SHORT    3x $   1,558.64   22.2%                           SQ6 V4.7 M-6.0 RSI25
+EXIT    2023-10-12 09:38                       $   1,545.96                $+7,294 50m        Take profit hit
+
+ENTRY   2023-10-12 09:38  ETH      SHORT    3x $   1,545.81   22.2%                           SQ6 V4.7 M-6.0 RSI25
+EXIT    2023-10-12 17:01                       $   1,528.08               $+10,531 7h 23m     Take profit hit
+
+ENTRY   2023-10-30 08:41  ETH      LONG     4x $   1,818.47   22.2%                           SQ6 V6.3 M2.3 RSI56
+EXIT    2023-10-30 17:12                       $   1,791.32               $-20,402 8h 31m     Stop loss hit
+
+ENTRY   2023-11-02 00:23  BTC      LONG     4x $  35,647.63   25.0%                           SQ13 V2.5 M3.6 RSI63
+EXIT    2023-11-02 13:44                       $  34,789.34               $-36,482 13h 21m    Stop loss hit
+
+ENTRY   2023-11-27 04:47  BTC      LONG     4x $  37,376.79   10.0%                           SQ4 V1.2 M0.3 RSI49
+EXIT    2023-11-27 13:45                       $  36,849.97                $-8,445 8h 58m     Stop loss hit
+
+ENTRY   2023-12-01 20:35  BTC      LONG     4x $  38,826.73   13.5%                           SQ5 V3.3 M3.5 RSI66
+EXIT    2023-12-02 20:46                       $  39,466.57               $+12,427 1d 0h      Take profit hit
+
+ENTRY   2023-12-11 02:07  ETH      SHORT    3x $   2,309.76   16.8%                           SQ3 V4.6 M-1.2 RSI39
+EXIT    2023-12-11 02:12                       $   2,233.86               $+22,771 5m         Take profit hit
+
+ENTRY   2023-12-11 02:12  ETH      SHORT    3x $   2,154.81   16.8%                           SQ3 V4.6 M-1.2 RSI39
+EXIT    2023-12-11 02:19                       $   2,221.94               $-22,999 7m         Stop loss hit
+
+ENTRY   2023-12-11 02:19  ETH      SHORT    3x $   2,239.30   16.8%                           SQ3 V4.6 M-1.2 RSI39
+EXIT    2023-12-11 18:24                       $   2,163.36               $+23,399 16h 5m     Take profit hit
+
+ENTRY   2024-01-02 00:07  ETH      LONG     4x $   2,356.56   22.2%                           SQ7 V21.2 M1.8 RSI62
+EXIT    2024-01-02 08:21                       $   2,403.50               $+25,101 8h 14m     Take profit hit
+
+ENTRY   2023-12-29 08:29  DOGE     SHORT    1x $       0.09   16.8%                           SQ5 V2.1 M-0.4 RSI46
+EXIT    2024-01-03 12:01                       $       0.09               $+10,149 5d 3h      Take profit hit
+
+ENTRY   2024-01-11 00:01  XRP      LONG     3x $       0.60   20.9%                           SQ27 V1.2 M2.6 RSI63
+EXIT    2024-01-18 00:01                       $       0.57               $-40,066 7d 0h      Time exit
+
+ENTRY   2024-01-18 17:13  BTC      SHORT    3x $  41,644.53   20.9%                           SQ18 V1.2 M-3.5 RSI36
+EXIT    2024-01-18 20:27                       $  40,848.63               $+18,409 3h 14m     Take profit hit
+
+ENTRY   2024-01-18 16:49  ETH      SHORT    3x $   2,481.78   19.3%                           SQ5 V2.8 M-3.1 RSI40
+EXIT    2024-01-18 20:31                       $   2,431.46               $+16,177 3h 42m     Take profit hit
+
+ENTRY   2024-01-18 16:50  XRP      SHORT    2x $       0.55   23.0%                           SQ21 V1.9 M-4.4 RSI27
+EXIT    2024-01-19 14:32                       $       0.54                $+8,942 21h 42m    Take profit hit
+
+ENTRY   2024-01-18 16:49  DOGE     SHORT    1x $       0.08   17.7%                           SQ3 V1.5 M-4.7 RSI30
+EXIT    2024-01-19 16:41                       $       0.08                $+7,321 23h 52m    Take profit hit
+
+ENTRY   2024-01-30 12:10  ETH      LONG     4x $   2,318.34   22.2%                           SQ7 V3.2 M4.1 RSI66
+EXIT    2024-01-30 16:24                       $   2,356.80               $+21,426 4h 14m     Take profit hit
+
+ENTRY   2024-01-30 20:00  XRP      SHORT    2x $       0.51   22.2%                           SQ9 V6.0 M-1.8 RSI37
+EXIT    2024-01-31 14:05                       $       0.50               $+14,461 18h 5m     Take profit hit
+
+ENTRY   2024-02-06 16:08  ETH      LONG     4x $   2,345.75   25.0%                           SQ17 V2.5 M3.0 RSI61
+EXIT    2024-02-06 20:06                       $   2,384.76               $+24,731 3h 58m     Take profit hit
+
+ENTRY   2024-02-07 20:01  BTC      LONG     4x $  43,661.87   25.0%                           SQ20 V2.3 M3.3 RSI66
+EXIT    2024-02-08 00:25                       $  44,494.71               $+29,282 4h 24m     Take profit hit
+
+ENTRY   2024-02-07 20:22  DOGE     LONG     2x $       0.08   15.4%                           SQ5 V1.8 M1.4 RSI55
+EXIT    2024-02-09 12:16                       $       0.08                $+9,086 1d 15h     Take profit hit
+
+ENTRY   2024-02-08 12:01  XRP      LONG     3x $       0.51   20.0%                           SQ10 V1.5 M1.2 RSI60
+EXIT    2024-02-09 18:29                       $       0.53               $+19,248 1d 6h      Take profit hit
+
+ENTRY   2024-02-14 14:06  DOGE     LONG     2x $       0.08   16.1%                           SQ4 V1.1 M2.2 RSI56
+EXIT    2024-02-14 17:09                       $       0.09               $+16,221 3h 3m      Take profit hit
+
+ENTRY   2024-02-15 00:36  XRP      LONG     3x $       0.54   20.9%                           SQ19 V1.4 M3.5 RSI65
+EXIT    2024-02-15 03:16                       $       0.55               $+21,626 2h 40m     Take profit hit
+
+ENTRY   2024-02-15 03:16  XRP      LONG     3x $       0.56   20.9%                           SQ19 V1.4 M3.5 RSI65
+EXIT    2024-02-15 21:28                       $       0.57               $+28,530 18h 12m    Take profit hit
+
+ENTRY   2024-03-04 04:06  BTC      LONG     4x $  63,469.68   20.9%                           SQ16 V1.4 M5.1 RSI68
+EXIT    2024-03-04 08:25                       $  64,953.42               $+32,589 4h 19m     Take profit hit
+
+ENTRY   2024-03-02 08:00  XRP      LONG     3x $       0.63   18.5%                           SQ9 V1.3 M4.3 RSI64
+EXIT    2024-03-04 11:34                       $       0.66               $+37,196 2d 3h      Take profit hit
+
+ENTRY   2024-03-05 19:07  XRP      SHORT    2x $       0.61   19.3%                           SQ5 V2.8 M-2.1 RSI36
+EXIT    2024-03-05 19:56                       $       0.55               $+54,591 49m        Take profit hit
+
+ENTRY   2024-03-05 19:56  XRP      SHORT    2x $       0.55   19.3%                           SQ5 V2.8 M-2.1 RSI36
+EXIT    2024-03-06 06:10                       $       0.60               $-55,191 10h 14m    Stop loss hit
+
+ENTRY   2024-03-11 15:44  XRP      LONG     3x $       0.64   25.0%                           SQ15 V3.2 M4.2 RSI66
+EXIT    2024-03-11 16:00                       $       0.68               $+71,516 16m        Take profit hit
+
+ENTRY   2024-03-11 16:01  ETH      LONG     4x $   4,020.77   18.5%                           SQ9 V1.5 M3.1 RSI59
+EXIT    2024-03-12 16:31                       $   3,904.43               $-39,638 1d 0h      Stop loss hit
+
+ENTRY   2024-03-14 16:00  ETH      SHORT    3x $   3,852.81   25.0%                           SQ12 V4.7 M-2.2 RSI33
+EXIT    2024-03-15 02:53                       $   3,720.75               $+43,894 10h 53m    Take profit hit
+
+ENTRY   2024-03-19 12:00  BTC      SHORT    3x $  62,988.17   23.0%                           SQ12 V1.6 M-3.3 RSI35
+EXIT    2024-03-20 20:08                       $  65,983.27               $-65,644 1d 8h      Stop loss hit
+
+ENTRY   2024-03-27 12:01  XRP      SHORT    2x $       0.62   16.1%                           SQ6 V1.4 M-1.0 RSI48
+EXIT    2024-03-27 14:12                       $       0.61               $+10,566 2h 11m     Take profit hit
+
+ENTRY   2024-03-27 14:12  XRP      SHORT    2x $       0.61   16.1%                           SQ6 V1.4 M-1.0 RSI48
+EXIT    2024-03-28 16:47                       $       0.63               $-13,514 1d 2h      Stop loss hit
+
+ENTRY   2024-04-01 12:00  XRP      SHORT    2x $       0.61   25.0%                           SQ19 V2.5 M-2.7 RSI39
+EXIT    2024-04-02 09:05                       $       0.59               $+21,252 21h 5m     Take profit hit
+
+ENTRY   2024-04-12 18:32  XRP      SHORT    2x $       0.56   25.0%                           SQ14 V8.0 M-5.2 RSI29
+EXIT    2024-04-12 19:02                       $       0.53               $+38,920 30m        Take profit hit
+
+ENTRY   2024-04-12 20:08  BTC      SHORT    3x $  67,132.45   16.1%                           SQ2 V1.4 M-2.7 RSI35
+EXIT    2024-04-13 19:56                       $  64,667.09               $+34,018 23h 48m    Take profit hit
+
+ENTRY   2024-04-12 19:02  XRP      SHORT    2x $       0.53   25.0%                           SQ14 V8.0 M-5.2 RSI29
+EXIT    2024-04-13 20:23                       $       0.49               $+48,329 1d 1h      Take profit hit
+
+ENTRY   2024-04-17 14:07  ETH      SHORT    3x $   3,012.95   19.3%                           SQ2 V2.4 M-3.7 RSI49
+EXIT    2024-04-17 15:44                       $   2,932.22               $+28,112 1h 37m     Take profit hit
+
+ENTRY   2024-04-17 14:19  BTC      SHORT    3x $  61,534.75   25.0%                           SQ12 V3.3 M-4.2 RSI41
+EXIT    2024-04-17 16:07                       $  59,747.44               $+44,314 1h 48m     Take profit hit
+
+ENTRY   2024-04-17 15:44  ETH      SHORT    3x $   2,946.29   19.3%                           SQ2 V2.4 M-3.7 RSI49
+EXIT    2024-04-17 18:45                       $   3,029.35               $-31,524 3h 1m      Stop loss hit
+
+ENTRY   2024-04-21 00:00  ETH      LONG     4x $   3,156.52   20.9%                           SQ15 V1.1 M2.0 RSI66
+EXIT    2024-04-22 05:45                       $   3,223.20               $+33,359 1d 5h      Take profit hit
+
+ENTRY   2024-04-30 08:04  XRP      SHORT    2x $       0.51   16.1%                           SQ2 V1.3 M-3.4 RSI33
+EXIT    2024-04-30 12:10                       $       0.50               $+15,226 4h 6m      Take profit hit
+
+ENTRY   2024-04-30 12:11  BTC      SHORT    3x $  60,862.81   17.7%                           SQ3 V1.9 M-3.7 RSI37
+EXIT    2024-05-01 07:08                       $  58,758.70               $+38,919 18h 57m    Take profit hit
+
+ENTRY   2024-05-15 16:21  ETH      LONG     4x $   2,985.22   22.2%                           SQ6 V14.0 M2.2 RSI64
+EXIT    2024-05-16 15:02                       $   2,932.38               $-32,642 22h 41m    Stop loss hit
+
+ENTRY   2024-05-16 00:00  XRP      LONG     3x $       0.52   20.9%                           SQ16 V1.0 M2.1 RSI59
+EXIT    2024-05-19 19:50                       $       0.51               $-23,263 3d 19h     Stop loss hit
+
+ENTRY   2024-05-28 04:07  XRP      SHORT    2x $       0.53   11.8%                           SQ3 V2.2 M-0.8 RSI46
+EXIT    2024-05-30 08:07                       $       0.51                $+9,788 2d 4h      Take profit hit
+
+ENTRY   2024-05-30 08:00  DOGE     SHORT    1x $       0.16   15.6%                           SQ8 V5.8 M-2.6 RSI43
+EXIT    2024-05-30 16:00                       $       0.16               $-11,058 8h 0m      Stop loss hit
+
+ENTRY   2024-05-28 04:16  BTC      SHORT    3x $  67,759.93   10.0%                           SQ4 V1.1 M-1.5 RSI43
+EXIT    2024-05-30 17:41                       $  69,230.28               $-14,183 2d 13h     Stop loss hit
+
+ENTRY   2024-06-04 12:00  XRP      LONG     3x $       0.52   17.6%                           SQ42 V3.5 M2.1 RSI62
+EXIT    2024-06-05 08:19                       $       0.53               $+11,822 20h 19m    Take profit hit
+
+ENTRY   2024-05-29 12:05  ETH      LONG     4x $   3,811.64   10.8%                           SQ2 V2.0 M0.4 RSI54
+EXIT    2024-06-05 12:08                       $   3,803.67                $-2,189 7d 0h      Time exit
+
+ENTRY   2024-06-07 18:04  XRP      SHORT    2x $       0.51   22.2%                           SQ9 V7.9 M-3.2 RSI34
+EXIT    2024-06-07 18:12                       $       0.48               $+31,583 8m         Take profit hit
+
+ENTRY   2024-06-07 18:12  XRP      SHORT    2x $       0.48   22.2%                           SQ9 V7.9 M-3.2 RSI34
+EXIT    2024-06-07 20:58                       $       0.50               $-30,381 2h 46m     Stop loss hit
+
+ENTRY   2024-06-11 04:13  BTC      SHORT    3x $  67,946.13   17.7%                           SQ3 V2.0 M-5.8 RSI34
+EXIT    2024-06-11 15:50                       $  66,363.18               $+25,700 11h 37m    Take profit hit
+
+ENTRY   2024-06-14 16:06  BTC      SHORT    3x $  66,261.27   22.2%                           SQ8 V3.0 M-3.3 RSI42
+EXIT    2024-06-14 18:12                       $  65,164.55               $+22,995 2h 6m      Take profit hit
+
+ENTRY   2024-06-14 18:12  BTC      SHORT    3x $  65,144.58   22.2%                           SQ8 V3.0 M-3.3 RSI42
+EXIT    2024-06-14 21:55                       $  66,241.84               $-25,136 3h 43m     Stop loss hit
+
+ENTRY   2024-06-15 13:26  ETH      SHORT    3x $   3,559.34   14.0%                           SQ5 V1.1 M-0.5 RSI54
+EXIT    2024-06-18 01:25                       $   3,444.37               $+25,712 2d 11h     Take profit hit
+
+ENTRY   2024-06-18 12:25  BTC      SHORT    3x $  65,093.78   19.3%                           SQ5 V16.9 M-3.0 RSI38
+EXIT    2024-06-20 11:08                       $  66,330.24               $-24,552 1d 22h     Stop loss hit
+
+ENTRY   2024-06-24 05:15  DOGE     SHORT    1x $       0.12   20.9%                           SQ12 V1.0 M-3.0 RSI35
+EXIT    2024-06-24 09:33                       $       0.12               $-13,654 4h 18m     Stop loss hit
+
+ENTRY   2024-07-03 16:00  XRP      SHORT    2x $       0.47   13.5%                           SQ2 V3.0 M-2.3 RSI40
+EXIT    2024-07-04 01:46                       $       0.46               $+10,246 9h 46m     Take profit hit
+
+ENTRY   2024-07-09 00:50  ETH      SHORT    3x $   3,021.85   16.8%                           SQ3 V3.1 M-0.2 RSI57
+EXIT    2024-07-10 16:12                       $   3,144.49               $-39,788 1d 15h     Stop loss hit
+
+ENTRY   2024-07-16 13:43  XRP      LONG     3x $       0.55   19.3%                           SQ2 V5.7 M6.5 RSI67
+EXIT    2024-07-16 16:34                       $       0.59               $+61,304 2h 51m     Take profit hit
+
+ENTRY   2024-07-24 21:11  ETH      SHORT    3x $   3,360.98   25.0%                           SQ13 V2.1 M-3.5 RSI35
+EXIT    2024-07-25 01:07                       $   3,263.72               $+41,411 3h 56m     Take profit hit
+
+ENTRY   2024-07-30 20:00  XRP      LONG     3x $       0.63   25.0%                           SQ50 V3.3 M2.7 RSI66
+EXIT    2024-08-01 14:59                       $       0.60               $-69,946 1d 18h     Stop loss hit
+
+ENTRY   2024-08-15 04:35  BTC      SHORT    3x $  58,312.14   25.0%                           SQ10 V2.1 M-2.3 RSI43
+EXIT    2024-08-15 20:55                       $  56,320.04               $+53,805 16h 20m    Take profit hit
+
+ENTRY   2024-08-19 08:04  XRP      LONG     3x $       0.57   23.0%                           SQ34 V1.8 M2.7 RSI66
+EXIT    2024-08-19 10:53                       $       0.59               $+29,252 2h 49m     Take profit hit
+
+ENTRY   2024-08-19 10:53  XRP      LONG     3x $       0.59   23.0%                           SQ34 V1.8 M2.7 RSI66
+EXIT    2024-08-19 19:06                       $       0.61               $+35,557 8h 13m     Take profit hit
+
+ENTRY   2024-08-21 18:21  BTC      LONG     4x $  60,234.24   19.3%                           SQ5 V2.5 M2.5 RSI58
+EXIT    2024-08-21 20:00                       $  61,641.09               $+37,174 1h 39m     Take profit hit
+
+ENTRY   2024-08-23 06:12  DOGE     LONG     2x $       0.11   16.1%                           SQ2 V1.4 M3.3 RSI63
+EXIT    2024-08-23 14:15                       $       0.11               $+18,858 8h 3m      Take profit hit
+
+ENTRY   2024-08-23 08:02  ETH      LONG     4x $   2,672.02   16.1%                           SQ9 V1.2 M1.5 RSI56
+EXIT    2024-08-23 17:47                       $   2,720.42               $+23,989 9h 45m     Take profit hit
+
+ENTRY   2024-08-24 12:01  XRP      LONG     3x $       0.61   25.0%                           SQ14 V3.5 M3.4 RSI68
+EXIT    2024-08-24 13:23                       $       0.62               $+26,272 1h 22m     Take profit hit
+
+ENTRY   2024-08-24 13:23  XRP      LONG     3x $       0.62   25.0%                           SQ14 V3.5 M3.4 RSI68
+EXIT    2024-08-24 21:36                       $       0.61               $-28,975 8h 13m     Stop loss hit
+
+ENTRY   2024-09-02 04:00  XRP      SHORT    2x $       0.55   23.0%                           SQ15 V1.8 M-3.3 RSI39
+EXIT    2024-09-02 19:47                       $       0.57               $-21,798 15h 47m    Stop loss hit
+
+ENTRY   2024-09-06 16:00  ETH      SHORT    3x $   2,286.04   13.5%                           SQ2 V3.1 M-5.1 RSI27
+EXIT    2024-09-06 20:36                       $   2,188.62               $+35,493 4h 36m     Take profit hit
+
+ENTRY   2024-09-06 16:31  DOGE     SHORT    1x $       0.09   13.0%                           SQ7 V1.2 M-3.8 RSI31
+EXIT    2024-09-07 16:03                       $       0.10                $-9,657 23h 32m    Stop loss hit
+
+ENTRY   2024-09-28 08:00  XRP      LONG     3x $       0.61   23.0%                           SQ58 V2.0 M3.4 RSI67
+EXIT    2024-09-28 17:37                       $       0.63               $+33,601 9h 37m     Take profit hit
+
+ENTRY   2024-09-26 16:03  BTC      LONG     4x $  65,172.45   25.0%                           SQ26 V4.4 M2.4 RSI60
+EXIT    2024-09-30 09:16                       $  63,857.47               $-45,139 3d 17h     Stop loss hit
+
+ENTRY   2024-10-09 20:03  ETH      SHORT    3x $   2,411.94   16.1%                           SQ4 V1.1 M-1.6 RSI45
+EXIT    2024-10-10 18:24                       $   2,335.91               $+31,300 22h 21m    Take profit hit
+
+ENTRY   2024-10-21 12:17  BTC      SHORT    3x $  68,173.40   14.0%                           SQ3 V1.4 M-1.0 RSI48
+EXIT    2024-10-21 15:07                       $  66,977.43               $+16,904 2h 50m     Take profit hit
+
+ENTRY   2024-10-23 00:01  XRP      SHORT    2x $       0.53   25.0%                           SQ39 V2.7 M-2.1 RSI39
+EXIT    2024-10-23 16:48                       $       0.52               $+19,267 16h 47m    Take profit hit
+
+ENTRY   2024-10-21 15:07  BTC      SHORT    3x $  66,987.11   14.0%                           SQ3 V1.4 M-1.0 RSI48
+EXIT    2024-10-23 18:04                       $  65,558.22               $+20,818 2d 2h      Take profit hit
+
+ENTRY   2024-10-25 23:03  DOGE     SHORT    1x $       0.13   18.5%                           SQ6 V1.4 M-4.3 RSI32
+EXIT    2024-10-27 13:11                       $       0.14               $-17,048 1d 14h     Stop loss hit
+
+ENTRY   2024-10-28 05:54  BTC      LONG     4x $  67,879.60   19.3%                           SQ3 V2.2 M2.2 RSI51
+EXIT    2024-10-28 12:00                       $  68,687.42               $+19,733 6h 6m      Take profit hit
+
+ENTRY   2024-10-31 13:28  XRP      SHORT    2x $       0.52   16.8%                           SQ4 V5.1 M-0.8 RSI48
+EXIT    2024-10-31 14:04                       $       0.51                $+9,201 36m        Take profit hit
+
+ENTRY   2024-10-31 14:04  XRP      SHORT    2x $       0.51   16.8%                           SQ4 V5.1 M-0.8 RSI48
+EXIT    2024-11-01 03:58                       $       0.52               $-10,108 13h 54m    Stop loss hit
+
+ENTRY   2024-11-03 16:02  XRP      SHORT    2x $       0.50   23.0%                           SQ12 V1.6 M-2.9 RSI38
+EXIT    2024-11-04 09:27                       $       0.51               $-20,155 17h 25m    Stop loss hit
+
+ENTRY   2024-11-06 00:45  XRP      LONG     3x $       0.52   15.6%                           SQ8 V4.1 M2.7 RSI62
+EXIT    2024-11-06 03:08                       $       0.53               $+23,348 2h 23m     Take profit hit
+
+ENTRY   2024-11-06 04:03  ETH      LONG     4x $   2,580.08   22.2%                           SQ8 V2.7 M1.9 RSI61
+EXIT    2024-11-06 22:39                       $   2,705.02               $+94,764 18h 36m    Take profit hit
+
+ENTRY   2024-11-06 03:08  XRP      LONG     3x $       0.54   22.2%                           SQ8 V4.1 M2.7 RSI62
+EXIT    2024-11-07 03:03                       $       0.55               $+40,806 23h 55m    Take profit hit
+
+ENTRY   2024-11-10 04:33  BTC      LONG     4x $  77,871.27   19.3%                           SQ2 V2.6 M7.5 RSI65
+EXIT    2024-11-10 05:25                       $  79,436.94               $+36,300 52m        Take profit hit
+
+ENTRY   2024-11-10 05:25  BTC      LONG     4x $  79,508.70   19.3%                           SQ2 V2.6 M7.5 RSI65
+EXIT    2024-11-10 22:22                       $  81,234.41               $+39,886 16h 57m    Take profit hit
+
+ENTRY   2024-11-14 12:06  ETH      SHORT    3x $   3,186.17   20.0%                           SQ11 V1.7 M-1.0 RSI44
+EXIT    2024-11-15 04:43                       $   3,038.32               $+65,601 16h 37m    Take profit hit
+
+ENTRY   2024-11-19 16:03  DOGE     LONG     2x $       0.40   23.0%                           SQ18 V2.0 M2.2 RSI58
+EXIT    2024-11-20 18:01                       $       0.37               $-69,133 1d 1h      Stop loss hit
+
+ENTRY   2024-11-23 00:10  DOGE     LONG     2x $       0.41   25.0%                           SQ15 V2.4 M3.3 RSI63
+EXIT    2024-11-23 04:04                       $       0.45              $+103,448 3h 54m     Take profit hit
+
+ENTRY   2024-11-21 16:14  ETH      LONG     4x $   3,301.66   20.9%                           SQ30 V1.5 M3.5 RSI61
+EXIT    2024-11-23 14:27                       $   3,473.31              $+105,034 1d 22h     Take profit hit
+
+ENTRY   2024-11-22 01:49  SOL      LONG     3x $     256.08   19.3%                           SQ2 V2.5 M4.0 RSI65
+EXIT    2024-11-25 15:12                       $     224.77              $-157,937 3d 13h     *** LIQUIDATED ***
+
+ENTRY   2024-11-27 16:02  ETH      LONG     4x $   3,556.61   20.9%                           SQ12 V1.1 M2.7 RSI59
+EXIT    2024-11-27 23:04                       $   3,686.09               $+74,706 7h 2m      Take profit hit
+
+ENTRY   2024-12-03 12:34  ETH      SHORT    3x $   3,605.69   19.3%                           SQ6 V4.9 M-0.9 RSI44
+EXIT    2024-12-03 14:34                       $   3,519.52               $+33,823 2h 0m      Take profit hit
+
+ENTRY   2024-12-03 14:34  ETH      SHORT    3x $   3,503.01   19.3%                           SQ6 V4.9 M-0.9 RSI44
+EXIT    2024-12-03 20:36                       $   3,600.03               $-41,398 6h 2m      Stop loss hit
+
+ENTRY   2024-12-04 12:01  ETH      LONG     4x $   3,736.40   19.3%                           SQ3 V2.3 M2.3 RSI59
+EXIT    2024-12-04 15:32                       $   3,849.35               $+58,582 3h 31m     Take profit hit
+
+ENTRY   2024-12-05 02:33  BTC      LONG     4x $ 100,194.63   25.0%                           SQ15 V10.6 M3.7 RSI65
+EXIT    2024-12-05 22:27                       $  96,757.10               $-92,083 19h 54m    Stop loss hit
+
+ENTRY   2024-12-04 15:32  ETH      LONG     4x $   3,847.40   19.3%                           SQ3 V2.3 M2.3 RSI59
+EXIT    2024-12-06 15:05                       $   3,996.57               $+77,115 1d 23h     Take profit hit
+
+ENTRY   2024-12-11 16:02  BTC      LONG     4x $ 100,696.26   14.0%                           SQ2 V1.5 M0.8 RSI54
+EXIT    2024-12-15 12:39                       $ 103,005.05               $+32,932 3d 20h     Take profit hit
+
+ENTRY   2024-12-18 16:02  BTC      LONG     4x $ 104,377.53   16.8%                           SQ2 V2.1 M0.5 RSI54
+EXIT    2024-12-18 20:07                       $ 101,983.60               $-41,808 4h 5m      Stop loss hit
+
+ENTRY   2024-12-23 04:00  BTC      SHORT    3x $  95,859.58   17.7%                           SQ4 V1.5 M-3.8 RSI46
+EXIT    2024-12-23 18:51                       $  92,733.70               $+47,799 14h 51m    Take profit hit
+
+ENTRY   2024-12-24 16:03  ETH      LONG     4x $   3,500.72   15.4%                           SQ5 V1.7 M0.4 RSI47
+EXIT    2024-12-26 08:18                       $   3,379.44               $-56,875 1d 16h     Stop loss hit
+
+ENTRY   2024-12-30 04:00  XRP      SHORT    2x $       2.10   20.4%                           SQ8 V2.0 M-4.7 RSI39
+EXIT    2024-12-30 15:23                       $       2.01               $+37,211 11h 23m    Take profit hit
+
+ENTRY   2025-01-01 12:24  XRP      LONG     3x $       2.16   14.0%                           SQ3 V1.5 M1.1 RSI53
+EXIT    2025-01-01 16:07                       $       2.24               $+34,686 3h 43m     Take profit hit
+
+ENTRY   2025-01-02 08:05  ETH      LONG     4x $   3,421.58   25.0%                           SQ16 V6.3 M2.5 RSI61
+EXIT    2025-01-02 12:13                       $   3,472.54               $+38,006 4h 8m      Take profit hit
+
+ENTRY   2025-01-07 16:03  DOGE     SHORT    1x $       0.36   19.3%                           SQ7 V3.0 M-1.2 RSI34
+EXIT    2025-01-08 07:01                       $       0.34               $+32,226 14h 58m    Take profit hit
+
+ENTRY   2025-01-07 20:00  XRP      SHORT    2x $       2.27   22.2%                           SQ8 V2.4 M-2.8 RSI32
+EXIT    2025-01-08 22:55                       $       2.39               $-49,717 1d 2h      Stop loss hit
+
+ENTRY   2025-01-11 16:46  XRP      LONG     3x $       2.45   25.0%                           SQ17 V2.9 M3.0 RSI68
+EXIT    2025-01-11 20:36                       $       2.54               $+67,662 3h 50m     Take profit hit
+
+ENTRY   2025-01-13 08:52  BTC      SHORT    3x $  92,938.19   19.3%                           SQ3 V2.3 M-3.8 RSI45
+EXIT    2025-01-13 12:00                       $  90,698.33               $+40,532 3h 8m      Take profit hit
+
+ENTRY   2025-01-13 10:00  ETH      SHORT    3x $   3,148.17   25.0%                           SQ16 V4.5 M-5.5 RSI37
+EXIT    2025-01-13 13:00                       $   3,037.01               $+69,661 3h 0m      Take profit hit
+
+ENTRY   2025-01-13 08:17  SOL      SHORT    2x $     181.46   25.0%                           SQ10 V6.3 M-5.8 RSI38
+EXIT    2025-01-13 14:33                       $     174.01               $+49,236 6h 16m     Take profit hit
+
+ENTRY   2025-01-19 08:17  ETH      SHORT    3x $   3,238.60   19.3%                           SQ2 V3.3 M-1.9 RSI32
+EXIT    2025-01-19 14:17                       $   3,358.01               $-60,867 6h 0m      Stop loss hit
+
+ENTRY   2025-01-26 23:10  SOL      SHORT    2x $     246.04   23.0%                           SQ27 V1.6 M-1.9 RSI48
+EXIT    2025-01-27 00:01                       $     238.30               $+35,771 51m        Take profit hit
+
+ENTRY   2025-01-27 00:01  BTC      SHORT    3x $ 102,367.94   23.0%                           SQ21 V1.9 M-3.1 RSI34
+EXIT    2025-01-27 04:39                       $ 100,522.80               $+37,555 4h 38m     Take profit hit
+
+ENTRY   2025-01-30 12:01  ETH      LONG     4x $   3,221.50   15.4%                           SQ4 V1.6 M0.2 RSI54
+EXIT    2025-01-31 12:27                       $   3,348.28               $+69,256 1d 0h      Take profit hit
+
+ENTRY   2025-01-31 12:39  SOL      LONG     3x $     239.24   18.2%                           SQ12 V1.3 M0.1 RSI52
+EXIT    2025-01-31 18:20                       $     234.07               $-32,435 5h 41m     Stop loss hit
+
+ENTRY   2025-02-01 16:01  DOGE     SHORT    1x $       0.32   25.0%                           SQ18 V2.1 M-2.3 RSI38
+EXIT    2025-02-01 20:20                       $       0.31               $+21,811 4h 19m     Take profit hit
+
+ENTRY   2025-02-06 08:04  XRP      SHORT    2x $       2.44   25.0%                           SQ14 V2.6 M-3.0 RSI48
+EXIT    2025-02-07 06:46                       $       2.27               $+77,240 22h 42m    Take profit hit
+
+ENTRY   2025-02-05 16:04  BTC      SHORT    3x $  97,994.67   18.5%                           SQ7 V1.4 M-1.7 RSI45
+EXIT    2025-02-07 14:44                       $ 100,011.00               $-37,512 1d 22h     Stop loss hit
+
+ENTRY   2025-02-11 04:53  DOGE     LONG     2x $       0.26   20.4%                           SQ8 V1.7 M2.8 RSI66
+EXIT    2025-02-11 18:46                       $       0.25               $-42,620 13h 53m    Stop loss hit
+
+ENTRY   2025-02-12 13:32  SOL      SHORT    2x $     192.28   11.3%                           SQ7 V1.4 M-1.1 RSI37
+EXIT    2025-02-14 09:55                       $     199.43               $-22,255 1d 20h     Stop loss hit
+
+ENTRY   2025-02-21 20:00  DOGE     SHORT    1x $       0.24   11.3%                           SQ2 V1.5 M-4.1 RSI38
+EXIT    2025-02-24 14:57                       $       0.23               $+19,892 2d 18h     Take profit hit
+
+ENTRY   2025-02-28 04:01  DOGE     SHORT    1x $       0.19   19.3%                           SQ5 V3.4 M-5.7 RSI29
+EXIT    2025-02-28 20:10                       $       0.20               $-39,562 16h 9m     Stop loss hit
+
+ENTRY   2025-03-06 16:01  XRP      LONG     3x $       2.62   16.1%                           SQ4 V1.1 M1.7 RSI47
+EXIT    2025-03-07 00:20                       $       2.50               $-56,327 8h 19m     Stop loss hit
+
+ENTRY   2025-03-09 20:00  ETH      SHORT    3x $   2,040.59   13.5%                           SQ2 V2.7 M-4.1 RSI26
+EXIT    2025-03-10 09:18                       $   2,119.41               $-44,023 13h 18m    Stop loss hit
+
+ENTRY   2025-03-14 16:01  SOL      LONG     3x $     132.24   17.6%                           SQ15 V2.3 M2.4 RSI64
+EXIT    2025-03-16 19:49                       $     126.38               $-60,071 2d 3h      Stop loss hit
+
+ENTRY   2025-03-15 04:24  ETH      SHORT    3x $   1,918.91   15.3%                           SQ10 V5.3 M-0.7 RSI46
+EXIT    2025-03-19 10:31                       $   1,961.90               $-28,959 4d 6h      Stop loss hit
+
+ENTRY   2025-03-26 20:00  XRP      SHORT    2x $       2.36   13.5%                           SQ4 V3.3 M-1.6 RSI42
+EXIT    2025-03-27 13:40                       $       2.30               $+14,750 17h 40m    Take profit hit
+
+ENTRY   2025-03-28 08:00  BTC      SHORT    3x $  85,191.76   22.2%                           SQ9 V2.1 M-1.6 RSI38
+EXIT    2025-03-28 17:06                       $  83,715.69               $+33,188 9h 6m      Take profit hit
+
+ENTRY   2025-04-01 14:52  BTC      LONG     4x $  84,147.57   15.4%                           SQ5 V1.7 M0.5 RSI56
+EXIT    2025-04-02 13:47                       $  85,798.74               $+32,871 22h 55m    Take profit hit
+
+ENTRY   2025-04-06 17:42  ETH      SHORT    3x $   1,671.92   19.3%                           SQ5 V10.8 M-6.1 RSI26
+EXIT    2025-04-06 20:34                       $   1,602.63               $+64,505 2h 52m     Take profit hit
+
+ENTRY   2025-04-06 20:03  BTC      SHORT    3x $  79,795.98   18.5%                           SQ6 V1.1 M-4.6 RSI33
+EXIT    2025-04-06 23:12                       $  77,467.95               $+48,994 3h 9m      Take profit hit
+
+ENTRY   2025-04-06 23:12  BTC      SHORT    3x $  77,505.44   18.5%                           SQ6 V1.1 M-4.6 RSI33
+EXIT    2025-04-07 07:04                       $  74,489.29               $+67,229 7h 52m     Take profit hit
+
+ENTRY   2025-04-22 13:46  ETH      LONG     4x $   1,651.18   16.1%                           SQ2 V1.2 M3.3 RSI66
+EXIT    2025-04-22 15:04                       $   1,709.65               $+66,729 1h 18m     Take profit hit
+
+ENTRY   2025-04-22 15:04  ETH      LONG     4x $   1,709.94   16.1%                           SQ2 V1.2 M3.3 RSI66
+EXIT    2025-04-23 02:50                       $   1,793.59               $+94,636 11h 46m    Take profit hit
+
+ENTRY   2025-04-28 00:07  XRP      LONG     3x $       2.25   18.2%                           SQ10 V1.2 M1.3 RSI54
+EXIT    2025-04-28 07:47                       $       2.32               $+46,070 7h 40m     Take profit hit
+
+ENTRY   2025-05-05 08:04  XRP      SHORT    2x $       2.18   25.0%                           SQ16 V2.5 M-2.7 RSI40
+EXIT    2025-05-05 13:40                       $       2.12               $+32,151 5h 36m     Take profit hit
+
+ENTRY   2025-05-08 08:07  SOL      LONG     3x $     152.48   20.9%                           SQ13 V1.5 M2.7 RSI61
+EXIT    2025-05-08 14:49                       $     156.94               $+52,387 6h 42m     Take profit hit
+
+ENTRY   2025-05-08 04:04  XRP      LONG     3x $       2.20   15.4%                           SQ5 V1.9 M0.4 RSI52
+EXIT    2025-05-08 19:50                       $       2.26               $+29,575 15h 46m    Take profit hit
+
+ENTRY   2025-05-21 13:43  BTC      LONG     4x $ 107,113.32   25.0%                           SQ61 V2.2 M3.5 RSI65
+EXIT    2025-05-21 16:34                       $ 109,420.42               $+69,857 2h 51m     Take profit hit
+
+ENTRY   2025-05-21 12:33  SOL      LONG     3x $     169.86   20.0%                           SQ10 V1.6 M0.7 RSI57
+EXIT    2025-05-22 04:47                       $     176.91               $+73,431 16h 14m    Take profit hit
+
+ENTRY   2025-05-22 00:01  DOGE     LONG     2x $       0.23   25.0%                           SQ16 V6.0 M3.4 RSI53
+EXIT    2025-05-23 02:45                       $       0.25              $+124,571 1d 2h      Take profit hit
+
+ENTRY   2025-05-24 04:11  ETH      LONG     4x $   2,552.06   14.0%                           SQ3 V1.5 M0.7 RSI53
+EXIT    2025-05-27 13:20                       $   2,672.28               $+92,680 3d 9h      Take profit hit
+
+ENTRY   2025-05-28 14:00  XRP      SHORT    2x $       2.28   18.5%                           SQ9 V1.2 M-3.3 RSI40
+EXIT    2025-05-28 15:10                       $       2.31               $-15,108 1h 10m     Stop loss hit
+
+ENTRY   2025-05-28 15:10  XRP      SHORT    2x $       2.26   18.5%                           SQ9 V1.2 M-3.3 RSI40
+EXIT    2025-05-29 02:55                       $       2.31               $-22,794 11h 45m    Stop loss hit
+
+ENTRY   2025-05-28 16:00  BTC      SHORT    3x $ 107,157.61   16.8%                           SQ3 V2.1 M-1.4 RSI47
+EXIT    2025-05-29 11:00                       $ 108,872.27               $-32,769 19h 0m     Stop loss hit
+
+ENTRY   2025-05-29 16:00  BTC      SHORT    3x $ 107,058.45   11.3%                           SQ2 V1.3 M-2.6 RSI31
+EXIT    2025-05-30 00:58                       $ 104,900.60               $+25,768 8h 58m     Take profit hit
+
+ENTRY   2025-06-03 12:15  SOL      SHORT    2x $     160.89   17.7%                           SQ8 V1.7 M-0.1 RSI62
+EXIT    2025-06-03 22:00                       $     155.12               $+40,070 9h 45m     Take profit hit
+
+ENTRY   2025-06-05 16:32  BTC      SHORT    3x $ 103,928.56   23.0%                           SQ19 V1.6 M-2.6 RSI35
+EXIT    2025-06-05 19:18                       $ 101,733.95               $+56,216 2h 46m     Take profit hit
+
+ENTRY   2025-06-05 19:18  BTC      SHORT    3x $ 101,752.53   23.0%                           SQ19 V1.6 M-2.6 RSI35
+EXIT    2025-06-06 11:53                       $ 104,088.81               $-64,943 16h 35m    Stop loss hit
+
+ENTRY   2025-06-05 20:15  ETH      SHORT    3x $   2,499.69   19.3%                           SQ2 V8.4 M-2.5 RSI45
+EXIT    2025-06-09 21:08                       $   2,603.51               $-87,771 4d 0h      Stop loss hit
+
+ENTRY   2025-06-12 08:02  XRP      LONG     3x $       2.24   13.5%                           SQ6 V2.4 M0.1 RSI46
+EXIT    2025-06-12 20:44                       $       2.18               $-29,706 12h 42m    Stop loss hit
+
+ENTRY   2025-06-18 08:20  DOGE     SHORT    1x $       0.17   17.6%                           SQ14 V5.4 M-2.4 RSI38
+EXIT    2025-06-20 16:22                       $       0.16               $+27,976 2d 8h      Take profit hit
+
+ENTRY   2025-06-18 08:24  ETH      SHORT    3x $   2,537.74   10.8%                           SQ4 V1.9 M-0.7 RSI47
+EXIT    2025-06-20 17:20                       $   2,446.14               $+39,305 2d 8h      Take profit hit
+
+ENTRY   2025-06-21 12:02  XRP      SHORT    2x $       2.14   22.2%                           SQ7 V3.1 M-3.9 RSI40
+EXIT    2025-06-21 19:35                       $       2.08               $+35,690 7h 33m     Take profit hit
+
+ENTRY   2025-06-24 08:28  DOGE     SHORT    1x $       0.16   14.0%                           SQ4 V1.3 M-0.3 RSI52
+EXIT    2025-07-01 08:36                       $       0.16                $+6,479 7d 0h      Time exit
+
+ENTRY   2025-07-14 12:10  DOGE     LONG     2x $       0.21   19.3%                           SQ4 V2.3 M2.4 RSI50
+EXIT    2025-07-14 19:51                       $       0.20               $-59,451 7h 41m     Stop loss hit
+
+ENTRY   2025-07-14 08:00  ETH      LONG     4x $   3,045.87   17.7%                           SQ3 V1.9 M6.5 RSI63
+EXIT    2025-07-15 02:17                       $   2,962.18               $-71,585 18h 17m    Stop loss hit
+
+ENTRY   2025-07-16 16:00  SOL      LONG     3x $     169.36   17.6%                           SQ24 V7.9 M3.1 RSI64
+EXIT    2025-07-16 21:10                       $     175.16               $+56,173 5h 10m     Take profit hit
+
+ENTRY   2025-07-20 12:11  BTC      LONG     4x $ 117,956.01   21.8%                           SQ19 V3.8 M0.6 RSI54
+EXIT    2025-07-20 19:51                       $ 118,995.44               $+25,974 7h 40m     Take profit hit
+
+ENTRY   2025-07-23 16:04  XRP      SHORT    2x $       3.32   25.0%                           SQ17 V3.7 M-2.6 RSI38
+EXIT    2025-07-23 20:26                       $       3.14               $+73,159 4h 22m     Take profit hit
+
+ENTRY   2025-07-25 04:00  BTC      SHORT    3x $ 115,426.94   25.0%                           SQ27 V6.3 M-2.6 RSI42
+EXIT    2025-07-26 10:25                       $ 117,814.73               $-62,665 1d 6h      Stop loss hit
+
+ENTRY   2025-08-01 08:04  ETH      SHORT    3x $   3,628.37   25.0%                           SQ20 V2.3 M-2.7 RSI40
+EXIT    2025-08-01 22:27                       $   3,488.42               $+99,683 14h 23m    Take profit hit
+
+ENTRY   2025-08-01 04:00  BTC      SHORT    3x $ 115,534.98   25.0%                           SQ20 V8.7 M-3.3 RSI34
+EXIT    2025-08-02 15:59                       $ 112,881.03               $+65,288 1d 11h     Take profit hit
+
+ENTRY   2025-08-01 08:02  XRP      SHORT    2x $       2.94   22.2%                           SQ8 V3.1 M-3.5 RSI38
+EXIT    2025-08-02 18:24                       $       2.80               $+57,293 1d 10h     Take profit hit
+
+ENTRY   2025-08-07 10:03  DOGE     LONG     2x $       0.21   22.2%                           SQ7 V2.4 M3.1 RSI62
+EXIT    2025-08-07 13:39                       $       0.22               $+64,846 3h 36m     Take profit hit
+
+ENTRY   2025-08-07 08:00  SOL      LONG     3x $     170.07   20.4%                           SQ8 V2.0 M2.9 RSI61
+EXIT    2025-08-07 22:55                       $     174.95               $+59,121 14h 55m    Take profit hit
+
+ENTRY   2025-08-07 12:00  BTC      LONG     4x $ 116,569.87   25.0%                           SQ11 V4.8 M2.7 RSI59
+EXIT    2025-08-10 03:20                       $ 118,049.76               $+47,824 2d 15h     Take profit hit
+
+ENTRY   2025-08-12 16:00  ETH      LONG     4x $   4,469.73   17.7%                           SQ4 V1.8 M5.5 RSI67
+EXIT    2025-08-13 03:50                       $   4,646.42              $+109,357 11h 50m    Take profit hit
+
+ENTRY   2025-08-13 16:02  BTC      LONG     4x $ 121,164.43   19.3%                           SQ2 V3.1 M4.2 RSI67
+EXIT    2025-08-13 23:44                       $ 123,624.81               $+62,953 7h 42m     Take profit hit
+
+ENTRY   2025-08-18 12:01  DOGE     SHORT    1x $       0.22   16.1%                           SQ3 V1.2 M-2.1 RSI46
+EXIT    2025-08-19 17:05                       $       0.21               $+28,101 1d 5h      Take profit hit
+
+ENTRY   2025-08-22 16:00  BTC      LONG     4x $ 116,537.37   14.0%                           SQ4 V1.0 M0.7 RSI56
+EXIT    2025-08-24 19:34                       $ 113,758.95               $-57,300 2d 3h      Stop loss hit
+
+ENTRY   2025-08-29 12:00  BTC      SHORT    3x $ 110,081.00   19.3%                           SQ2 V3.8 M-2.8 RSI45
+EXIT    2025-08-29 16:01                       $ 108,126.55               $+44,469 4h 1m      Take profit hit
+
+ENTRY   2025-09-02 16:02  ETH      SHORT    3x $   4,298.29   22.2%                           SQ6 V3.1 M-2.1 RSI41
+EXIT    2025-09-03 13:46                       $   4,432.94               $-85,540 21h 44m    Stop loss hit
+
+ENTRY   2025-09-03 20:03  DOGE     LONG     2x $       0.22   21.8%                           SQ17 V2.1 M1.2 RSI55
+EXIT    2025-09-04 05:03                       $       0.22               $-48,618 9h 0m      Stop loss hit
+
+ENTRY   2025-09-03 08:02  SOL      LONG     3x $     209.74   18.2%                           SQ13 V1.5 M1.2 RSI59
+EXIT    2025-09-05 00:43                       $     201.94               $-77,122 1d 16h     Stop loss hit
+
+ENTRY   2025-09-11 20:00  DOGE     LONG     2x $       0.25   15.6%                           SQ6 V10.0 M5.0 RSI67
+EXIT    2025-09-12 00:44                       $       0.26               $+58,015 4h 44m     Take profit hit
+
+ENTRY   2025-09-18 20:01  ETH      SHORT    3x $   4,594.21   16.1%                           SQ7 V1.2 M-0.1 RSI57
+EXIT    2025-09-19 14:49                       $   4,502.68               $+36,386 18h 48m    Take profit hit
+
+ENTRY   2025-10-01 12:00  DOGE     LONG     2x $       0.24   25.0%                           SQ11 V2.4 M3.3 RSI62
+EXIT    2025-10-02 02:00                       $       0.25               $+66,450 14h 0m     Take profit hit
+
+ENTRY   2025-10-06 13:10  ETH      LONG     4x $   4,590.54   22.2%                           SQ9 V8.0 M5.0 RSI63
+EXIT    2025-10-06 17:18                       $   4,700.54               $+85,090 4h 8m      Take profit hit
+
+ENTRY   2025-10-07 14:08  XRP      SHORT    2x $       2.92   19.3%                           SQ4 V5.9 M-2.9 RSI38
+EXIT    2025-10-07 19:00                       $       2.86               $+25,040 4h 52m     Take profit hit
+
+ENTRY   2025-10-07 16:00  SOL      SHORT    2x $     223.72   23.0%                           SQ14 V1.7 M-1.8 RSI43
+EXIT    2025-10-10 15:21                       $     215.56               $+61,626 2d 23h     Take profit hit
+
+ENTRY   2025-10-10 16:01  BTC      SHORT    3x $ 118,884.40   22.2%                           SQ6 V6.1 M-4.0 RSI31
+EXIT    2025-10-10 19:21                       $ 116,112.11               $+70,166 3h 20m     Take profit hit
+
+ENTRY   2025-10-10 16:00  SOL      SHORT    2x $     210.25   19.3%                           SQ2 V4.4 M-4.5 RSI29
+EXIT    2025-10-10 20:56                       $     200.93               $+64,081 4h 56m     Take profit hit
+
+ENTRY   2025-10-10 19:21  BTC      SHORT    3x $ 116,035.57   22.2%                           SQ6 V6.1 M-4.0 RSI31
+EXIT    2025-10-10 21:13                       $ 112,995.36               $+80,932 1h 52m     Take profit hit
+
+ENTRY   2025-10-13 12:12  XRP      SHORT    2x $       2.58   19.3%                           SQ3 V3.1 M-1.9 RSI43
+EXIT    2025-10-14 06:47                       $       2.44               $+72,475 18h 35m    Take profit hit
+
+ENTRY   2025-10-15 16:00  BTC      SHORT    3x $ 110,909.51   16.1%                           SQ5 V1.1 M-1.6 RSI49
+EXIT    2025-10-16 16:30                       $ 107,808.96               $+65,304 1d 0h      Take profit hit
+
+ENTRY   2025-10-15 16:00  XRP      SHORT    2x $       2.44   16.1%                           SQ2 V1.3 M-1.7 RSI51
+EXIT    2025-10-16 19:20                       $       2.33               $+49,722 1d 3h      Take profit hit
+
+ENTRY   2025-10-29 13:45  BTC      SHORT    3x $ 112,871.17   16.8%                           SQ2 V2.6 M-0.4 RSI50
+EXIT    2025-10-29 16:12                       $ 111,059.49               $+39,564 2h 27m     Take profit hit
+
+ENTRY   2025-10-30 12:23  XRP      SHORT    2x $       2.53   20.9%                           SQ15 V1.3 M-2.8 RSI31
+EXIT    2025-10-30 19:17                       $       2.41               $+70,366 6h 54m     Take profit hit
+
+ENTRY   2025-10-30 16:00  SOL      SHORT    2x $     184.61   25.0%                           SQ12 V7.6 M-3.4 RSI26
+EXIT    2025-11-03 15:26                       $     173.44              $+126,441 3d 23h     Take profit hit
+
+ENTRY   2025-11-03 04:00  ETH      SHORT    3x $   3,733.19   19.3%                           SQ2 V2.5 M-3.5 RSI50
+EXIT    2025-11-03 15:30                       $   3,613.18               $+86,504 11h 30m    Take profit hit
+
+ENTRY   2025-11-03 08:01  BTC      SHORT    3x $ 107,444.28   19.3%                           SQ3 V2.8 M-2.3 RSI48
+EXIT    2025-11-03 15:32                       $ 110,369.15               $-84,741 7h 31m     Stop loss hit
+
+ENTRY   2025-11-07 16:02  XRP      SHORT    2x $       2.21   21.8%                           SQ10 V4.1 M-0.2 RSI56
+EXIT    2025-11-07 17:30                       $       2.31               $-79,516 1h 28m     Stop loss hit
+
+ENTRY   2025-11-07 17:30  XRP      SHORT    2x $       2.32   15.3%                           SQ10 V4.1 M-0.2 RSI56
+EXIT    2025-11-10 03:04                       $       2.43               $-56,442 2d 9h      Stop loss hit
+
+ENTRY   2025-11-11 20:01  DOGE     LONG     2x $       0.17   11.3%                           SQ7 V1.4 M0.6 RSI41
+EXIT    2025-11-12 19:07                       $       0.17               $-38,320 23h 6m     Stop loss hit
+
+ENTRY   2025-11-19 16:01  SOL      SHORT    2x $     134.78   15.6%                           SQ9 V2.2 M-2.6 RSI38
+EXIT    2025-11-20 02:05                       $     140.98               $-61,309 10h 4m     Stop loss hit
+
+ENTRY   2025-11-18 04:14  ETH      SHORT    3x $   2,991.00   17.6%                           SQ10 V2.3 M-3.1 RSI38
+EXIT    2025-11-20 08:56                       $   3,192.25              $-165,593 2d 4h      Stop loss hit
+
+ENTRY   2025-11-18 00:01  BTC      SHORT    3x $  92,045.79   16.1%                           SQ10 V1.8 M-4.5 RSI31
+EXIT    2025-11-21 00:00                       $  87,587.29              $+118,409 2d 23h     Take profit hit
+
+ENTRY   2025-11-24 08:02  BTC      SHORT    3x $  86,838.94   20.0%                           SQ15 V1.5 M-1.2 RSI49
+EXIT    2025-11-24 17:24                       $  89,711.83              $-100,591 9h 22m     Stop loss hit
+
+ENTRY   2025-12-01 00:07  XRP      SHORT    2x $       2.12   20.9%                           SQ20 V1.1 M-3.6 RSI33
+EXIT    2025-12-01 04:25                       $       2.04               $+57,779 4h 18m     Take profit hit
+
+ENTRY   2025-12-01 00:17  BTC      SHORT    3x $  88,790.06   22.2%                           SQ8 V6.9 M-2.5 RSI30
+EXIT    2025-12-01 04:26                       $  85,810.79              $+107,467 4h 9m      Take profit hit
+
+ENTRY   2025-12-01 00:18  ETH      SHORT    3x $   2,907.01   18.5%                           SQ9 V1.2 M-3.7 RSI29
+EXIT    2025-12-01 12:49                       $   2,808.11               $+81,456 12h 31m    Take profit hit
+
+ENTRY   2025-12-15 13:07  XRP      SHORT    2x $       1.97   25.0%                           SQ15 V11.3 M-4.3 RSI31
+EXIT    2025-12-15 17:04                       $       1.91               $+56,290 3h 57m     Take profit hit
+
+ENTRY   2025-12-18 20:08  XRP      SHORT    2x $       1.82   17.7%                           SQ2 V2.0 M-3.8 RSI32
+EXIT    2025-12-19 15:17                       $       1.90               $-63,187 19h 9m     Stop loss hit
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Wins: 357 | Losses: 176
+Longs: 209 | Shorts: 324
+Liquidations: 8
+
+===========================
+BACKTEST RESULTS
+===========================
+Total Trades:    533
+Win Rate:        67.0%
+Profit Factor:   1.98
+Total P&L:       $+4,819,968
+Max Drawdown:    24.5%
+Sharpe Ratio:    2.00
+Final Equity:    $4,708,482
+Return:          +4608.5%
+===========================
+LEVERAGE STATS
+===========================
+Avg Leverage:    2.7x
+Liquidations:    8
+===========================
